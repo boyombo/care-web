@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148']
 # Application definition
 
 INSTALLED_APPS = [
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'client.apps.ClientConfig',
+
+    #baton
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +131,13 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+BATON = {
+    'SITE_HEADER': 'FUTURECARE',
+    'SITE_TITLE': 'FUTURECARE',
+    'INDEX_TITLE': 'Site administration',
+    'CONFIRM_UNSAVED_CHANGES': True,
+}
 
 try:
     from .local_settings import *
