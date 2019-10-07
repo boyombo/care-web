@@ -94,3 +94,6 @@ target/
 
 # Komodo project
 *.komodoproject
+deploy.sh
+deploy.py
+../Pipfile
