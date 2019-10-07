@@ -17,7 +17,7 @@ class Location(models.Model):
 
 
 class CareProvider(models.Model):
-    code_no = models.CharField(max_length=20)
+    code_no = models.CharField(max_length=20, blank=True)
     name = models.CharField(max_length=200)
     address = models.TextField(null=True)
     phone1 = models.CharField(max_length=100, null=True, blank=True)
