@@ -32,6 +32,7 @@ class Dependant(models.Model):
     OTHERS = 3
     DESIGNATIONS = enumerate(('Spouse', 'Daughter', 'Son', 'Others'))
 
+    primary = models.ForeignKey('Client', null=True, on_delete=models.SET_NULL)
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
@@ -98,7 +99,7 @@ class Client(models.Model):
         choices=PAYMENT_OPTIONS, null=True)
     payment_instrument = models.PositiveIntegerField(
         choices=PAYMENT_INSTRUMENTS, null=True)
-    dependants = models.ManyToManyField(Dependant, blank=True)
+    #dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
         return self.surname
