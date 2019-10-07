@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from client.models import CareProvider, Ranger, HMO, Dependant, Client, Location, LGA
+from client.models import CareProvider, Ranger, HMO, Dependant,\
+    Client, Location, LGA
 
 
 @admin.register(LGA)
@@ -15,12 +16,12 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(CareProvider)
 class CareProviderAdmin(admin.ModelAdmin):
-    list_display = ['code_no', 'name']
+    list_display = ['name', 'phone1', 'lga']
 
 
 @admin.register(Ranger)
 class RangerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'phone']
+    list_display = ['first_name', 'last_name', 'phone', 'location']
 
 
 @admin.register(HMO)
