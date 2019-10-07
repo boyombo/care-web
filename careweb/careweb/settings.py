@@ -137,6 +137,9 @@ BATON = {
     'SITE_TITLE': 'FUTURECARE',
     'INDEX_TITLE': 'Site administration',
     'CONFIRM_UNSAVED_CHANGES': True,
+    'COPYRIGHT': 'Futureview Solutions',
+    'POWERED_BY': 'Futureview',
+    'SUPPORT_HREF': 'http://futurecare.everyday.com.ng',
 }
 
 try:
