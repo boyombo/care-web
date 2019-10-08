@@ -105,14 +105,17 @@ class Client(models.Model):
     phone_no = models.CharField(max_length=50, blank=True)
     whatsapp_no = models.CharField(max_length=50, blank=True)
     email = models.CharField(max_length=50, blank=True)
-    pcp = models.ForeignKey(CareProvider, null=True, on_delete=models.SET_NULL)
+    pcp = models.ForeignKey(
+        CareProvider, null=True, blank=True, on_delete=models.SET_NULL)
     ranger = models.ForeignKey(Ranger, null=True, on_delete=models.SET_NULL)
     home_address = models.TextField(blank=True)
     occupation = models.CharField(max_length=200, blank=True)
     company = models.CharField(max_length=200, blank=True)
     office_address = models.TextField(blank=True)
-    hmo = models.ForeignKey(HMO, null=True, on_delete=models.SET_NULL)
-    informal_sector_group = models.CharField(max_length=200, null=True)
+    hmo = models.ForeignKey(
+        HMO, null=True, blank=True, on_delete=models.SET_NULL)
+    informal_sector_group = models.CharField(
+        max_length=200, blank=True, null=True)
     package_option = models.PositiveIntegerField(
         choices=PACKAGE_OPTIONS, null=True)
     payment_option = models.PositiveIntegerField(

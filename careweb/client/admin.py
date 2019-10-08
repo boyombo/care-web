@@ -17,12 +17,15 @@ class LocationAdmin(admin.ModelAdmin):
 @admin.register(CareProvider)
 class CareProviderAdmin(admin.ModelAdmin):
     list_display = ['name', 'phone1', 'lga']
+    list_filter = ['lga']
+    search_fields = ['name']
 
 
 @admin.register(Ranger)
 class RangerAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'last_name', 'phone', 'lga']
     list_filter = ['lga']
+    search_fields = ['first_name', 'last_name']
 
 
 @admin.register(HMO)
@@ -43,3 +46,4 @@ class DependantInline(admin.TabularInline):
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['surname', 'first_name', 'dob', 'sex', 'pcp']
     inlines = [DependantInline]
+    autocomplete_fields = ['ranger', 'pcp']
