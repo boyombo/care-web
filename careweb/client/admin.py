@@ -1,27 +1,30 @@
 from django.contrib import admin
 
-from client.models import CareProvider, Ranger, HMO, Dependant,\
-    Client, Location, LGA
+from client.models import HMO, Dependant, Client
 
 
-@admin.register(LGA)
-class LGAAdmin(admin.ModelAdmin):
-    list_display = ['name']
+#@admin.register(LGA)
+#class LGAAdmin(admin.ModelAdmin):
+#    list_display = ['name']
 
 
-@admin.register(Location)
-class LocationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'lga']
+#@admin.register(Location)
+#class LocationAdmin(admin.ModelAdmin):
+#    list_display = ['name', 'lga']
 
 
-@admin.register(CareProvider)
-class CareProviderAdmin(admin.ModelAdmin):
-    list_display = ['name', 'phone1', 'lga']
+#@admin.register(CareProvider)
+#class CareProviderAdmin(admin.ModelAdmin):
+#    list_display = ['name', 'phone1', 'lga']
+#    list_filter = ['lga']
+#    search_fields = ['name']
 
 
-@admin.register(Ranger)
-class RangerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'phone', 'location']
+#@admin.register(Ranger)
+#class RangerAdmin(admin.ModelAdmin):
+#    list_display = ['first_name', 'last_name', 'phone', 'lga']
+#    list_filter = ['lga']
+#    search_fields = ['first_name', 'last_name']
 
 
 @admin.register(HMO)
@@ -42,3 +45,4 @@ class DependantInline(admin.TabularInline):
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['surname', 'first_name', 'dob', 'sex', 'pcp']
     inlines = [DependantInline]
+    autocomplete_fields = ['ranger', 'pcp']

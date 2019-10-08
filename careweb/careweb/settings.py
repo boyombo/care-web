@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148']
 # Application definition
 
 INSTALLED_APPS = [
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'client.apps.ClientConfig',
+    'core.apps.CoreConfig',
+    'ranger.apps.RangerConfig',
+    'location.apps.LocationConfig',
+    'provider.apps.ProviderConfig',
+
+    #baton
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +135,16 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+BATON = {
+    'SITE_HEADER': 'FUTURECARE',
+    'SITE_TITLE': 'FUTURECARE',
+    'INDEX_TITLE': 'Site administration',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'COPYRIGHT': 'Futureview Solutions',
+    'POWERED_BY': 'Futureview',
+    'SUPPORT_HREF': 'http://futurecare.everyday.com.ng',
+}
 
 try:
     from .local_settings import *
