@@ -32,7 +32,7 @@ class Ranger(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=50)
-    location = models.ForeignKey(Location, null=True, on_delete=models.SET_NULL)
+    lga = models.ForeignKey(LGA, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return '{} {}'.format(self.first_name, self.last_name)

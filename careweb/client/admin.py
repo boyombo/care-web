@@ -21,7 +21,8 @@ class CareProviderAdmin(admin.ModelAdmin):
 
 @admin.register(Ranger)
 class RangerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'phone', 'location']
+    list_display = ['first_name', 'last_name', 'phone', 'lga']
+    list_filter = ['lga']
 
 
 @admin.register(HMO)
