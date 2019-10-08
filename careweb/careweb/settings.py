@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'client.apps.ClientConfig',
+    'core.apps.CoreConfig',
+    'ranger.apps.RangerConfig',
+    'location.apps.LocationConfig',
+    'provider.apps.ProviderConfig',
 
     #baton
     'baton.autodiscover',
