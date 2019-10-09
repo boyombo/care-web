@@ -69,14 +69,15 @@ class Dependant(models.Model):
 
 
 class Client(models.Model):
-    FEMALE = 0
-    MALE = 1
-    SEXES = enumerate(('Female', 'Male'))
+    FEMALE = 'F'
+    MALE = 'M'
+    SEXES = (('F', 'Female'), ('M', 'Male'))
+    #SEXES = enumerate(('Female', 'Male'))
 
-    SINGLE = 0
-    MARRIED = 1
-    DIVORCED = 2
-    MARITAL_STATUSES = enumerate(('Single', 'Married', 'Divorced'))
+    SINGLE = 'S'
+    MARRIED = 'M'
+    DIVORCED = 'D'
+    MARITAL_STATUSES = (('S', 'Single'), ('M', 'Married'), ('D', 'Divorced'))
 
     LASHMA = 0
     LASHMA_QUALITY_LIFE = 1
@@ -99,8 +100,9 @@ class Client(models.Model):
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
-    sex = models.PositiveIntegerField(choices=SEXES)
-    marital_status = models.PositiveIntegerField(choices=MARITAL_STATUSES)
+    sex = models.CharField(max_length=10, choices=SEXES)
+    #sex = models.PositiveIntegerField(choices=SEXES)
+    marital_status = models.CharField(max_length=10, choices=MARITAL_STATUSES)
     national_id_card_no = models.CharField(max_length=50, blank=True)
     drivers_licence_no = models.CharField(max_length=50, blank=True)
     lashma_no = models.CharField(max_length=50, blank=True)
