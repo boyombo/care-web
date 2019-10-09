@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from location.models import LGA
 from provider.models import CareProvider
@@ -137,6 +138,7 @@ class Client(models.Model):
         max_length=50, choices=PAYMENT_OPTIONS, null=True)
     payment_instrument = models.CharField(
         max_length=20, choices=PAYMENT_INSTRUMENTS, null=True)
+    registration_date = models.DateField(default=timezone.now)
     #dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
