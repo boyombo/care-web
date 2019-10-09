@@ -79,22 +79,31 @@ class Client(models.Model):
     DIVORCED = 'D'
     MARITAL_STATUSES = (('S', 'Single'), ('M', 'Married'), ('D', 'Divorced'))
 
-    LASHMA = 0
-    LASHMA_QUALITY_LIFE = 1
-    PACKAGE_OPTIONS = enumerate(('LASHMA', 'LASHMA QUALITY LIFE'))
+    LASHMA = 'L'
+    LASHMA_QUALITY_LIFE = 'Q'
+    PACKAGE_OPTIONS = (('L', 'LASHMA'), ('Q', 'LASHMA QUALITY LIFE'))
 
-    WEEKLY = 0
-    MONTHLY = 1
-    QUARTERLY = 2
-    ANNUALLY = 3
-    PAYMENT_OPTIONS = enumerate(('Weekly', 'Monthly', 'Quarterly', 'Annually'))
+    WEEKLY = 'W'
+    MONTHLY = 'M'
+    QUARTERLY = 'Q'
+    ANNUALLY = 'A'
+    PAYMENT_OPTIONS = (
+        ('W', 'Weekly'),
+        ('M', 'Monthly'),
+        ('Q', 'Quarterly'),
+        ('A', 'Annually')
+    )
 
-    TRANSFER = 0
-    EWALLET = 1
-    CHEQUE = 2
-    BANK_DEPOSIT = 3
-    PAYMENT_INSTRUMENTS = enumerate(
-        ('Transfer', 'E-Wallet', 'Cheque', 'Bank Deposit'))
+    TRANSFER = 'T'
+    EWALLET = 'E'
+    CHEQUE = 'C'
+    BANK_DEPOSIT = 'B'
+    PAYMENT_INSTRUMENTS = (
+        ('T', 'Transfer'),
+        ('E', 'E-Wallet'),
+        ('C', 'Cheque'),
+        ('B', 'Bank Deposit')
+    )
 
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
@@ -122,12 +131,12 @@ class Client(models.Model):
         HMO, null=True, blank=True, on_delete=models.SET_NULL)
     informal_sector_group = models.CharField(
         max_length=200, blank=True, null=True)
-    package_option = models.PositiveIntegerField(
-        choices=PACKAGE_OPTIONS, null=True)
-    payment_option = models.PositiveIntegerField(
-        choices=PAYMENT_OPTIONS, null=True)
-    payment_instrument = models.PositiveIntegerField(
-        choices=PAYMENT_INSTRUMENTS, null=True)
+    package_option = models.CharField(
+        max_length=50, choices=PACKAGE_OPTIONS, null=True)
+    payment_option = models.CharField(
+        max_length=50, choices=PAYMENT_OPTIONS, null=True)
+    payment_instrument = models.CharField(
+        max_length=20, choices=PAYMENT_INSTRUMENTS, null=True)
     #dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
