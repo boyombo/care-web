@@ -73,34 +73,43 @@ class Client(models.Model):
     MALE = 1
     SEXES = enumerate(('Female', 'Male'))
 
-    SINGLE = 0
-    MARRIED = 1
-    DIVORCED = 2
-    MARITAL_STATUSES = enumerate(('Single', 'Married', 'Divorced'))
+    SINGLE = 'S'
+    MARRIED = 'M'
+    DIVORCED = 'D'
+    MARITAL_STATUSES = (('S', 'Single'), ('M', 'Married'), ('D', 'Divorced'))
+    #MARITAL_STATUSES = enumerate(('Single', 'Married', 'Divorced'))
 
-    LASHMA = 0
-    LASHMA_QUALITY_LIFE = 1
-    PACKAGE_OPTIONS = enumerate(('LASHMA', 'LASHMA QUALITY LIFE'))
+    LASHMA = 'L'
+    LASHMA_QUALITY_LIFE = 'Q'
+    PACKAGE_OPTIONS = (('L', 'LASHMA'), ('Q', 'LASHMA QUALITY LIFE'))
 
-    WEEKLY = 0
-    MONTHLY = 1
-    QUARTERLY = 2
-    ANNUALLY = 3
-    PAYMENT_OPTIONS = enumerate(('Weekly', 'Monthly', 'Quarterly', 'Annually'))
+    WEEKLY = 'W'
+    MONTHLY = 'M'
+    QUARTERLY = 'Q'
+    ANNUALLY = 'A'
+    PAYMENT_OPTIONS = (
+        ('W', 'Weekly'),
+        ('M', 'Monthly'),
+        ('Q', 'Quarterly'),
+        ('A', 'Annually'))
 
-    TRANSFER = 0
-    EWALLET = 1
-    CHEQUE = 2
-    BANK_DEPOSIT = 3
-    PAYMENT_INSTRUMENTS = enumerate(
-        ('Transfer', 'E-Wallet', 'Cheque', 'Bank Deposit'))
+    TRANSFER = 'T'
+    EWALLET = 'E'
+    CHEQUE = 'C'
+    BANK_DEPOSIT = 'B'
+    PAYMENT_INSTRUMENTS = (
+        ('T', 'Transfer'),
+        ('E', 'E-Wallet'),
+        ('C', 'Cheque'),
+        ('B', 'Bank Deposit'))
 
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
-    sex = models.PositiveIntegerField(choices=SEXES)
-    marital_status = models.PositiveIntegerField(choices=MARITAL_STATUSES)
+    sex = models.CharField(max_length=10, choices=SEXES, default='F')
+    marital_status = models.CharField(
+        max_length=10, choices=MARITAL_STATUSES, default='S')
     national_id_card_no = models.CharField(max_length=50, blank=True)
     drivers_licence_no = models.CharField(max_length=50, blank=True)
     lashma_no = models.CharField(max_length=50, blank=True)
@@ -120,8 +129,8 @@ class Client(models.Model):
         HMO, null=True, blank=True, on_delete=models.SET_NULL)
     informal_sector_group = models.CharField(
         max_length=200, blank=True, null=True)
-    package_option = models.PositiveIntegerField(
-        choices=PACKAGE_OPTIONS, null=True)
+    package_option = models.CharField(
+        max_length=10, choices=PACKAGE_OPTIONS, null=True)
     payment_option = models.PositiveIntegerField(
         choices=PAYMENT_OPTIONS, null=True)
     payment_instrument = models.PositiveIntegerField(
