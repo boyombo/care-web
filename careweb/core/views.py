@@ -6,6 +6,7 @@ from core.forms import LoginForm
 from ranger.models import Ranger
 from provider.models import CareProvider
 from location.models import LGA
+from client.models import Client
 
 
 @csrf_exempt
@@ -45,6 +46,17 @@ def login_agent(request):
                             'name': lga.name
                         } for lga in LGA.objects.all()
                     ]
+                    clients = [
+                        {
+                            'id': client.id,
+                            'surname': client.surname,
+                            'first_name': client.first_name,
+                            'middle_name': client.middle_name,
+                            'phone_no': client.phone_no,
+                            'whatsapp_no': client.whatsapp_no,
+                            'email': client.email,
+                        } for client in Client.objects.filter(ranger=agent)
+                    ]
 
                     return JsonResponse(
                         {
@@ -53,11 +65,12 @@ def login_agent(request):
                                 'first_name': agent.first_name,
                                 'last_name': agent.last_name,
                                 'phone': agent.phone,
-                                'lga_name': prov.lga.name,
-                                'lga_id': prov.lga.id,
+                                'lga_name': agent.lga.name,
+                                'lga_id': agent.lga.id,
                             },
                             'providers': providers,
-                            'lgas': lgas
+                            'lgas': lgas,
+                            'clients': clients
                         }
                     )
         return JsonResponse(

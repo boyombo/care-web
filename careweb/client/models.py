@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from location.models import LGA
 from provider.models import CareProvider
@@ -69,15 +70,15 @@ class Dependant(models.Model):
 
 
 class Client(models.Model):
-    FEMALE = 0
-    MALE = 1
-    SEXES = enumerate(('Female', 'Male'))
+    FEMALE = 'F'
+    MALE = 'M'
+    SEXES = (('F', 'Female'), ('M', 'Male'))
+    #SEXES = enumerate(('Female', 'Male'))
 
     SINGLE = 'S'
     MARRIED = 'M'
     DIVORCED = 'D'
     MARITAL_STATUSES = (('S', 'Single'), ('M', 'Married'), ('D', 'Divorced'))
-    #MARITAL_STATUSES = enumerate(('Single', 'Married', 'Divorced'))
 
     LASHMA = 'L'
     LASHMA_QUALITY_LIFE = 'Q'
@@ -91,7 +92,8 @@ class Client(models.Model):
         ('W', 'Weekly'),
         ('M', 'Monthly'),
         ('Q', 'Quarterly'),
-        ('A', 'Annually'))
+        ('A', 'Annually')
+    )
 
     TRANSFER = 'T'
     EWALLET = 'E'
@@ -101,15 +103,16 @@ class Client(models.Model):
         ('T', 'Transfer'),
         ('E', 'E-Wallet'),
         ('C', 'Cheque'),
-        ('B', 'Bank Deposit'))
+        ('B', 'Bank Deposit')
+    )
 
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
-    sex = models.CharField(max_length=10, choices=SEXES, default='F')
-    marital_status = models.CharField(
-        max_length=10, choices=MARITAL_STATUSES, default='S')
+    sex = models.CharField(max_length=10, choices=SEXES)
+    #sex = models.PositiveIntegerField(choices=SEXES)
+    marital_status = models.CharField(max_length=10, choices=MARITAL_STATUSES)
     national_id_card_no = models.CharField(max_length=50, blank=True)
     drivers_licence_no = models.CharField(max_length=50, blank=True)
     lashma_no = models.CharField(max_length=50, blank=True)
@@ -130,11 +133,12 @@ class Client(models.Model):
     informal_sector_group = models.CharField(
         max_length=200, blank=True, null=True)
     package_option = models.CharField(
-        max_length=10, choices=PACKAGE_OPTIONS, null=True)
-    payment_option = models.PositiveIntegerField(
-        choices=PAYMENT_OPTIONS, null=True)
-    payment_instrument = models.PositiveIntegerField(
-        choices=PAYMENT_INSTRUMENTS, null=True)
+        max_length=50, choices=PACKAGE_OPTIONS, null=True)
+    payment_option = models.CharField(
+        max_length=50, choices=PAYMENT_OPTIONS, null=True)
+    payment_instrument = models.CharField(
+        max_length=20, choices=PAYMENT_INSTRUMENTS, null=True)
+    registration_date = models.DateField(default=timezone.now)
     #dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
