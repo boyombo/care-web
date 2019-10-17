@@ -46,17 +46,6 @@ def login_agent(request):
                             'name': lga.name
                         } for lga in LGA.objects.all()
                     ]
-                    clients = [
-                        {
-                            'id': client.id,
-                            'surname': client.surname,
-                            'first_name': client.first_name,
-                            'middle_name': client.middle_name,
-                            'phone_no': client.phone_no,
-                            'whatsapp_no': client.whatsapp_no,
-                            'email': client.email,
-                        } for client in Client.objects.filter(ranger=agent)
-                    ]
 
                     return JsonResponse(
                         {
@@ -71,7 +60,6 @@ def login_agent(request):
                             },
                             'providers': providers,
                             'lgas': lgas,
-                            'clients': clients
                         }
                     )
         return JsonResponse(
