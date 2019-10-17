@@ -62,6 +62,7 @@ def login_agent(request):
                         {
                             'success': True,
                             'ranger': {
+                                'id': agent.id,
                                 'first_name': agent.first_name,
                                 'last_name': agent.last_name,
                                 'phone': agent.phone,
