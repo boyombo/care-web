@@ -1,46 +1,16 @@
 from django.db import models
 from django.utils import timezone
 
-from location.models import LGA
+#from location.models import LGA
 from provider.models import CareProvider
 from ranger.models import Ranger
 
 
-#class LGA(models.Model):
-#    name = models.CharField(max_length=100)
+class Association(models.Model):
+    name = models.CharField(max_length=100)
 
-#    def __str__(self):
-#        return self.name
-
-
-#class Location(models.Model):
-#    name = models.CharField(max_length=100)
-#    lga = models.ForeignKey(LGA, on_delete=models.CASCADE)
-
-#    def __str__(self):
-#        return self.name
-
-
-#class CareProvider(models.Model):
-#    code_no = models.CharField(max_length=20, blank=True)
-#    name = models.CharField(max_length=200)
-#    address = models.TextField(null=True)
-#    phone1 = models.CharField(max_length=100, null=True, blank=True)
-#    phone2 = models.CharField(max_length=100, null=True, blank=True)
-#    lga = models.ForeignKey(LGA, null=True, on_delete=models.SET_NULL)
-
-#    def __str__(self):
-#        return self.name
-
-
-#class Ranger(models.Model):
-#    first_name = models.CharField(max_length=200)
-#    last_name = models.CharField(max_length=200)
-#    phone = models.CharField(max_length=50)
-#    lga = models.ForeignKey(LGA, null=True, on_delete=models.SET_NULL)
-
-#    def __str__(self):
-#        return '{} {}'.format(self.first_name, self.last_name)
+    def __str__(self):
+        return self.name
 
 
 class HMO(models.Model):
@@ -55,14 +25,14 @@ class Dependant(models.Model):
     DAUGHTER = 1
     SON = 2
     OTHERS = 3
-    DESIGNATIONS = enumerate(('Spouse', 'Daughter', 'Son', 'Others'))
+    RELATIONSHIPS = enumerate(('Spouse', 'Daughter', 'Son', 'Others'))
 
     primary = models.ForeignKey('Client', null=True, on_delete=models.SET_NULL)
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
-    designation = models.PositiveIntegerField(choices=DESIGNATIONS)
+    relationship = models.PositiveIntegerField(choices=RELATIONSHIPS)
     pcp = models.ForeignKey(CareProvider, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -130,8 +100,9 @@ class Client(models.Model):
     office_address = models.TextField(blank=True)
     hmo = models.ForeignKey(
         HMO, null=True, blank=True, on_delete=models.SET_NULL)
-    informal_sector_group = models.CharField(
-        max_length=200, blank=True, null=True)
+    #informal_sector_group = models.CharField(
+    #    max_length=200, blank=True, null=True)
+    associations = models.ManyToManyField('Association')
     package_option = models.CharField(
         max_length=50, choices=PACKAGE_OPTIONS, null=True)
     payment_option = models.CharField(
