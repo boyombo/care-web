@@ -1,3 +1,8 @@
 from django.shortcuts import render
+from client.models import Dependant, Client
 
-# Create your views here.
+
+def profile(request):
+    profile = Client.objects.all()
+    context = {"profile": profile}
+    return render(request, 'client/profile.html', context)

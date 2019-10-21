@@ -147,7 +147,7 @@ BATON = {
 }
 
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/client/profile'
 LOGOUT_REDIRECT_URL = '/'
 
 

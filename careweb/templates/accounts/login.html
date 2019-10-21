@@ -6,11 +6,11 @@
 
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Admin</b>LTE</a>
+    <a href=""><b>Care</b>WEB</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Sign in to get started</p>
 
     <form action="" method="post">{% csrf_token %}
       {% if form.non_field_errors %}
@@ -70,18 +70,6 @@
         </div>
       </div>
     </form>
-
-    {% comment %}
-    <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-    </div>
-    <!-- /.social-auth-links -->
-    {% endcomment %}
-
 
   </div>
   <!-- /.login-box-body -->
