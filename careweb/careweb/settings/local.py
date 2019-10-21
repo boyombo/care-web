@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'location.apps.LocationConfig',
     'provider.apps.ProviderConfig',
 
+
     #baton
     'baton.autodiscover',
 ]

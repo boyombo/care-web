@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+
+{% block content %}
+ 
+ <!-- TABLE: LATEST ORDERS -->
+  <section class="content">
+    <div class="row">
+        <div class="col-xs-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Add Agent</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" action="." method="post">{% csrf_token %}
+
+              <div class="box-body">
+                {{form.non_field_errors}}
+                <div class="form-group">
+                  {{form.user.errors}}
+                  <label for="{{form.plan.id_for_label}}">User</label>
+                  {{ form.user }}
+                </div>
+                 <div class="form-group">
+                  {{form.name.errors}}
+                  <label for="{{form.first_name.id_for_label}}">Name</label>
+                  {{ form.name }}
+                </div>
+                <div class="form-group">
+                  {{form.phone.errors}}
+                  <label for="{{form.last_name.id_for_label}}">Phone</label>
+                  {{ form.phone }}
+                </div>
+                <div class="form-group">
+                  {{form.email.errors}}
+                  <label for="{{form.gender.id_for_label}}">Email</label>
+                  {{ form.email }}
+                </div>
+                <div class="form-group">
+                  {{form.address.errors}}
+                  <label for="{{form.age.id_for_label}}">Address</label>
+                  {{ form.address }}
+                </div>
+                <div class="form-group">
+                  {{form.ward.errors}}
+                  <label for="{{form.phone.id_for_label}}">Ward</label>
+                  {{ form.ward }}
+                </div>
+                
+                
+                
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <input type="submit" class="btn btn-primary" />
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block extra-js %}
+<script type="text/javascript">
+    $('#id_user').addClass('form-control')
+    $('#id_user').attr('placeholder', 'user')
+    $('#id_name').addClass('form-control')
+    $('#id_name').attr('placeholder', 'name')
+    $('#id_phone').addClass('form-control')
+    $('#id_phone').attr('placeholder', 'phone')
+    $('#id_email').addClass('form-control')
+    $('#id_email').attr('placeholder', 'email')
+    $('#id_address').addClass('form-control')
+    $('#id_address').attr('placeholder', 'address')
+    $('#id_ward').addClass('form-control')
+    $('#id_ward').attr('placeholder', 'ward')
+    
+</script>
+{% endblock extra-js %}

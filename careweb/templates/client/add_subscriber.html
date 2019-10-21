@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+
+{% block content %}
+ 
+ <!-- TABLE: LATEST ORDERS -->
+  <section class="content">
+    <div class="row">
+        <div class="col-xs-6">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Add Subscriber</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" action="." method="post">{% csrf_token %}
+
+              <div class="box-body">
+                {{form.non_field_errors}}
+                <div class="form-group">
+                  {{form.plan.errors}}
+                  <label for="{{form.plan.id_for_label}}">Plan</label>
+                  {{ form.plan }}
+                </div>
+                 <div class="form-group">
+                  {{form.first_name.errors}}
+                  <label for="{{form.first_name.id_for_label}}">First Name</label>
+                  {{ form.first_name }}
+                </div>
+                <div class="form-group">
+                  {{form.last_name.errors}}
+                  <label for="{{form.last_name.id_for_label}}">Last Name</label>
+                  {{ form.last_name }}
+                </div>
+                <div class="form-group">
+                  {{form.gender.errors}}
+                  <label for="{{form.gender.id_for_label}}">Gender</label>
+                  {{ form.gender }}
+                </div>
+                <div class="form-group">
+                  {{form.age.errors}}
+                  <label for="{{form.age.id_for_label}}">Age</label>
+                  {{ form.age }}
+                </div>
+                <div class="form-group">
+                  {{form.phone.errors}}
+                  <label for="{{form.phone.id_for_label}}">Phone</label>
+                  {{ form.phone }}
+                </div>
+                <div class="form-group">
+                  {{form.address.errors}}
+                  <label for="{{form.address.id_for_label}}">Address</label>
+                  {{ form.address }}
+                </div>
+                <div class="form-group">
+                  {{form.agent.errors}}
+                  <label for="{{form.agent.id_for_label}}">Agent</label>
+                  {{ form.agent }}
+                </div>
+                <div class="form-group">
+                  {{form.registration_date.errors}}
+                  <label for="{{form.registration_date.id_for_label}}">Registration Date</label>
+                  {{ form.registration_date }}
+                </div>
+                <div class="form-group">
+                  {{form.savings_group.errors}}
+                  <label for="{{form.savings_group.id_for_label}}">Savings Group</label>
+                  {{ form.savings_group }}
+                </div>
+                
+                
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <input type="submit" class="btn btn-primary" />
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block extra-js %}
+<script type="text/javascript">
+    $('#id_plan').addClass('form-control')
+    $('#id_plan').attr('placeholder', 'Plan')
+    $('#id_first_name').addClass('form-control')
+    $('#id_first_name').attr('placeholder', 'First Name')
+     $('#id_last_name').addClass('form-control')
+    $('#id_last_name').attr('placeholder', 'Last Name')
+     $('#id_gender').addClass('form-control')
+    $('#id_gender').attr('placeholder', 'Gender')
+    $('#id_age').addClass('form-control')
+    $('#id_age').attr('placeholder', 'Age')
+    $('#id_phone').addClass('form-control')
+    $('#id_phone').attr('placeholder', 'Phone')
+    $('#id_address').addClass('form-control')
+    $('#id_address').attr('placeholder', 'Address')
+    $('#id_agent').addClass('form-control')
+    $('#id_agent').attr('placeholder', 'Agent')
+    $('#id_registration_date').addClass('form-control')
+    $('#id_registration_date').attr('placeholder', 'Registration Date')
+    $('#id_savings_group').addClass('form-control')
+    $('#id_savings_group').attr('placeholder', 'Savings Group')
+</script>
+{% endblock extra-js %}
