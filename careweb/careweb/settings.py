@@ -146,6 +146,11 @@ BATON = {
     'SUPPORT_HREF': 'http://futurecare.everyday.com.ng',
 }
 
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
 try:
     from .local_settings import *
 except ImportError:
