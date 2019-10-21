@@ -5,6 +5,7 @@ from baton.autodiscover import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 from core import views as core_views
 
@@ -12,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
     path('agent_app_login/', core_views.login_agent),
+    path('', TemplateView.as_view(template_name='editBase.html'), name='editBase'),
 ]
 
 admin.site.site_header = 'Futurecare'

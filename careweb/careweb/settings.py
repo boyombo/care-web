@@ -25,7 +25,7 @@ SECRET_KEY = 'q7(#m#a%md&pg(i^cc+u(+t&0*nfbn2omp)yu2-u!8a3a6mzbj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148']
+ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148', '127.0.0.1']
 
 
 # Application definition
