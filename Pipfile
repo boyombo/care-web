@@ -9,6 +9,8 @@ name = "pypi"
 
 django = "*"
 fabric = "*"
+django-baton = "*"
+ipython = "*"
 
 
 [dev-packages]
