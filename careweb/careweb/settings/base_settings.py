@@ -10,21 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-
 import os
-from decouple import config
-from dj_database_url import parse as db_url
-from datetime import timedelta
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -35,7 +25,7 @@ SECRET_KEY = 'q7(#m#a%md&pg(i^cc+u(+t&0*nfbn2omp)yu2-u!8a3a6mzbj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148']
+ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148', '127.0.0.1']
 
 
 # Application definition
@@ -54,7 +44,6 @@ INSTALLED_APPS = [
     'ranger.apps.RangerConfig',
     'location.apps.LocationConfig',
     'provider.apps.ProviderConfig',
-
 
     #baton
     'baton.autodiscover',
@@ -75,9 +64,7 @@ ROOT_URLCONF = 'careweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../templates'), ],
-        #home/nonso/DjangoProjects/care-web
-        #/home/nonso/DjangoProjects/care-web/careweb
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,23 +77,17 @@ TEMPLATES = [
     },
 ]
 
-
-
 WSGI_APPLICATION = 'careweb.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
-    'default': config('DATABASE_URL', default='postgres:///careweb', cast=db_url),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 
@@ -147,13 +128,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '../static')
-#STATICFILES_DIRS = (os.path.join(BASE_DIR, '../static'),)
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'otherstatic'),
-# )
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'otherstatic'),
+)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -168,7 +146,12 @@ BATON = {
     'SUPPORT_HREF': 'http://futurecare.everyday.com.ng',
 }
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+
+LOGIN_REDIRECT_URL = '/client/profile'
+LOGOUT_REDIRECT_URL = '/'
+
+
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass

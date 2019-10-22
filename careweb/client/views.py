@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from client.models import Dependant, Client
+import client.models as cm
 import client.forms as cf
 # Create your views here.
 from django.views import View
@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 
 
 def profile(request):
-    profile = Client.objects.all()
+    profile = cm.Client.objects.all()
     context = {"profile": profile}
     return render(request, 'client/profile.html', context)
 

@@ -79,11 +79,8 @@ class Insurance(models.Model):
         ('B', 'Bank Deposit')
     )
 
-<<<<<<< HEAD
     user = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL)
-
-=======
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='client')
     hmo = models.ForeignKey(HMO, on_delete=models.CASCADE, related_name='hmo')
     package_option = models.CharField(max_length=50, choices=PACKAGE_OPTION)
@@ -105,7 +102,6 @@ class Dependant(models.Model):
     RELATIONSHIPS = enumerate(('Spouse', 'Daughter', 'Son', 'Others'))
 
     primary = models.ForeignKey('Client', null=True, on_delete=models.SET_NULL)
->>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)

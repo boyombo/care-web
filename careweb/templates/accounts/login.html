@@ -2,27 +2,16 @@
 
 {% load staticfiles %}
 
-<<<<<<< HEAD
 {% block title %}Login{% endblock title %}
-=======
->>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
 {% block wrapper %}
 
 <div class="login-box">
   <div class="login-logo">
-<<<<<<< HEAD
     <a href=""><b>Care</b>WEB</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to get started</p>
-=======
-    <a href=""><b>Admin</b>LTE</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
->>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
 
     <form action="" method="post">{% csrf_token %}
       {% if form.non_field_errors %}
@@ -34,10 +23,6 @@
       {% endif %}
 
       <div class="form-group has-feedback">
-        {% comment %}
-        <input type="email" class="form-control" placeholder="Email">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-        {% endcomment %}
 
         {% if form.username.errors %}
             <div class="alert alert-danger">
@@ -48,10 +33,6 @@
       </div>
 
       <div class="form-group has-feedback">
-        {% comment %}
-        <input type="password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        {% endcomment %}
 
         {% if form.password.errors %}
             <div class="alert alert-danger">
@@ -61,16 +42,6 @@
         {{ form.password }}
       </div>
       <div class="row">
-        <!--
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> Remember Me
-            </label>
-          </div>
-        </div>
-        -->
-        <!-- /.col -->
         <div class="col-xs-4">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
         </div>
@@ -78,30 +49,11 @@
 
         <div class="col-xs-8 ">
           <a href="#">I forgot my password</a><br>
-<<<<<<< HEAD
           <a href="{% url 'register' %}" class="text-center">New member, Register here</a>
-=======
-          <a href="" class="text-center">New member, Register here</a>
->>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
         </div>
       </div>
     </form>
 
-<<<<<<< HEAD
-=======
-    {% comment %}
-    <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-    </div>
-    <!-- /.social-auth-links -->
-    {% endcomment %}
-
-
->>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
   </div>
   <!-- /.login-box-body -->
 </div>

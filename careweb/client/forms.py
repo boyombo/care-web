@@ -14,10 +14,11 @@ class RegisterForm(forms.ModelForm):
     pwd2 = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
-        model = Client
+        model = cm.Client
         fields = [
-            'surname', 'first_name', 'middle_name',
+            'middle_name',
             'dob', 'sex', 'marital_status', 'phone_no', 'whatsapp_no']
+            # 'surname', 'first_name', 
 
         widgets = {'dob': DateInput()}
 
