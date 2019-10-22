@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+
+{% block content %}
+ 
+ <!-- TABLE: LATEST ORDERS -->
+  <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Subscriber List</h3>
+
+              <div class="box-tools pull-right">
+                <a href="{% url 'subscriber_add'%}" class="btn btn-sm btn-info btn-flat pull-left"><i class="fa fa-plus"></i> Add Subscriber</a>
+
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>Plan</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Agent</th>
+                    <th>Registartion Date</th>
+                    <th>Savings Group</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                {% for subscriber in subscriber %}
+                  <tr>
+                    {% comment %}<td><a href="">{{ forloop.counter }}</a></td>{% endcomment %}
+                    <td>{{ subscriber.plan }}</td>
+                    <td>{{ subscriber.first_name }}</td>
+                    <td>{{ subscriber.last_name }}</td>
+                    <td>{{ subscriber.gender }}</td>
+                    <td>{{ subscriber.age }}</td>
+                    <td>{{ subscriber.phone }}</td>
+                    <td>{{ subscriber.address }}</td>
+                    <td>{{ subscriber.agent }}</td>
+                    <td>{{ subscriber.registration_date }}</td>
+                    <td>{{ subscriber.savings_group }}</td>
+                    <td>{{ plan.target_amount }}<span class="label label-success"></span></td>
+                    <td>
+                     {% comment %} <div class="sparkbar" data-color="#00a65a" data-height="20">{{ plan.min_daily_savings }}</div>
+                    </td>
+                    <td>{{ plan.max_payback_duration }}</td>
+                    <td>{{ plan.interest_rate }}</td>{% endcomment %}
+                  </tr>
+                  {% endfor %}
+                  
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+</div>
+</div>
+</section>
+{% endblock content %}

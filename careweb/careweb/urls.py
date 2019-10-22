@@ -14,6 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
     path('agent_app_login/', core_views.login_agent),
+<<<<<<< HEAD
     path('client/', include('client.urls')),
     path('', TemplateView.as_view(template_name='editBase.html'), name='editBase'),
 ]
@@ -22,6 +23,9 @@ urlpatterns = [
 urlpatterns += [
     path('accounts/login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('accounts/logout/', LogoutView.as_view(next_page='/'), name='logout'),
+=======
+    path('ranger/', include('ranger.urls') )
+>>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
 ]
 
 admin.site.site_header = 'Futurecare'

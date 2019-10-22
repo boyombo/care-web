@@ -26,9 +26,9 @@ class DependantInline(admin.TabularInline):
     model = Dependant
 
 
-@admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'first_name', 'dob', 'sex', 'pcp']
-    inlines = [DependantInline, AssociationInline]
-    autocomplete_fields = ['ranger', 'pcp']
-    exclude = ['associations']
+# @admin.register(Client)
+# class ClientAdmin(admin.ModelAdmin):
+#     list_display = ['surname', 'first_name', 'dob', 'sex', 'pcp']
+#     inlines = [DependantInline, AssociationInline]
+#     autocomplete_fields = ['ranger', 'pcp']
+#     exclude = ['associations']

@@ -5,6 +5,7 @@ from django.utils import timezone
 #from location.models import LGA
 from provider.models import CareProvider
 from ranger.models import Ranger
+from django.contrib.auth.models import User
 
 
 class Association(models.Model):
@@ -21,7 +22,82 @@ class HMO(models.Model):
         return self.name
 
 
+class Client(models.Model):
+    # FEMALE = 'F'
+    # MALE = 'M'
+    SEX = (
+        ('F', 'Female'), 
+        ('M', 'Male')
+        )
+
+    MARITAL_STATUSES = (
+        ('S', 'Single'), 
+        ('M', 'Married'), 
+        ('D', 'Divorced')
+        )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ranger = models.ForeignKey(Ranger, null=True, on_delete=models.SET_NULL)
+    middle_name = models.CharField(max_length=100, blank=True)
+    dob = models.DateField(null=True, blank=True)
+    sex = models.CharField(max_length=10, choices=SEX)
+    marital_status = models.CharField(max_length=10, choices=MARITAL_STATUSES)
+    national_id_card_no = models.CharField(max_length=50, blank=True)
+    drivers_licence_no = models.CharField(max_length=50, blank=True)
+    lagos_resident_no = models.CharField(max_length=50, blank=True)
+    phone_no = models.CharField(max_length=11, blank=True)
+    whatsapp_no = models.CharField(max_length=11, blank=True)
+    home_address = models.TextField(blank=True)
+    occupation = models.CharField(max_length=200, blank=True)
+    company = models.CharField(max_length=200, blank=True)
+    office_address = models.TextField(blank=True)
+    associations = models.ManyToManyField('Association')
+    registration_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user
+
+
+class Insurance(models.Model):
+
+    PACKAGE_OPTION = (
+        ('L', 'LASHMA'), 
+        ('Q', 'LASHMA QUALITY LIFE')
+        )
+
+    PAYMENT_OPTION = (
+        ('W', 'Weekly'),
+        ('M', 'Monthly'),
+        ('Q', 'Quarterly'),
+        ('A', 'Annually')
+    )
+
+    PAYMENT_INSTRUMENT = (
+        ('T', 'Transfer'),
+        ('E', 'E-Wallet'),
+        ('C', 'Cheque'),
+        ('B', 'Bank Deposit')
+    )
+
+<<<<<<< HEAD
+    user = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL)
+
+=======
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='client')
+    hmo = models.ForeignKey(HMO, on_delete=models.CASCADE, related_name='hmo')
+    package_option = models.CharField(max_length=50, choices=PACKAGE_OPTION)
+    payment_option = models.CharField(max_length=50, choices=PAYMENT_OPTION)
+    payment_instrument = models.CharField(max_length=50, 
+                                          choices=PAYMENT_INSTRUMENT, null=True)
+    pcp = models.ForeignKey(CareProvider, null=True, blank=True, 
+                            on_delete=models.SET_NULL)
+    lashma_no = models.CharField(max_length=50, blank=True)
+    lashma_quality_life_no = models.CharField(max_length=50, blank=True)
+
+
 class Dependant(models.Model):
+
     SPOUSE = 0
     DAUGHTER = 1
     SON = 2
@@ -29,92 +105,13 @@ class Dependant(models.Model):
     RELATIONSHIPS = enumerate(('Spouse', 'Daughter', 'Son', 'Others'))
 
     primary = models.ForeignKey('Client', null=True, on_delete=models.SET_NULL)
+>>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
     relationship = models.PositiveIntegerField(choices=RELATIONSHIPS)
     pcp = models.ForeignKey(CareProvider, null=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return self.surname
-
-
-class Client(models.Model):
-    FEMALE = 'F'
-    MALE = 'M'
-    SEXES = (('F', 'Female'), ('M', 'Male'))
-    #SEXES = enumerate(('Female', 'Male'))
-
-    SINGLE = 'S'
-    MARRIED = 'M'
-    DIVORCED = 'D'
-    MARITAL_STATUSES = (('S', 'Single'), ('M', 'Married'), ('D', 'Divorced'))
-
-    LASHMA = 'L'
-    LASHMA_QUALITY_LIFE = 'Q'
-    PACKAGE_OPTIONS = (('L', 'LASHMA'), ('Q', 'LASHMA QUALITY LIFE'))
-
-    WEEKLY = 'W'
-    MONTHLY = 'M'
-    QUARTERLY = 'Q'
-    ANNUALLY = 'A'
-    PAYMENT_OPTIONS = (
-        ('W', 'Weekly'),
-        ('M', 'Monthly'),
-        ('Q', 'Quarterly'),
-        ('A', 'Annually')
-    )
-
-    TRANSFER = 'T'
-    EWALLET = 'E'
-    CHEQUE = 'C'
-    BANK_DEPOSIT = 'B'
-    PAYMENT_INSTRUMENTS = (
-        ('T', 'Transfer'),
-        ('E', 'E-Wallet'),
-        ('C', 'Cheque'),
-        ('B', 'Bank Deposit')
-    )
-
-    user = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
-
-    surname = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100, blank=True)
-    dob = models.DateField(null=True, blank=True)
-    sex = models.CharField(max_length=10, choices=SEXES)
-    #sex = models.PositiveIntegerField(choices=SEXES)
-    marital_status = models.CharField(max_length=10, choices=MARITAL_STATUSES)
-    national_id_card_no = models.CharField(max_length=50, blank=True)
-    drivers_licence_no = models.CharField(max_length=50, blank=True)
-    lashma_no = models.CharField(max_length=50, blank=True)
-    lashma_quality_life_no = models.CharField(max_length=50, blank=True)
-    lagos_resident_no = models.CharField(max_length=50, blank=True)
-    phone_no = models.CharField(max_length=50, blank=True)
-    whatsapp_no = models.CharField(max_length=50, blank=True)
-    email = models.CharField(max_length=50, blank=True)
-    pcp = models.ForeignKey(
-        CareProvider, null=True, blank=True, on_delete=models.SET_NULL)
-    ranger = models.ForeignKey(Ranger, null=True, on_delete=models.SET_NULL)
-    home_address = models.TextField(blank=True)
-    occupation = models.CharField(max_length=200, blank=True)
-    company = models.CharField(max_length=200, blank=True)
-    office_address = models.TextField(blank=True)
-    hmo = models.ForeignKey(
-        HMO, null=True, blank=True, on_delete=models.SET_NULL)
-    #informal_sector_group = models.CharField(
-    #    max_length=200, blank=True, null=True)
-    associations = models.ManyToManyField('Association')
-    package_option = models.CharField(
-        max_length=50, choices=PACKAGE_OPTIONS, null=True)
-    payment_option = models.CharField(
-        max_length=50, choices=PAYMENT_OPTIONS, null=True)
-    payment_instrument = models.CharField(
-        max_length=20, choices=PAYMENT_INSTRUMENTS, null=True)
-    registration_date = models.DateField(default=timezone.now)
-    #dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
         return self.surname

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+
+{% block content %}
+ 
+ <!-- TABLE: LATEST ORDERS -->
+  <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Agent List</h3>
+
+              <div class="box-tools pull-right">
+                <a href="{% url 'agent_add'%}" class="btn btn-sm btn-info btn-flat pull-left"><i class="fa fa-plus"></i> Add Agent</a>
+
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Ward</th>
+                    
+                  </tr>
+                  </thead>
+                  <tbody>
+                {% for agent in agent %}
+                  <tr>
+                    {% comment %}<td><a href="">{{ forloop.counter }}</a></td>{% endcomment %}
+                    <td>{{ agent.user }}</td>
+                    <td>{{ agent.name }}</td>
+                    <td>{{ agent.phone }}</td>
+                    <td>{{ agent.email }}</td>
+                    <td>{{ agent.address }}</td>
+                    <td>{{ agent.ward }}</td>
+                    {% comment %}<td>{{ subscriber.address }}</td>
+                    <td>{{ subscriber.agent }}</td>
+                    <td>{{ subscriber.registration_date }}</td>
+                    <td>{{ subscriber.savings_group }}</td>
+                    <td>{{ plan.target_amount }}<span class="label label-success"></span></td>
+                    <td>
+                     {% comment %} <div class="sparkbar" data-color="#00a65a" data-height="20">{{ plan.min_daily_savings }}</div>
+                    </td>
+                    <td>{{ plan.max_payback_duration }}</td>
+                    <td>{{ plan.interest_rate }}</td>{% endcomment %}
+                  </tr>
+                  {% endfor %}
+                  
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+</div>
+</div>
+</section>
+{% endblock content %}
