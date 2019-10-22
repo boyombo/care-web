@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Register{% endblock title %}
+
+{% block wrapper %}
+
+<div class="login-box">
+  <div class="login-logo">
+    <a href=""><b>Care</b>WEB</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Register now to get stated</p>
+
+    <form action="" method="post">{% csrf_token %}
+
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="form-group has-feedback">
+        {% if form.surname.errors %}
+            <div class="alert alert-danger">
+                {{ form.surname.errors }}
+            </div>
+        {% endif %}
+        {{ form.surname }}
+      </div>
+
+      <div class="form-group has-feedback">
+        {% if form.first_name.errors %}
+            <div class="alert alert-danger">
+                {{ form.first_name.errors }}
+            </div>
+        {% endif %}
+        {{ form.first_name }}
+      </div>
+
+      <div class="form-group has-feedback">
+        {% if form.middle_name.errors %}
+            <div class="alert alert-danger">
+                {{ form.middle_name.errors }}
+            </div>
+        {% endif %}
+        {{ form.middle_name }}
+      </div>
+
+      <div class="form-group has-feedback">
+        {% if form.phone_no.errors %}
+            <div class="alert alert-danger">
+                {{ form.phone_no.errors }}
+            </div>
+        {% endif %}
+        {{ form.phone_no }}
+      </div>
+
+      <div class="form-group has-feedback">
+        {% if form.whatsapp_no.errors %}
+            <div class="alert alert-danger">
+                {{ form.whatsapp_no.errors }}
+            </div>
+        {% endif %}
+        {{ form.whatsapp_no }}
+      </div>
+      
+
+      <div class="form-group has-feedback">
+        {% if form.sex.errors %}
+            <div class="alert alert-danger">
+                {{ form.sex.errors }}
+            </div>
+        {% endif %}
+        {{ form.sex }}
+      </div>
+
+      <div class="form-group has-feedback">
+        {% if form.dob.errors %}
+            <div class="alert alert-danger">
+                {{ form.dob.errors }}
+            </div>
+        {% endif %}
+        {{ form.dob }}
+      </div>
+      
+      <div class="form-group has-feedback">
+        {% if form.marital_status.errors %}
+            <div class="alert alert-danger">
+                {{ form.marital_status.errors }}
+            </div>
+        {% endif %}
+        {{ form.marital_status }}
+      </div>
+      
+      <div class="form-group has-feedback">
+        {% if form.username.errors %}
+            <div class="alert alert-danger">
+                {{ form.username.errors }}
+            </div>
+        {% endif %}
+        {{ form.username }}
+      </div>
+      
+      <div class="form-group has-feedback">
+        {% if form.pwd1.errors %}
+            <div class="alert alert-danger">
+                {{ form.pwd1.errors }}
+            </div>
+        {% endif %}
+        {{ form.pwd1 }}
+      </div>
+      
+      <div class="form-group has-feedback">
+        {% if form.pwd2.errors %}
+            <div class="alert alert-danger">
+                {{ form.pwd2.errors }}
+            </div>
+        {% endif %}
+        {{ form.pwd2 }}
+      </div>
+      
+      <div class="row">
+
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+        </div>
+        <!-- /.col -->
+
+        <div class="col-xs-8 ">
+          <a href="#">I forgot my password</a><br>
+          <a href="{% url 'login' %}" class="text-center">Already a member, Login here</a>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+{% endblock wrapper %}
+
+
+{% block extra-js %}
+<script type="text/javascript">
+  $('#id_surname').addClass('form-control glyphicon');
+  $('#id_surname').attr('placeholder', 'Surname');
+
+  $('#id_first_name').addClass('form-control glyphicon');
+  $('#id_first_name').attr('placeholder', 'First-Name');
+
+  $('#id_middle_name').addClass('form-control glyphicon');
+  $('#id_middle_name').attr('placeholder', 'Middle-Name');
+
+  $('#id_dob').addClass('form-control glyphicon');
+  $('#id_dob').attr('placeholder', 'Date-of-Birth');
+
+  $('#id_sex').addClass('form-control glyphicon');
+  $('#id_sex').attr('placeholder', 'Gender');
+
+  $('#id_marital_status').addClass('form-control glyphicon');
+  $('#id_marital_status').attr('placeholder', 'Marital-Status');
+
+  $('#id_phone_no').addClass('form-control glyphicon');
+  $('#id_phone_no').attr('placeholder', 'Phone-N0.');
+
+  $('#id_whatsapp_no').addClass('form-control glyphicon');
+  $('#id_whatsapp_no').attr('placeholder', 'Whatsapp-N0.');
+
+  $('#id_username').addClass('form-control glyphicon');
+  $('#id_username').attr('placeholder', 'Email');
+
+  $('#id_pwd1').addClass('form-control glyphicon');
+  $('#id_pwd1').attr('placeholder', 'Password');
+
+  $('#id_pwd2').addClass('form-control glyphicon');
+  $('#id_pwd2').attr('placeholder', 'Verify-Password');
+</script>
+{% endblock extra-js %}

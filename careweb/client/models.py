@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -75,6 +76,9 @@ class Client(models.Model):
         ('C', 'Cheque'),
         ('B', 'Bank Deposit')
     )
+
+    user = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL)
 
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
