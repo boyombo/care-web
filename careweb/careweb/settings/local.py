@@ -16,6 +16,7 @@ from decouple import config
 from dj_database_url import parse as db_url
 from datetime import timedelta
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -23,7 +24,6 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -75,7 +75,9 @@ ROOT_URLCONF = 'careweb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
+        'DIRS': [os.path.join(BASE_DIR, '../templates'), ],
+        #home/nonso/DjangoProjects/care-web
+        #/home/nonso/DjangoProjects/care-web/careweb
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,6 +89,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'careweb.wsgi.application'
 
@@ -143,10 +147,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'otherstatic'),
-)
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, '../static'),)
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'otherstatic'),
+# )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

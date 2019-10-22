@@ -9,11 +9,11 @@ import client.models as cm
 class Ranger(View):
     form_class = cf.ClientForm
     initial = {'key': 'value'}
-    template_name = 'profile.html'
+    template_name = 'ranger/profile.html'
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
+        return render(request, 'ranger/profile.html')
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)

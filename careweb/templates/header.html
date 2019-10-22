@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 
 <header class="main-header">
     <!-- Logo -->
@@ -31,7 +31,7 @@
                   <li><!-- start message -->
                     <a href="#">
                       <div class="pull-left">
-                        <img src="vendor/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="{% static 'vendor/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image">
                       </div>
                       <h4>
                         Support Team
