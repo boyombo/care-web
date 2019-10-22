@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 import ranger.models as rm
+import client.models as cm
 
 
 class UserForm(forms.ModelForm):
@@ -30,6 +31,19 @@ class RangerForm(forms.ModelForm):
     class Meta:
         model = rm.Ranger
         fields = '__all__'
+
+
+class ClientForm(forms.ModelForm):
+
+    class Meta:
+        model = cm.Client
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        ranger = kwargs.pop('ranger','')
+        super(ClientForm, self).__init__(*args, **kwargs)
+        self.fields['ranger']=forms.ModelChoiceField(queryset=cm.Client.objects.filter(ranger=ranger))
+     
 
 
 class LoginForm(forms.ModelForm):
