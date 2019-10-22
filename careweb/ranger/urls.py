@@ -4,8 +4,7 @@ from ranger import views
 
 
 urlpatterns = [
-    path('profile/', views.Ranger.as_view(), name='signup')
-
-
+    path('profile/', views.register, name='register'),
+    path('login/', views.login_ranger, name='login'),
 
 ]

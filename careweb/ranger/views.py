@@ -3,24 +3,31 @@ from django.shortcuts import render
 # Create your views here.
 from django.views import View
 from django.http import HttpResponseRedirect
-import client.forms as cf
-import client.models as cm
+import ranger.forms as rf
+import ranger.models as rm
 
-class Ranger(View):
-    form_class = cf.ClientForm
-    initial = {'key': 'value'}
-    template_name = 'ranger/profile.html'
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib.auth.models import User
+# Create your views here.
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(request, 'ranger/profile.html')
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+def register(request):
+    if request.method == 'POST':
+        form = rf.RangerForm(request.POST)
         if form.is_valid():
-            client_form = form.save(commit=False)
+            form.save()
+            return redirect('profile')
+    else:
+        form = rf.RangerForm()
+    return render(request, 'ranger/profile.html', {'form': form})
+
+def login_ranger(request):
+    if request.method == 'POST':
+        form = rf.LoginForm(request.POST)
+        if form.is_valid():
             username = form.cleaned_data.get('username')
-            first_name = form.cleaned_data.get('first name')
-            cm.Client.objects.create()
-            
-            return HttpResponseRedirect('/success/')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            login(request, user)
