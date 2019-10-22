@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from client.models import Client
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(max_length=100)
     pwd1 = forms.CharField(widget=forms.PasswordInput())
@@ -15,14 +19,7 @@ class RegisterForm(forms.ModelForm):
             'surname', 'first_name', 'middle_name',
             'dob', 'sex', 'marital_status', 'phone_no', 'whatsapp_no']
 
-    widgets = {
-        'dob': forms.DateInput(
-            format=('%m/%d/%Y'),
-            attrs={'class': 'form-control',
-                   'placeholder': 'Date of Birth', 'type': 'date'}),
-    }
-
-    labels = {"sex": "Select Gender"}
+        widgets = {'dob': DateInput()}
 
     def clean_email(self):
         if 'username' in self.cleaned_data:
