@@ -31,3 +31,15 @@ def login_ranger(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             login(request, user)
+    else:
+        form = rf.LoginForm()
+    return render(request, 'ranger/login.html', {'form': form})
+
+@login_required(login_url='login')
+def profile(request):
+    if request.method == 'POST':
+        profile = rm.Ranger.objects.get(user=request.user)
+        context = {'profile': profile}
+        return render(request, 'ranger/profile.html', context)
+    else:
+        return render(request, 'ranger/home.html')
