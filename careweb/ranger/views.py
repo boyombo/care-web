@@ -37,9 +37,14 @@ def login_ranger(request):
 
 @login_required(login_url='login')
 def profile(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         profile = rm.Ranger.objects.get(user=request.user)
         context = {'profile': profile}
         return render(request, 'ranger/profile.html', context)
     else:
-        return render(request, 'ranger/home.html')
+        # Edit profile
+        profile = rm.Ranger.objects.get(user=request.user)
+        form = rf.RangerForm(request.POST, instance=profile)
+        form.save()
+        context = rm.Ranger.objects.get(user=request.user)
+        return render(request, 'ranger/profile.html', context)
