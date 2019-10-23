@@ -83,9 +83,10 @@ class Client(models.Model):
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
-    sex = models.CharField(max_length=10, choices=SEXES)
+    sex = models.CharField(max_length=10, choices=SEXES, null=True)
     #sex = models.PositiveIntegerField(choices=SEXES)
-    marital_status = models.CharField(max_length=10, choices=MARITAL_STATUSES)
+    marital_status = models.CharField(
+        max_length=10, choices=MARITAL_STATUSES, null=True)
     national_id_card_no = models.CharField(max_length=50, blank=True)
     drivers_licence_no = models.CharField(max_length=50, blank=True)
     lashma_no = models.CharField(max_length=50, blank=True)
