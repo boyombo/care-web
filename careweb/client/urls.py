@@ -4,5 +4,6 @@ from client import views
 
 
 urlpatterns = [
-    path('register', views.register),
+    path('api_register/', views.register_api),
+    path('api_login/', views.login_api),
 ]
