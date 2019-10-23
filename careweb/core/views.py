@@ -10,6 +10,40 @@ from client.models import Client
 
 
 @csrf_exempt
+def login_client(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            usr = authenticate(username=username, password=password)
+            if usr is not None:
+                try:
+                    client = Client.objects.get(user=usr)
+                except Client.DoesNotExist:
+                    return JsonResponse(
+                        {
+                            'error': 'Please contact support, your account is not configured correctly',
+                            'success': False
+                        }
+                    )
+                else:
+                    return JsonResponse(
+                        {
+                            'client': {
+                                'id': client.id,
+                                'surname': client.surname,
+                                'firstName': client.first_name,
+                                'middleName': client.middle_name,
+                                'phone': client.phone_no,
+                                'email': client.email
+                            },
+                            'success': True
+                        }
+                    )
+
+
+@csrf_exempt
 def login_agent(request):
     if request.method == 'POST':
         #import pdb;pdb.set_trace()
