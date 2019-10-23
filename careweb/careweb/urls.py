@@ -13,6 +13,7 @@ urlpatterns = [
     path('baton/', include('baton.urls')),
     path('agent_app_login/', core_views.login_agent),
     path('client_app_login/', core_views.login_client),
+    path('client/', include('client.urls')),
 ]
 
 admin.site.site_header = 'Futurecare'
