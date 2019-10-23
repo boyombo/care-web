@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('first_name', models.CharField(max_length=200)),
                 ('last_name', models.CharField(max_length=200)),
                 ('phone', models.CharField(max_length=50)),
-                ('balance', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
+                #('balance', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
                 ('lga', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='location.LGA')),
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
