@@ -8,4 +8,4 @@ class RegForm(forms.ModelForm):
 
     class Meta:
         model = Client
-        fields = ['email', 'first_name', 'surname', 'phone']
+        fields = ['email', 'first_name', 'surname', 'phone_no']
