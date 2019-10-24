@@ -11,6 +11,7 @@ django = "*"
 fabric = "*"
 django-baton = "*"
 ipython = "*"
+pillow = "*"
 
 
 [dev-packages]
