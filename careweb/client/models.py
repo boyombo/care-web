@@ -114,6 +114,7 @@ class Client(models.Model):
     payment_instrument = models.CharField(
         max_length=20, choices=PAYMENT_INSTRUMENTS, null=True)
     registration_date = models.DateField(default=timezone.now)
+    photo = models.ImageField(upload_to='clientphoto', null=True, blank=True)
     #dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
