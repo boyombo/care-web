@@ -1,9 +1,12 @@
+from pprint import pprint
+
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 
-from client.forms import RegForm, LoginForm
+from client.forms import RegForm, LoginForm, PhotoForm
 from client.models import Client
 
 
@@ -54,6 +57,11 @@ def login_api(request):
                         }
                     )
                 else:
+                    host = 'http://{}'.format(request.get_host())
+                    if client.photo:
+                        photo_url = '{}{}'.format(host, client.photo.url)
+                    else:
+                        photo_url = ''
                     return JsonResponse(
                         {
                             'client': {
@@ -61,8 +69,40 @@ def login_api(request):
                                 'surname': client.surname,
                                 'firstName': client.first_name,
                                 'phone': client.phone_no,
-                                'email': client.email
+                                'email': client.email,
+                                'photo': photo_url
                             },
                             'success': True
                         }
                     )
+
+
+@csrf_exempt
+def upload_photo(request, id):
+    cl = get_object_or_404(Client, pk=id)
+    #import pdb;pdb.set_trace()
+    pprint('got client')
+    pprint(cl)
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES, instance=cl)
+        pprint(form)
+        if form.is_valid():
+            form.save()
+            host = 'http://{}'.format(request.get_host())
+            if cl.photo:
+                photo_url = '{}{}'.format(host, cl.photo.url)
+            else:
+                photo_url = ''
+    return JsonResponse(
+        {
+            'client': {
+                'id': cl.id,
+                'surname': cl.surname,
+                'firstName': cl.first_name,
+                'phone': cl.phone_no,
+                'email': cl.email,
+                'photo': photo_url
+            },
+            'success': True
+        }
+    )
