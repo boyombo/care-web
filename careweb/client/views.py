@@ -33,7 +33,9 @@ def register_api(request):
                         'id': obj.id,
                         'surname': obj.surname,
                         'firstName': obj.first_name,
-                        'email': obj.email
+                        'email': obj.email,
+                        'phone': obj.phone_no,
+                        'photo': ''
                     }
                 }
             )
