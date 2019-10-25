@@ -1204,6 +1204,9 @@ Testimonial Area Css End
 /* =====================================================
 3.7 Counter Area Start
 ======================================================== */
+.counter-negate {
+    padding: 1px 0px 1px;
+}
 .counter {
     padding: 120px 0px 120px;
 }
