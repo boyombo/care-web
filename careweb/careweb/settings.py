@@ -146,6 +146,43 @@ BATON = {
     'SUPPORT_HREF': 'http://futurecare.everyday.com.ng',
 }
 
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+    },
+    'handlers': {
+        'client_logfile': {
+            'formatter': 'simple',
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/client.log'),
+        },
+        'ranger_logfile': {
+            'formatter': 'simple',
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/ranger.log'),
+        },
+    },
+    'loggers': {
+        'client': {
+            'handlers': ['client_logfile'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'ranger': {
+            'handlers': ['ranger_logfile'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
 try:
     from .local_settings import *
 except ImportError:

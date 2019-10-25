@@ -9,6 +9,9 @@ from django.contrib.auth import authenticate
 from client.forms import RegForm, LoginForm, PhotoForm
 from client.models import Client
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 @csrf_exempt
 def register_api(request):
@@ -41,10 +44,14 @@ def register_api(request):
 def login_api(request):
     if request.method == 'POST':
         #import pdb;pdb.set_trace()
+        logger.info('logging in...')
         form = LoginForm(request.POST)
+        logger.info('form {}'.format(form.data))
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            logger.info('form {}'.format(form.cleaned_data))
+
             usr = authenticate(username=username, password=password)
             if usr is not None:
                 try:
