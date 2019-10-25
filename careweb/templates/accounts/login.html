@@ -1,20 +1,22 @@
 {% extends "base.html" %}
-
+{% load widget_tweaks %}
 
 {% block title %}
 Login
 {% endblock title %}
 
+{% comment %}
 {% block header %}
 {% endblock header %}
+{% endcomment %}
 
 {% block footer %}
 {% endblock footer %}
 
 {% block content %}
     <!-- BreadCrumb Area Start -->
-      <!--  
-    <section id="insuronbreadcrumb" class="insuronbreadcrumb extraPaddimg blog-details">
+ 
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
             <div class="bcoverlay"></div>
             <div class="container">
                 <div class="row">
@@ -41,7 +43,7 @@ Login
                 </div>
             </div>
         </section>  
-    -->
+
     <!--  BreadCrumb Area Start  -->
 
 
@@ -72,7 +74,7 @@ Login
                                                         {{ form.username.errors }}
                                                     </div>
                                                 {% endif %}
-                                                {{ form.username }}
+                                                {{ form.username|add_class:"form-control" }}
 
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="Site">
@@ -90,7 +92,8 @@ Login
                                                         {{ form.password.errors }}
                                                     </div>
                                                 {% endif %}
-                                                {{ form.password }}
+                                                {{ form.password|add_class:"form-control" }}
+
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="url">
                                                         <i class="fas fa-key"></i>

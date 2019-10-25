@@ -3,7 +3,7 @@
         <!-- Start Navigation -->
         <nav class="navbar navbar-expand-lg navbar-light p-0">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="{% url 'home' %}">
                     <img src="{% static 'img/logo.png' %}" alt="">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -14,10 +14,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" href="">Home</a>
+                            <a class="nav-link active" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">About</a>
+                            <a class="nav-link" href="{% url 'home' %}">About</a>
                         </li>
                         {% comment %}
                         <li class="nav-item dropdown">

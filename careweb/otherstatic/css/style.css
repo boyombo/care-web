@@ -761,7 +761,7 @@ Services Area Start
 ================================================= */
 
 .giveAndtakeNumber {
-    background: url(../img/givandtakenumberbg.jpg) no-repeat center;
+    background: url(../img/banner9.jpg) no-repeat center;
     background-size: cover;
     padding: 116px 0px 120px;
     position: relative;
@@ -1465,11 +1465,12 @@ Footer Area End
  =====================================================*/
 
 .insuronbreadcrumb {
-    padding: 142px 0px 144px;
-    background: url(../img/slider/banner2.jpg) no-repeat center;
+    padding: 20px 0px 20px;
+    background: url('../img/banner2.jpg') no-repeat center;
     background-size: cover;
     background-attachment: fixed;
     position: relative;
+    max-height: 120px;
 }
 
 .insuronbreadcrumb .bcoverlay {

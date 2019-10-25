@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'location.apps.LocationConfig',
     'provider.apps.ProviderConfig',
 
+    'widget_tweaks',
+
     #baton
     'baton.autodiscover',
 ]
