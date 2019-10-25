@@ -1,97 +1,125 @@
 {% extends "base.html" %}
-<<<<<<< HEAD
 
-{% load staticfiles %}
 
-{% block title %}Register{% endblock title %}
+{% block title %}
+Register
+{% endblock title %}
 
-{% block wrapper %}
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
 
-<div class="login-box">
-  <div class="login-logo">
-    <a href=""><b>Care</b>WEB</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Sign in to get started</p>
+{% block footer %}
+{% endblock footer %}
 
-    <form action="" method="post">{% csrf_token %}
-      {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-          <div class="alert alert-danger">
-            {{ error }}
-          </div>
-        {% endfor %}
-      {% endif %}
-
-      <div class="form-group has-feedback">
-        {% comment %}
-        <input type="email" class="form-control" placeholder="Email">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-        {% endcomment %}
-
-        {% if form.username.errors %}
-            <div class="alert alert-danger">
-                {{ form.username.errors }}
+{% block content %}
+<!--
+<section id="insuronbreadcrumb" class="insuronbreadcrumb extraPaddimg blog-details">
+            <div class="bcoverlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="Content">
+                            <h2>
+                                Register
+                            </h2>
+                            <div class="links">
+                                <ul>
+                                    <li>
+                                        <a href="index.html">Home</a>
+                                    </li>
+                                    <li>
+                                        <span>/</span>
+                                    </li>
+                                    <li>
+                                        <a class="active" href="register.html">Register</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% endif %}
-        {{ form.username }}
-      </div>
+        </section> 
+        --> 
+    <!--  BreadCrumb Area Start  -->
 
-      <div class="form-group has-feedback">
-        {% comment %}
-        <input type="password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        {% endcomment %}
-
-        {% if form.password.errors %}
-            <div class="alert alert-danger">
-                {{ form.password.errors }}
+<!-- SignUP Area Start -->
+<section class="logRegForm"> 
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10">
+                        <div class="contact_form_wrappre2">
+                            <h2>
+                                Register
+                            </h2>
+                                <form action="#">
+                                        <div class="inputArea">
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter username" aria-describedby="username" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="username">
+                                                                <i class="fas fa-user"></i>
+                                                            </span>
+                                                        </div>
+            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="email" class="form-control" placeholder="Enter Email Address" aria-describedby="Site" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="Site">
+                                                                <i class="fas fa-phone"></i>
+                                                            </span>
+                                                        </div>
+            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter Phone Number" aria-describedby="Site" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="Site">
+                                                                <i class="fas fa-envelope"></i>
+                                                            </span>
+                                                        </div>
+            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" placeholder="Your Password" aria-describedby="url" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="url">
+                                                                <i class="fas fa-key"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12">
+                                                    <button class="loginnow" type="submit">REGISTER</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                        </div>
+                </div>
             </div>
-        {% endif %}
-        {{ form.password }}
-      </div>
-      <div class="row">
-        <!--
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> Remember Me
-            </label>
-          </div>
         </div>
-        -->
-        <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-        </div>
-        <!-- /.col -->
+    </section>
+    <!-- SignUp Area End -->
+    
 
-        <div class="col-xs-8 ">
-          <a href="#">I forgot my password</a><br>
-          <a href="" class="text-center">New member, Register here</a>
-        </div>
-      </div>
-    </form>
-
-  </div>
-  <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-
-{% endblock wrapper %}
-
-
-{% block extra-js %}
-<script type="text/javascript">
-  $('#id_username').addClass('form-control glyphicon');
-  $('#id_username').attr('placeholder', 'Username');
-
-  $('#id_password').addClass('form-control glyphicon');
-  $('#id_password').attr('placeholder', 'Password');
-</script>
-{% endblock extra-js %}
-=======
-{% load static %}
-
->>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5
+  {% endblock content %}

@@ -37,7 +37,7 @@ def register(request):
                 return redirect('login')
     else:
         form = cf.RegisterForm()
-    return render(request, 'client/register.html', {"form": form})
+    return render(request, 'accounts/register.html', {"form": form})
 
 
 class Client(View):

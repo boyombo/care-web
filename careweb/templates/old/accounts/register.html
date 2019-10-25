@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+<<<<<<< HEAD
+
+{% load staticfiles %}
+
+{% block title %}Register{% endblock title %}
+
+{% block wrapper %}
+
+<div class="login-box">
+  <div class="login-logo">
+    <a href=""><b>Care</b>WEB</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Sign in to get started</p>
+
+    <form action="" method="post">{% csrf_token %}
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="form-group has-feedback">
+        {% comment %}
+        <input type="email" class="form-control" placeholder="Email">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        {% endcomment %}
+
+        {% if form.username.errors %}
+            <div class="alert alert-danger">
+                {{ form.username.errors }}
+            </div>
+        {% endif %}
+        {{ form.username }}
+      </div>
+
+      <div class="form-group has-feedback">
+        {% comment %}
+        <input type="password" class="form-control" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        {% endcomment %}
+
+        {% if form.password.errors %}
+            <div class="alert alert-danger">
+                {{ form.password.errors }}
+            </div>
+        {% endif %}
+        {{ form.password }}
+      </div>
+      <div class="row">
+        <!--
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox"> Remember Me
+            </label>
+          </div>
+        </div>
+        -->
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+        </div>
+        <!-- /.col -->
+
+        <div class="col-xs-8 ">
+          <a href="#">I forgot my password</a><br>
+          <a href="" class="text-center">New member, Register here</a>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+{% endblock wrapper %}
+
+
+{% block extra-js %}
+<script type="text/javascript">
+  $('#id_username').addClass('form-control glyphicon');
+  $('#id_username').attr('placeholder', 'Username');
+
+  $('#id_password').addClass('form-control glyphicon');
+  $('#id_password').attr('placeholder', 'Password');
+</script>
+{% endblock extra-js %}
+=======
+{% load static %}
+
+>>>>>>> d6292376a7a3b4e3f024692c670837f696de6cf5

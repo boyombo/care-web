@@ -15,8 +15,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
     path('agent_app_login/', core_views.login_agent),
-    path('ranger/', include('ranger.urls') ),
-    path('', TemplateView.as_view(template_name='editBase.html'), name='editBase'),
+    path('ranger/', include('ranger.urls')),
+    path('', TemplateView.as_view(template_name='base.html'), name='base'),
 ]
 
 

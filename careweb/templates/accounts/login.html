@@ -1,73 +1,96 @@
 {% extends "base.html" %}
 
-{% load staticfiles %}
 
-{% block title %}Login{% endblock title %}
-{% block wrapper %}
+{% block title %}
+Login
+{% endblock title %}
 
-<div class="login-box">
-  <div class="login-logo">
-    <a href=""><b>Care</b>WEB</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Sign in to get started</p>
+{% block header %}
+{% endblock header %}
 
-    <form action="" method="post">{% csrf_token %}
-      {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-          <div class="alert alert-danger">
-            {{ error }}
-          </div>
-        {% endfor %}
-      {% endif %}
+{% block footer %}
+{% endblock footer %}
 
-      <div class="form-group has-feedback">
-
-        {% if form.username.errors %}
-            <div class="alert alert-danger">
-                {{ form.username.errors }}
+{% block content %}
+    <!-- BreadCrumb Area Start -->
+      <!--  
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb extraPaddimg blog-details">
+            <div class="bcoverlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="Content">
+                            <h2>
+                                Login
+                            </h2>
+                            <div class="links">
+                                <ul>
+                                    <li>
+                                        <a href="index.html">Home</a>
+                                    </li>
+                                    <li>
+                                        <span>/</span>
+                                    </li>
+                                    <li>
+                                        <a class="active" href="login.html">Login</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% endif %}
-        {{ form.username }}
-      </div>
+        </section>  
+    -->
+    <!--  BreadCrumb Area Start  -->
 
-      <div class="form-group has-feedback">
 
-        {% if form.password.errors %}
-            <div class="alert alert-danger">
-                {{ form.password.errors }}
+    <!-- SignIn Area Start -->
+    <section id="logRegForm" class="logRegForm"> 
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7 col-md-10">
+                            <div class="contact_form_wrappre2">
+                                <h2>
+                                    Login
+                                </h2>
+                                    <form action="#">
+                                            <div class="inputArea">
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Enter username or email" aria-describedby="Site" required>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="Site">
+                                                                    <i class="fas fa-user"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control" placeholder="Your password" aria-describedby="url" required>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="url">
+                                                                    <i class="fas fa-key"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md-12">
+                                                        <button class="loginnow" type="submit">Login Now</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                            </div>
+                    </div>
+                </div>
             </div>
-        {% endif %}
-        {{ form.password }}
-      </div>
-      <div class="row">
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-        </div>
-        <!-- /.col -->
-
-        <div class="col-xs-8 ">
-          <a href="#">I forgot my password</a><br>
-          <a href="{% url 'register' %}" class="text-center">New member, Register here</a>
-        </div>
-      </div>
-    </form>
-
-  </div>
-  <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-
-{% endblock wrapper %}
-
-
-{% block extra-js %}
-<script type="text/javascript">
-  $('#id_username').addClass('form-control glyphicon');
-  $('#id_username').attr('placeholder', 'Username');
-
-  $('#id_password').addClass('form-control glyphicon');
-  $('#id_password').attr('placeholder', 'Password');
-</script>
-{% endblock extra-js %}
+        </section>
+        <!-- SignIn Area Start -->
+{% endblock content %}
