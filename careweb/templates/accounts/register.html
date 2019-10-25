@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+Register
+{% endblock title %}
+
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block content %}
+
+<section id="insuronbreadcrumb" class="insuronbreadcrumb">
+            <div class="bcoverlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="Content">
+                            <h2>
+                                Register
+                            </h2>
+                            <div class="links">
+                                <ul>
+                                    <li>
+                                        <a href="index.html">Home</a>
+                                    </li>
+                                    <li>
+                                        <span>/</span>
+                                    </li>
+                                    <li>
+                                        <a class="active" href="register.html">Register</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> 
+        
+    <!--  BreadCrumb Area Start  -->
+
+<!-- SignUP Area Start -->
+<section class="logRegForm"> 
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10">
+                        <div class="contact_form_wrappre2">
+                            <h2>
+                                Register
+                            </h2>
+                                <form action="#">
+                                        <div class="inputArea">
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter username" aria-describedby="username" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="username">
+                                                                <i class="fas fa-user"></i>
+                                                            </span>
+                                                        </div>
+            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="email" class="form-control" placeholder="Enter Email Address" aria-describedby="Site" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="Site">
+                                                                <i class="fas fa-phone"></i>
+                                                            </span>
+                                                        </div>
+            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Enter Phone Number" aria-describedby="Site" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="Site">
+                                                                <i class="fas fa-envelope"></i>
+                                                            </span>
+                                                        </div>
+            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" placeholder="Your Password" aria-describedby="url" required>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="url">
+                                                                <i class="fas fa-key"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12">
+                                                    <button class="loginnow" type="submit">REGISTER</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SignUp Area End -->
+    
+
+  {% endblock content %}
