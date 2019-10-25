@@ -1,12 +1,14 @@
+{% load staticfiles %}
 
     <!--Start Slider Area-->
     <section id="slider-area" class="slider-area">
-        <div class="overlay"></div>
-        <!--Start Slider-->
-        <div class="silder owl-carousel">
+        <!--<div class="overlay"></div>-->
+        <!--Start Slider owl-carousel-->
+        <div class="silder">
             <!--Start Slide Item-->
-            <div class="slide-item" style="background-image: url(img/slider/banner1.jpg)">
-                <div class="overlay"></div>
+            <div class="slide-item" style="background-image: url({% static 'img/slider/banner1.jpg' %})">
+                <div class="overlay"></div><!-- -->
+
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
@@ -36,33 +38,6 @@
             <!--End Slide Item-->
 
             <!--Start Slide Item-->
-            <div class="slide-item" style="background-image: url(img/slider/banner2.jpg)">
-                <div class="overlay"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                                <div class="slide-caption">
-                                        <div class="slider-inner">
-                                            <div class="innerSize">
-                                                <h1 class="caption-title">Insurances Do Matter</h1>
-                                                <p class="caption-desc">
-                                                    When an unknown printer took a galley of type and scrambled it to make a
-                                                    type specimen book. It has survived not only five centuries, but also the
-                                                    leap into electronic typesetting, remaining essentially unchanged.
-                                                </p>
-                                                <div class="slide-btn">
-                                                    <a class="mybtn" href="#about">Learn More</a>
-                                                    <a class="venobox video-icon-btn" data-vbtype="video" data-autoplay="true" href="http://vimeo.com/75976293">
-                                                        <i class="fa fa-play"></i><span>INTRO VIDEO</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!--End Slide Item-->
         </div>
         <!--End Slider-->

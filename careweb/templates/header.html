@@ -4,7 +4,7 @@
         <nav class="navbar navbar-expand-lg navbar-light p-0">
             <div class="container">
                 <a class="navbar-brand" href="index.html">
-                    <img src="img/logo.png" alt="">
+                    <img src="{% static 'img/logo.png' %}" alt="">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,11 +14,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" href="index.html">Home</a>
+                            <a class="nav-link active" href="">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="aboutUs.html">About</a>
+                            <a class="nav-link" href="">About</a>
                         </li>
+                        {% comment %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="servicemenu" role="button" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
@@ -40,6 +41,7 @@
                                 <a class="dropdown-item" href="blogDetails.html">Blog Details</a>
                             </div>
                         </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="pages" role="button" data-toggle="dropdown" aria-haspopup="true"
                              aria-expanded="false">
@@ -52,9 +54,20 @@
                                 <a class="dropdown-item" href="404.html">404</a>
                             </div>
                         </li>
+                        {% endcomment %}
+                        {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                         </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                        {% endif %}
+
                     </ul>
                     <div class="call_btn">
                         <a href="#">
