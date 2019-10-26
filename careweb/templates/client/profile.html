@@ -15,7 +15,7 @@ Profile
                 <div class="col-lg-12">
                     <div class="Content">
                         <h2>
-                            Life Insurance
+                            Profile
                         </h2>
                         <div class="links">
                             <ul>
@@ -26,7 +26,7 @@ Profile
                                     <span>/</span>
                                 </li>
                                 <li>
-                                    <a class="active" href="lifeInsurance.html">Life Insurance</a>
+                                    <a class="active" href="">Profile</a>
                                 </li>
                             </ul>
                         </div>
@@ -43,32 +43,16 @@ Profile
             <div class="row">
                 <div class="col-md-6 counter" style="padding: 10px;">  
                     <div class="row">
-                        <div class=" col-md-12 col-xl-6">
+                        <div class=" col-md-12">
                             <div class="c-box">
-                                <span class="count">Premium</span><sup></sup>
-                                <h3> Due date 12th Nov 2019</h3>
+                                {% if profile.package_option %}
+                                    <h1>{{profile.get_package_option_display }}</h1>
+                                {%else%}
+                                    <h3>You don't have a plan selected yet</h3>
+                                {% endif %}
                             </div>
                         </div>
-                        <div class=" col-md-12 col-xl-6">
-                            <div class="c-box">
-                                <span class="count">Plan</span><sup></sup>
-                                <h3>Future care plan</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-top: 15px;">
-                        <div class=" col-md-12 col-xl-6">
-                            <div class="c-box">
-                                <span class="count">Renew</span><sup></sup>
-                                <h3>Click to pay</h3>
-                            </div>
-                        </div>
-                        <div class=" col-md-12 col-xl-6">
-                            <div class="c-box">
-                                <span class="count">Payment</span><sup></sup>
-                                <h3>Change frequency</h3>
-                            </div>
-                        </div>
+                       
                     </div>
     
                 <!--
@@ -79,18 +63,9 @@ Profile
                 </div>
                 <div class="col-md-6">
                     <div class="content">
-                        <h2>life Insurance</h2>
+                        <h2>Welcome, {{profile.first_name}}</h2>
                         <p>
-                            Dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex Nemo
-                            enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-                            qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-                            consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam
-                            quaerat voluptatem.
-                        </p>
-                        <p class="cpading-bottom">
-                            consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-                            ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eiusolorem ipsum quia dolor sit
-                            amet, consectetur.
+                            We at FutureCare will try to get a health plan to fit the needs of you and your family.
                         </p>
                     </div>
                 </div>
@@ -103,12 +78,11 @@ Profile
                 <div class="col-lg-8 col-md-10">
                     <div class="sectionHeader">
                         <h2>
-                            Insurance Feature
+                            Account Setup
                         </h2>
                         
                         <p>
-                            when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                            the book type of spaciman and scrambled it to make a type specimen book.
+                            Setup the details of your Account to help us give you the best possible coverage.
                         </p>
                     </div>
                 </div>
@@ -116,56 +90,56 @@ Profile
             <div class="row">
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-headphones"></i>
-                        <h3>
-                            24/7 Support
-                        </h3>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate modi excepturi quisquam repellendus.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="box">
                         <i class="pe-7s-user"></i>
                         <h3>
-                            Expert Agent
+                            Personal Information
                         </h3>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate modi excepturi quisquam repellendus.
+                            Your names, age, gender and marital status
                         </p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-graph1"></i>
+                        <i class="pe-7s-phone"></i>
                         <h3>
-                            Access on The Go
+                            Contact
                         </h3>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate modi excepturi quisquam repellendus.
+                            Your phone and whatsapp numbers, then your home address.
                         </p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-car"></i>
+                        <i class="pe-7s-culture"></i>
                         <h3>
-                            Safe Driving Discounts
+                            Work/Employment
                         </h3>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate modi excepturi quisquam repellendus.
+                            Tell us about your occupation, who you work for and where your office is.
                         </p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-shield"></i>
+                        <i class="pe-7s-eyedropper"></i>
                         <h3>
-                            Insurance Insight
+                            Primary Care Provider
                         </h3>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate modi excepturi quisquam repellendus.
+                            What hospital or health-care center do you go to most frequently?
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <i class="pe-7s-users"></i>
+                        <h3>
+                            Dependants
+                        </h3>
+                        <p>
+                            Your spouse, children and other dependants you want to cover with your health plan.
                         </p>
                     </div>
                 </div>
@@ -173,10 +147,10 @@ Profile
                     <div class="box">
                         <i class="pe-7s-tools"></i>
                         <h3>
-                            Reliable Service
+                            Associations
                         </h3>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate modi excepturi quisquam repellendus.
+                            The Informal Sector Groups that you may belong to.
                         </p>
                     </div>
                 </div>
@@ -329,3 +303,10 @@ Profile
     <!-- Counter Area End -->
 
 {% endblock content %}
+
+ {% block extra-js %}
+    <script type="text/javascript">
+    $('.nav-link').removeClass('active')
+    $('#profile-nav-link').addClass('active')
+    </script>
+{% endblock extra-js %}

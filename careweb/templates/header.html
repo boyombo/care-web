@@ -57,6 +57,9 @@
                         {% endcomment %}
                         {% if user.is_authenticated %}
                         <li class="nav-item">
+                            <a class="nav-link" id="profile-nav-link" href="{% url 'profile' %}">Profile</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                         </li>
                         {% else %}
@@ -69,12 +72,22 @@
                         {% endif %}
 
                     </ul>
-                    <div class="call_btn">
-                        <a href="#">
-                            <i class="fas fa-phone"></i>
-                            get a call
-                        </a>
-                    </div>
+                    {% if profile.ranger %}
+                             <div class="big-btn">
+                                <a href="#">
+                                    <i class="fas fa-phone"></i>
+                                     Contact your Agent
+                                </a>
+                            </div>
+                           
+                            {% else %}
+                            <div class="big-btn">
+                                <a href="#">
+                                    <i class="fas fa-phone"></i>
+                                     Find an Agent
+                                </a>
+                            </div>
+                            {% endif %}
                 </div>
             </div>
         </nav>
