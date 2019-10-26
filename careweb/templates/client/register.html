@@ -55,51 +55,80 @@ Register
                             <h2>
                                 Register
                             </h2>
-                                <form action="#">
+                                <form action="" method="post">{% csrf_token %}
+                                {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
                                         <div class="inputArea">
                                             <div class="form-row">
                                                 <div class="col">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Enter username" aria-describedby="username" required>
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="username">
+                                                        {% if form.first_name.errors %}
+                                                            <div class="alert alert-danger">
+                                                                {{ form.first_name.errors }}
+                                                            </div>
+                                                        {% endif %}
+                                                        {% render_field form.first_name class+="form-control" placeholder="Enter your First name" %}
+                                                         <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="Site">
                                                                 <i class="fas fa-user"></i>
                                                             </span>
                                                         </div>
-            
+        
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
                                                     <div class="input-group">
-                                                        <input type="email" class="form-control" placeholder="Enter Email Address" aria-describedby="Site" required>
-                                                        <div class="input-group-prepend">
+                                                        {% if form.surname.errors %}
+                                                            <div class="alert alert-danger">
+                                                                {{ form.surname.errors }}
+                                                            </div>
+                                                        {% endif %}
+                                                        {% render_field form.surname class+="form-control" placeholder="Enter your Surname" %}
+                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="Site">
-                                                                <i class="fas fa-phone"></i>
+                                                                <i class="fas fa-user"></i>
                                                             </span>
                                                         </div>
-            
+        
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Enter Phone Number" aria-describedby="Site" required>
-                                                        <div class="input-group-prepend">
+                                                        {% if form.email.errors %}
+                                                            <div class="alert alert-danger">
+                                                                {{ form.email.errors }}
+                                                            </div>
+                                                        {% endif %}
+                                                        {% render_field form.email class+="form-control" placeholder="Email address (this will be your username)" %}
+                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="Site">
                                                                 <i class="fas fa-envelope"></i>
                                                             </span>
                                                         </div>
-            
+        
                                                     </div>
                                                 </div>
                                             </div>
+                                           
                                             <div class="form-row">
                                                 <div class="col">
+                                                    {% if form.password.errors %}
+                                                        <div class="alert alert-danger">
+                                                            {{ form.password.errors }}
+                                                        </div>
+                                                    {% endif %}
                                                     <div class="input-group">
-                                                        <input type="password" class="form-control" placeholder="Your Password" aria-describedby="url" required>
+                                                        
+                                                        {% render_field form.password class+="form-control" placeholder="Your Password" %}
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="url">
                                                                 <i class="fas fa-key"></i>
@@ -124,3 +153,18 @@ Register
     
 
   {% endblock content %}
+
+  {% block extra-js %}
+    <script type="text/javascript">
+    $('#id_username').addClass('form-control');
+    $('#id_username').attr('placeholder', 'Username');
+
+    // glyphicon
+
+    $('#id_password').addClass('form-control');
+    $('#id_password').attr('placeholder', 'Password');
+
+    $('.nav-link').removeClass('active')
+    $('#register-nav-link').addClass('active')
+    </script>
+{% endblock extra-js %}
