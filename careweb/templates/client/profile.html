@@ -41,32 +41,25 @@ Profile
     <section id="serviceDetails" class="serviceDetails">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 counter" style="padding: 10px;">  
-                    <div class="row">
-                        <div class=" col-md-12">
-                            <div class="c-box">
-                                {% if profile.package_option %}
-                                    <h1>{{profile.get_package_option_display }}</h1>
-                                {%else%}
-                                    <h3>You don't have a plan selected yet</h3>
-                                {% endif %}
-                            </div>
-                        </div>
-                       
-                    </div>
-    
-                <!--
-                    <div class="img">
-                        <img class="img-fluid" src="img/service/serviceDetails1.jpg" alt="">
-                    </div>
-                -->
-                </div>
-                <div class="col-md-6">
+                
+                <div class="col-md-8 col-xs-12">
                     <div class="content">
                         <h2>Welcome, {{profile.first_name}}</h2>
                         <p>
                             We at FutureCare will try to get a health plan to fit the needs of you and your family.
                         </p>
+                    </div>
+                    <div class="col-md-6 counter" style="padding: 10px;">  
+                        <div class="row">
+                            <div class=" col-md-12">
+                                {% if profile.package_option %}
+                                    <h1>{{profile.get_package_option_display }}</h1>
+                                {%else%}
+                                    <a href="" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-note2"> </i> Choose a Health Plan</a>
+                                {% endif %}
+                            </div>
+                        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,7 +83,7 @@ Profile
             <div class="row">
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-user"></i>
+                        <a href=""><i class="pe-7s-user"></i></a>
                         <h3>
                             Personal Information
                         </h3>
