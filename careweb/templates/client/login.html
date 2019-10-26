@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+Login
+{% endblock title %}
+
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block content %}
+    <!-- BreadCrumb Area Start -->
+ 
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
+            <div class="bcoverlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="Content">
+                            <h2>
+                                Login
+                            </h2>
+                            <div class="links">
+                                <ul>
+                                    <li>
+                                        <a href="index.html">Home</a>
+                                    </li>
+                                    <li>
+                                        <span>/</span>
+                                    </li>
+                                    <li>
+                                        <a class="active" href="login.html">Login</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>  
+
+    <!--  BreadCrumb Area Start  -->
+
+
+<!-- SignIn Area Start -->
+<section id="logRegForm" class="logRegForm"> 
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-10">
+                    <div class="contact_form_wrappre2">
+                        <h2>
+                            Login
+                        </h2>
+                            <form action="#" method="post">{% csrf_token %}
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+
+                                <div class="inputArea">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                {% if form.username.errors %}
+                                                    <div class="alert alert-danger">
+                                                        {{ form.username.errors }}
+                                                    </div>
+                                                {% endif %}
+                                                {{ form.username|add_class:"form-control" }}
+
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="Site">
+                                                        <i class="fas fa-user"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                {% if form.password.errors %}
+                                                    <div class="alert alert-danger">
+                                                        {{ form.password.errors }}
+                                                    </div>
+                                                {% endif %}
+                                                {{ form.password|add_class:"form-control" }}
+
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="url">
+                                                        <i class="fas fa-key"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <button class="loginnow" type="submit">Login Now</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- SignIn Area Start -->
+{% endblock content %}
+
+
+{% block extra-js %}
+<script type="text/javascript">
+  $('#id_username').addClass('form-control');
+  $('#id_username').attr('placeholder', 'Username');
+
+  // glyphicon
+
+  $('#id_password').addClass('form-control');
+  $('#id_password').attr('placeholder', 'Password');
+
+  $('.nav-link').removeClass('active')
+  $('#login-nav-link').addClass('active')
+</script>
+{% endblock extra-js %}

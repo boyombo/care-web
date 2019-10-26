@@ -1,0 +1,967 @@
+@media (max-width: 1199.98px) { 
+    .header .call_btn a {
+        width: 140px;
+        margin-left: 30px;
+    }
+    .header.header .nav-link {
+        margin-right: 20px;
+    }
+    .copyRightArea {
+        margin-top: 120px;
+    }
+    #slider-area .slide-item {
+        padding: 232px 0px 250px;
+    }
+    .service {
+        padding: 112px 0px 70px;
+    }
+    .history {
+        padding: 114px 0px 91px;
+    }
+    .testimonial {
+        padding: 120px 0px 120px;
+    }
+    #slider-area .slide-caption .slider-inner .innerSize{
+        width: 100%;
+        text-align: center;
+    }
+    #slider-area .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: none;
+        background-color:rgba(0, 0, 0, 0.7);
+    }
+    #slider-area .slide-caption .slider-inner .tagLine {
+        color: #f1f1f1;
+    }
+    #slider-area .slide-caption .slider-inner .caption-title {
+        color: #fff;
+    }
+
+    #slider-area .slidveideo a {
+        border-color:#f1f1f1;
+        color: #f1f1f1;
+    }
+    #slider-area .slidveideo a:hover {
+        background: #f1f1f1;
+        color: rgb(119, 119, 119);
+    }
+    .serviceDetails {
+        padding: 120px 0px 115px;
+    }
+    .why-choose-us-style-one {
+        padding: 113px 0 116px 0;
+    }
+    .fun-fact-style-one {
+        padding: 120px 0px 114px;
+    }
+    .counter .c-box {
+        margin-bottom: 30px;
+    }
+    .counter {
+        padding: 120px 0px 90px;
+    }
+    .counter.aboutCounter {
+        padding: 120px 0px 90px;
+    }
+    .address .media {
+        display: flow-root!important;
+        text-align: center;
+    }
+    .address h4 {
+        margin-top: 25px;
+    }
+    #slider-area .slide-caption .slider-inner .caption-desc, 
+    #slider-area .slidveideo .videoText {
+        max-width: 760px;
+    }
+
+}
+
+
+@media (max-width: 991.98px) { 
+    header.header {
+        padding: 15px 0px 15px;
+    }
+    .header.header .nav-link {
+        padding: 10px 0px 10px;
+        display: inline-block;
+    }
+    .header .call_btn a {
+        margin-left: 0px;
+        margin-top: 10px;
+        margin-bottom: 35px;
+    }
+    .header.header .nav-link.active::before{
+        display: none;
+    }
+    #navbarSupportedContent ul{
+        padding-top: 29px;
+    }
+    .footer .widget3 h5 {
+        margin-top: 35px;
+    }
+    .footer .widget4 h5 {
+        margin-top: 35px;
+    }
+    .spabreadcrumb.extrapadding {
+        padding-bottom: 118px;
+    }
+    .service .sectionHeader {
+        margin-bottom: 60px;
+    }
+    .service .quateBox {
+        margin-bottom: 50px;
+    }
+    .history .v-box {
+        margin-bottom: 36px;
+    }
+    .testimonialSlider {
+        margin-bottom: 50px;
+    }
+    .testimonial {
+        padding: 102px 0px 120px;
+    }
+    .counter .c-box {
+        padding: 30px 30px 47px;
+        border: 2px solid rgba(0, 0, 0, 0.30);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .footer .widget3 h5 {
+        margin-top: 38px;
+        margin-bottom: 32px;
+    }
+    .footer .widget4 h5 {
+        margin-top: 38px;
+        margin-bottom: 32px;
+    }
+    .copyRightArea {
+        margin-top: 100px;
+    }
+    .about h3 {
+        margin-top: 42px;
+    }
+    .feature-style-one {
+        padding: 121px 0 65px 0;
+    }
+    .feature-style-one.about-page .single-feature-style-one {
+        margin-bottom: 32px;
+    }
+    .single-fun-fact-style-one {
+        margin-bottom: 47px;
+    }
+    .fun-fact-style-one {
+        padding: 120px 0px 67px;
+    }
+    .chooseUsimg{
+        width: 100%;
+        margin-bottom: 50px;
+    }
+    .fun-fact-style-one .single-fun-fact-style-one h3 {
+        font-size: 40px;
+    }
+    .counter {
+        padding: 119px 0px 90px;
+    }
+    .about h2 {
+        margin-top: 45px;
+    }
+    .giveAndtakeNumber {
+        padding: 114px 0px 120px;
+    }
+}
+
+
+@media (max-width: 767.98px) { 
+
+    .logRegForm .loginnow {
+        margin-bottom: 30px;
+    }
+    .error-content .error-title {
+        font-size: 150px;
+        line-height: 160px;
+    }
+    .error-content a {
+        font-size: 18px;
+    }
+    #slider-area .slide-item {
+        padding: 138px 0px 160px;
+    }
+    .giveAndtakeNumber .companyNumber {
+        width: 330px;
+        margin-top: 30px;
+    }
+    .footer .widget2 h5{
+        margin-top: 54px;
+    }
+    #latest_news .c-box img{
+        width: 100%;
+    }
+    .sidebar .sidebar-widget:first-child {
+        padding-top: 34px;
+    }
+    #latest_news {
+        padding: 120px 0px 118px;
+    }
+    .fun-fact-style-one .single-fun-fact-style-one h3 {
+        font-size: 45px;
+    }
+    .fun-fact-style-one .single-fun-fact-style-one .icon-box i {
+        font-size: 40px;
+        line-height: 80px;
+    }
+    .fun-fact-style-one .single-fun-fact-style-one .icon-box {
+        width: 80px;
+        height: 80px;
+    }
+    .serviceDetails .content h2 {
+        margin-top: 44px;
+    }
+    #latest_news.single-blog {
+        padding: 120px 0px 114px;
+    }
+    .blogs .blog-box .blog-details .meta li {
+        padding-right: 0px;
+    }
+    .sidebar .search-form input {
+        margin-top: 50px;
+    }
+    .feature-style-one {
+        padding: 122px 0 63px 0;
+    }
+
+    .footer .widget3 h5 {
+        margin-top: 34px!important;
+    }
+    .footer .widget4 h5 {
+        margin-top: 34px!important;
+    }
+    #slider-area .slide-caption h1 {
+        font-size: 42px;
+    }
+    .faqSection {
+        padding: 112px 0 100px 0;
+    }
+    .not-found-wrap {
+        padding: 88px 0 120px;
+    }
+    #slider-area .slide-caption .slider-inner .caption-title {
+        font-size: 45px;
+        line-height: 55px;
+    }
+}
+
+
+
+@media (max-width: 575.98px) { 
+    .navbar-light .navbar-brand {
+        padding-left: 15px;
+    }
+    #navbarSupportedContent {
+        padding: 0px 15px;
+    }
+    #slider-area .slide-caption h1 {
+        font-size: 30px;
+    }
+    #slider-area .slide-caption .slider-inner .tagLine { 
+        font-size: 16px;
+    }
+    #slider-area .slide-caption .slider-inner .caption-title {
+        padding: 16px 0px 14px;
+    }
+
+    #slider-area .slide-item {
+        padding: 141px 0px 160px;
+    }
+    .feature-style-one {
+        padding: 120px 0 62px 0;
+    }
+    h2,
+    .sectionHeader h2 {
+        font-size: 30px;
+    }
+    .service {
+        padding: 108px 0px 70px;
+    }
+    .service .quateBox h3 {
+    font-size: 24px;
+    }
+    .service .box .content h5 {
+        font-size: 18px;
+    }
+    .history {
+        padding: 110px 0px 92px;
+    }
+    .testimonial {
+        padding: 60px 0px 120px;
+    }
+    .insuronbreadcrumb h2 {
+        font-size: 30px;
+        line-height: 26px;
+    }
+    .insuronbreadcrumb {
+        padding: 116px 0px 114px;
+    }
+    .why-choose-us-style-one {
+        padding: 108px 0 115px 0;
+    }
+    .serviceDetails {
+        padding: 120px 0px 117px;
+    }
+    .feature {
+        padding: 110px 0px 65px;
+    }
+    .feature {
+        padding: 106px 0px 70px;
+    }
+    .single-blog .blog-box h3 {
+        font-size: 20px;
+    }
+    .error-content .error-title {
+        font-size: 100px;
+        line-height: 100px;
+    }
+    .not-found-wrap {
+        padding: 110px 0 120px;
+    }
+    .sectionHeader .sectionSeparator {
+        margin: 20px 0px 19px;
+    }
+    .about h3 {
+        font-size: 24px;
+    }
+    .giveAndtakeNumber p {
+        line-height: 24px;
+    }
+    .historyBox a {
+        font-size: 22px;
+    }
+    .insuronbreadcrumb.extraPaddimg {
+        padding-bottom: 117px;
+    }
+    .insuronbreadcrumb.blog-details {
+        padding-top: 118px;
+    }
+    .sidebar .sidebar-widget h4 {
+        font-size: 20px;
+        margin: 0;
+        padding: 0 0 20px;
+        font-weight: 600;
+    }
+    .about {
+        padding: 120px 0px 118px;
+    }
+    .giveAndtakeNumber {
+        padding: 109px 0px 120px;
+    }
+    .faqSection {
+        padding: 108px 0 100px 0;
+    }
+    .contact-wrap .contact-form {
+        padding: 69px 60px 80px;
+    }
+    .contact-wrap .sectionHeader {
+        margin-bottom: 50px;
+    }
+
+
+
+ }
+
+
+@media (max-width: 500px) { 
+    .giveAndtakeNumber .postNumber {
+        width: 250px;
+    }
+    .giveAndtakeNumber .companyNumber {
+        width: 250px;
+    }
+    .about {
+        padding: 119px 0px 112px;
+    }
+    #latest_news .entry-footer .right-content{
+        float: none;
+        margin-top: 20px;
+    }
+    #slider-area .slide-caption .slider-inner .caption-title {
+        font-size: 45px;
+        line-height: 55px;
+    }
+ }
+
+ @media (max-width: 414px) {
+    #slider-area .slide-caption .slider-inner .caption-desc {
+        font-size: 16px;
+    }
+    #slider-area .slide-caption .slider-inner {
+        padding: 0px 0px;
+    }
+    #slider-area .slide-caption .slider-inner .tagLine { 
+        font-size: 14px;
+    }
+    #slider-area .slide-caption .slider-inner .slide-btn{
+        text-align: center;
+    }
+    #slider-area .slidveideo {
+        display: block;
+        margin-top: 20px;
+    }
+    #slider-area .slidveideo {
+        margin-top: 18px;
+    }
+    #slider-area .slide-item {
+        padding: 132px 0px 151px;
+    }
+    .single-blog .blog-box .comments-container h3 {
+        padding: 17px 0px 6px;
+        margin-bottom: 0px;
+    }
+    #latest_news blockquote .media{
+        display: flow-root;
+    }
+    #latest_news .blog-content-area blockquote i {
+        margin-bottom: 10px;
+    }
+    .single-blog .blog-box .blog_links {
+        margin-top: 23px;
+    }
+    .logRegForm .contact_form_wrappre2 {
+        padding: 46px 20px 34px;
+    }
+    .why-choose-us-style-one .single-why-choose-us-style-one .text-box h3 {
+        font-size: 20px;
+    }
+    .fun-fact-style-one .single-fun-fact-style-one p {
+        font-size: 20px;
+    }
+    .fun-fact-style-one .single-fun-fact-style-one h3 {
+        font-size: 34px;
+    }
+    .feature-style-one .single-feature-style-one h3 {
+        font-size: 20px;
+    }
+    .feature-style-one .single-feature-style-one i {
+        font-size: 65px;
+        line-height: 65px;
+    }
+    .feature-style-one {
+        padding: 108px 0 61px 0;
+    }
+    .feature-style-one.about-page {
+        padding: 108px 0 80px 0;
+    }
+    h2,
+    .sectionHeader h2,
+    .about h2,
+    .serviceDetails .content h2,
+    .logRegForm h2 {
+        font-size: 30px;
+        line-height: 34px;
+    }
+    .error-content .error-title {
+        font-size: 80px;
+        line-height: 80px;
+    }
+    .error-content .title {
+        font-size: 40px;
+        line-height: 52px;
+        margin-bottom: 23px;
+    }
+    .service .quateBox h3{
+        font-size: 20px;
+    }
+    .about h3 {
+        font-size: 20px;
+    }
+    .sectionHeader .sectionSeparator {
+        margin: 18px 0px 19px;
+    }
+    .history{
+        padding: 106px 0px 110px;
+    }
+    .faqSection {
+        padding: 105px 0 100px 0;
+    }
+    .faqSection .sectionHeader .sectionSeparator {
+        margin: 15px 0px 17px;
+    }
+    .historyBox a {
+        font-size: 20px;
+    }
+    .logRegForm h2 {
+        margin-bottom: 38px;
+    }
+    .counter .c-box span {
+        font-size: 35px;
+    }
+    .giveAndtakeNumber h2 {
+        line-height: 30px;
+    }
+    .single-testimonials .name-box-wrapper .text-box h4 {
+        font-size: 18px;
+    }
+    .counter .c-box h3 {
+        font-size: 18px;
+    }
+    .counter .c-box {
+        padding: 32px 30px 49px;
+    }
+    .counter .c-box h3 {
+        font-size: 18px;
+        margin-top: 12px;
+    }
+    .service {
+        padding: 106px 0px 70px;
+    }
+    .feature .box h3 {
+        font-size: 20px;
+    }
+    .contact-wrap .contact-form {
+        padding: 37px 30px 50px;
+    }
+    #slider-area .slide-caption .slider-inner .slide-btn {
+        margin-top: 27px;
+    }
+    .contact-wrap .sectionHeader {
+        margin-bottom: 18px;
+    }
+
+    #slider-area .slide-caption h1,
+    #slider-area .slide-caption .slider-inner .caption-title {
+        font-size: 29px;
+    }
+    #slider-area .slide-caption .slider-inner .slide-btn a.mybtn {
+        width: 145px;
+    }
+    #slider-area .slide-caption .slider-inner .slide-btn a,
+    #slider-area .slide-caption .slider-inner .slide-btn .video-icon-btn{
+        font-size: 14px;
+    }
+    .service .box .content h5 {
+        font-size: 20px;
+    }
+    #latest_news .c-box a h4 {
+        font-size: 20px;
+        line-height: 30px;
+    }
+    .single-blog .blog-box h3 {
+        font-size: 20px;
+        line-height: 30px;
+    }
+    #latest_news .entry-footer .right-content{
+        float: none;
+        margin-top: 20px;
+    }
+    .footer h5 ,
+    .footer .widget3 h5,
+    .footer .widget4 h5{
+        font-size: 20px;
+    }
+    .contact-form .sectionHeader h2 {
+        margin-bottom: 45px;
+    }
+    .copyRightArea {
+        margin-top: 80px;
+    }
+    .header .call_btn a:hover{
+        background-color: transparent;
+    }
+    .header .call_btn a {
+        background-color: transparent;
+        color: #333;
+        font-size: 16px;
+        padding: 0;
+        text-align: left;
+        height: 40px;
+        margin-bottom: 0;
+        font-weight: 600;
+        margin-top: -5px;
+    }
+    .header .call_btn a i{
+        display: none;
+    }
+    .feature.lifeinsurance {
+        padding-bottom: 80px;
+    }
+ }
+
+ @media (max-width:384px){
+    #slider-area .slide-caption h1,
+    #slider-area .slide-caption .slider-inner .caption-title {
+        font-size: 30px;
+    }
+    .comments-container .comments-list li {
+        padding-left: 100px;
+    }
+    .comments-container .comments-list li .comment h4 span {
+        display: block;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .testimonial .partner-logo-wrapper .col-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .testimonial .partner-logo-wrapper .partner-logos{
+        border:none;
+    }
+    .testimonial .partner-logo-wrapper{
+        border-top: none;
+    }
+    .testimonial .partner-logo-wrapper .partner-logos .single-logo-item {
+        text-align: center;
+        padding: 20px 0;
+    }
+    .testimonial {
+        padding-bottom: 100px;
+    }
+    .testimonialSlider{
+        margin-bottom: 30px;
+    }
+    #latest_news .entry-footer .left-content ul li {
+        margin-bottom: 15px;
+    }
+ }
+
+ @media (max-width: 360px) {
+        .testimonial .partner-logo-wrapper .partner-logos{
+            border: 0px;
+            flex: 100%;
+            max-width: 100%;
+        }
+        .testimonial .partner-logo-wrapper {
+            border-top: 0px;
+        }
+        .testimonial .partner-logo-wrapper .partner-logos .single-logo-item {
+            text-align: center;
+            padding: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 30px;
+        }
+        .testimonial {
+            padding: 60px 0px 90px;
+        }
+        .service .box {
+            display: flow-root;
+            margin-bottom: 44px;
+            text-align: center;
+        
+        }
+        .service .box .left i {
+            margin-right: 0px;
+            margin-bottom: 25px;
+        
+        }
+        .service .box .content p {
+            margin: 10px 0px 18px;
+        }
+        .why-choose-us-style-one .single-why-choose-us-style-one .icon-box, .why-choose-us-style-one .single-why-choose-us-style-one .text-box {
+            display: block;
+            vertical-align: none;
+            text-align: center;
+        }
+        .why-choose-us-style-one .single-why-choose-us-style-one .text-box {
+            padding-left: 0px;
+        }
+        .why-choose-us-style-one .single-why-choose-us-style-one .icon-box .inner i {
+            margin-bottom: 25px;
+        }
+        .why-choose-us-style-one .sectionHeader {
+            margin-bottom: 64px;
+        }
+        .service .sectionHeader {
+            margin-bottom: 64px;
+        }
+        .giveAndtakeNumber p {
+            padding: 0px 0px 65px;
+        }
+        .history .sectionHeader {
+            margin-bottom: 63px;
+        }
+        .feature .sectionHeader {
+            margin-bottom: 64px;
+        }
+        #slider-area .slide-caption h1 {
+            font-size: 36px;
+        }
+        #slider-area .slide-caption h1, 
+        #slider-area .slide-caption .slider-inner .caption-title {
+            font-size: 35px;
+            line-height: 45px;
+        }
+        .giveAndtakeNumber h2 {
+            line-height: 40px;
+        }
+        h2, .sectionHeader h2, .about h2, .serviceDetails .content h2, .logRegForm h2 {
+            font-size: 28px;
+            line-height: 34px;
+        }
+ }
+ 
+ @media (max-width: 360px){
+    #slider-area .slide-caption h1 {
+        font-size: 25px;
+    }
+    #slider-area .slide-caption .slider-inner .slide-btn .video-icon-btn span{
+        display: none;
+    }
+    #slider-area .slide-caption .slider-inner .caption-desc {
+        font-size: 15px;
+    }
+    .service .box .left i {
+        font-size: 30px;
+        width: 65px;
+        height: 65px;
+        line-height: 65px;
+    }
+    .v-box a {
+        width: 65px;
+        height: 65px;
+        line-height: 60px;
+    }
+    .v-box a i{
+        line-height: 65px;
+    }
+    .feature-style-one .single-feature-style-one a.read-more i{
+        line-height: 24px;
+    }
+    .feature-style-one .single-feature-style-one .icon i,
+    .why-choose-us-style-one .single-why-choose-us-style-one .icon-box .inner i,
+    .feature .box i,
+    .address .media i {
+        font-size: 30px;
+        width: 65px;
+        height: 65px;
+        line-height: 65px;
+    }
+    #latest_news .entry-footer .left-content ul li, #latest_news .entry-footer .right-content ul li {
+        margin-bottom: 20px;
+    }
+    #latest_news .entry-footer .right-content {
+        float: none;
+        margin-top: 5px;
+    }
+    .recent-posts-widget .recent-post-description h6 {
+        font-size: 16px;
+        line-height: 23px;
+    }
+    .recent-posts-widget .recent-post-description .time {
+        font-size: 13px;
+        color: #616161;
+    }
+    .faq-accordian .panel-group .panel .panel-heading .panel-title a {
+        font-size: 16px;
+        color: #333;
+    }
+    .error-content a {
+        font-size: 16px;
+        width: 200px;
+        height: 55px;
+        line-height: 55px;
+    }
+    .header .call_btn a {
+        background-color: transparent;
+        color: #333;
+        font-size: 16px;
+        padding: 0;
+        text-align: left;
+        height: 40px;
+        margin-bottom: 0;
+        font-weight: 600;
+        margin-top: -5px;
+    }
+    .contact-form .mr_btn_fill{
+        width: 100%;
+    }
+    .address h4{
+        margin-top: 15px;
+        font-size: 21px;
+    }
+    .footer .widget2 .media img {
+        width: 80px;
+    }
+    .comments-container .comments-list li .avatar {
+        position: initial;
+    }
+    
+    .comments-container .comments-list li .comment {
+        padding-top: 0px;
+    }
+    
+    .comments-container .comments-list li {
+        padding-left: 0;
+    }
+    .single-blog .blog-box .comments-container h3 {
+        margin-bottom: 20px;
+    }
+     #latest_news .entry-footer .right-content .title,
+     #latest_news .entry-footer .right-content ul li{
+        margin-bottom: 0;
+    }
+    .comments-container .comments-list li {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+    }
+    .comments-container .comments-list li:last-child {
+        border-bottom: none;
+        border-top: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .header .call_btn a:hover{
+        background-color: transparent;
+    }
+
+ }
+
+ @media (max-width: 320px) {
+    .navbar-light .navbar-brand img{
+        width: 130px;
+    }
+    .contact-form .mr_btn_fill {
+        width: 100%;
+    }
+    .comments-container .comments-list li {
+        position: relative;
+        padding-left: 0px;
+        padding-right: 0px;
+        /* padding-top: 74px; */
+    }
+    
+ }
+
+ @media (max-width: 330px){
+    #slider-area .slide-caption h1,
+    #slider-area .slide-caption h1, #slider-area .slide-caption .slider-inner .caption-title {
+        font-size: 23px;
+    }
+    .sectionHeader h2{
+        font-size: 22px;
+    }
+    .service .box .content h5 {
+        font-size: 18px;
+    }
+    .service .box .left i{
+        margin-bottom: 15px;
+    }
+    .historyBox a {
+        font-size: 18px;
+    }
+    .counter .c-box span {
+        font-size: 30px;
+    }
+    .counter .c-box sup{
+        display: none;
+    }
+    .counter .c-box h3 {
+        font-size: 16px;
+        margin-top: 12px;
+    }
+    .insuronbreadcrumb h2 {
+        font-size: 25px;
+        line-height: 22px;
+    }
+    .about h2{
+        font-size: 21px;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+    .serviceDetails .content h2 {
+        margin-top: 25px;
+        margin-bottom: 10px;
+        font-size: 21px;
+    } 
+    .insuronbreadcrumb .links li a{
+        font-size: 14px;
+    }
+    .feature .box h3 {
+        font-size: 18px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .footer h5, .footer .widget3 h5, .footer .widget4 h5 {
+        font-size: 18px;
+        margin-top: 10px !important;
+        margin-bottom: 15px !important;
+    }
+    .widget2 {
+        margin-top: 30px;
+    }
+    .faq-accordian .panel-group .panel .panel-heading .panel-title a {
+        padding: 20px 25px;
+        padding-left: 55px;
+    }
+    .faq-accordian .panel-group .panel .panel-body {
+        font-size: 15px;
+    }
+    .error-content .title {
+        font-size: 26px;
+        line-height: 20px;
+        margin-bottom: 21px;
+    }
+    .error-content .error-title {
+        font-size: 70px;
+        line-height: 60px;
+    }
+    .error-content p {
+        font-size: 15px;
+        line-height: 26px;
+    }
+    .address h4 {
+        margin-top: 25px;
+        font-size: 21px;
+    }
+    #slider-area .slide-caption h1, 
+    #slider-area .slide-caption h1, 
+    #slider-area .slide-caption .slider-inner .caption-title {
+        font-size: 35px;
+    }
+    .sectionHeader h2 {
+        font-size: 30px;
+    }
+    .insuronbreadcrumb h2 {
+        font-size: 30px;
+        line-height: 30px;
+    }
+    .about h2 {
+        font-size: 27px;
+    }
+    .insuronbreadcrumb.blog-details {
+        padding-top: 118px;
+    }
+    .single-blog .blog-box h3 {
+        font-size: 22px;
+        line-height: 30px;
+    }
+    .single-blog .blog-box .comments-container h3,
+    .single-blog .blog-box .comments-form h3{
+        font-size: 24px;
+    }
+    .historyBox a ,
+    .service .box .content h5{
+        font-size: 20px;
+    }
+    .serviceDetails .content h2 {
+        font-size: 26px;
+    }
+    .feature .box h3 {
+        font-size: 20px;
+    }
+ }
+
+ @media (min-width: 414px)  and (max-width: 415px){
+    .mybtn {
+        width: 160px;
+    }
+    #slider-area .slide-caption p {
+        font-size: 16px;
+    }
+    #slider-area .slidveideo {
+        display: inline-block;
+    }
+ }

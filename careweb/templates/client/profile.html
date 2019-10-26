@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile
+{% endblock title %}
+
+
+{% block content %}
+
+    <!-- banner Area Start -->
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
+        <div class="bcoverlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Content">
+                        <h2>
+                            Profile
+                        </h2>
+                        <div class="links">
+                            <ul>
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li>
+                                    <span>/</span>
+                                </li>
+                                <li>
+                                    <a class="active" href="">Profile</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Welcome Area End -->
+
+    <!-- Services Area Start -->
+    <section id="serviceDetails" class="serviceDetails">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-8 col-xs-12">
+                    <div class="content">
+                        <h2>Welcome, {{profile.first_name}}</h2>
+                        <p>
+                            We at FutureCare will try to get a health plan to fit the needs of you and your family.
+                        </p>
+                    </div>
+                    <div class="col-md-6 counter" style="padding: 10px;">  
+                        <div class="row">
+                            <div class=" col-md-12">
+                                {% if profile.package_option %}
+                                    <h5>Plan: {{profile.get_package_option_display }}</h5>
+                                    <small>Paid {{profile.get_payment_option_display }} by {{profile.get_payment_instrument_display }}</small>
+                                {%else%}
+                                    <a href="{% url 'profile_plan' pk=profile.id %}" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-note2"> </i> Choose a Health Plan</a>
+                                {% endif %}
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="feature lifeinsurance">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="sectionHeader">
+                        <h2>
+                            Account Setup
+                        </h2>
+                        
+                        <p>
+                            Setup the details of your Account to help us give you the best possible coverage.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <a href="{% url 'profile_personal' pk=profile.id %}"><i class="pe-7s-user"></i></a>
+                        <h3>
+                            Personal Information
+                        </h3>
+                        <p>
+                            Your names, age, gender and marital status
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <a href="{% url 'profile_contact' pk=profile.id %}"><i class="pe-7s-phone"></i></a>
+                        <h3>
+                            Contact
+                        </h3>
+                        <p>
+                            Your phone and whatsapp numbers, then your home address.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <a href="{% url 'profile_work' pk=profile.id %}"><i class="pe-7s-culture"></i></a>
+                        <h3>
+                            Work/Employment
+                        </h3>
+                        <p>
+                            Tell us about your occupation, who you work for and where your office is.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <a href="{% url 'profile_pcp' pk=profile.id %}"><i class="pe-7s-eyedropper"></i></a>
+                        <h3>
+                            Primary Care Provider
+                        </h3>
+                        <p>
+                            What hospital or health-care center do you go to most frequently?
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <a href="{% url 'profile_associations' pk=profile.id %}"><i class="pe-7s-tools"></i></a>
+                        <h3>
+                            Associations
+                        </h3>
+                        <p>
+                            The Informal Sector Groups that you may belong to.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <a href="{% url 'profile_dependants' pk=profile.id %}"><i class="pe-7s-users"></i></a>
+                        <h3>
+                            Dependants
+                        </h3>
+                        <p>
+                            Your spouse, children and other dependants you want to cover with your health plan.
+                        </p>
+                    </div>
+                </div>
+          
+            </div>
+        </div>
+    </div>
+    <!-- Services Area End -->
+
+
+    <!-- Testimonial Area Start -->
+    <section id="testimonial" class="testimonial">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-lg-5">
+                    <div class="testimonialSlider owl-carousel">
+                        <div class="single-testimonials">
+                            <img src="img/testimonial/testi-icon-1.png" class="testi-icon" alt="Awesome Image">
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>
+                            <div class="name-box-wrapper">
+                                <div class="img-box">
+                                    <img src="img/testimonial/reviewr1.jpg" alt="Awesome Image">
+                                </div>
+                                <div class="text-box">
+                                    <h4>Hailey Olkowski</h4>
+                                    <span>uihub, ui/ux designer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-testimonials">
+                            <img src="img/testimonial/testi-icon-1.png" class="testi-icon" alt="Awesome Image">
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>
+                            <div class="name-box-wrapper">
+                                <div class="img-box">
+                                    <img src="img/testimonial/reviewr2.jpg" alt="Awesome Image">
+                                </div>
+                                <div class="text-box">
+                                    <h4>Benny Talone</h4>
+                                    <span>uihub, ui/ux designer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-testimonials">
+                            <img src="img/testimonial/testi-icon-1.png" class="testi-icon" alt="Awesome Image">
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley.</p>
+                            <div class="name-box-wrapper">
+                                <div class="img-box">
+                                    <img src="img/testimonial/reviewr3.jpg" alt="Awesome Image">
+                                </div>
+                                <div class="text-box">
+                                    <h4>Rigoberto Sweat</h4>
+                                    <span>uihub, ui/ux designer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row partner-logo-wrapper">
+                        <div class="col-4 remove-col-padding partner-logos">
+                            <div class="single-logo-item">
+                                <!-- single logo item -->
+                                <a href="#">
+                                    <img class="img-fluid" src="img/patner/patner1.png" alt="partner image">
+                                </a>
+                            </div><!-- //.single logo item -->
+                        </div>
+                        <div class="col-4 remove-col-padding partner-logos">
+                            <div class="single-logo-item">
+                                <!-- single logo item -->
+                                <a href="#">
+                                    <img class="img-fluid" src="img/patner/patner2.png" alt="partner image">
+                                </a>
+                            </div><!-- //.single logo item -->
+                        </div>
+                        <div class="col-4  remove-col-padding partner-logos">
+                            <div class="single-logo-item">
+                                <!-- single logo item -->
+                                <a href="#">
+                                    <img class="img-fluid" src="img/patner/patner3.png" alt="partner image">
+                                </a>
+                            </div><!-- //.single logo item -->
+                        </div>
+                    </div>
+                    <div class="row partner-logo-wrapper">
+                        <div class="col-4 remove-col-padding partner-logos">
+                            <div class="single-logo-item">
+                                <!-- single logo item -->
+                                <a href="#">
+                                    <img class="img-fluid" src="img/patner/patner4.png" alt="partner image">
+                                </a>
+                            </div><!-- //.single logo item -->
+                        </div>
+                        <div class="col-4 remove-col-padding partner-logos">
+                            <div class="single-logo-item">
+                                <!-- single logo item -->
+                                <a href="#">
+                                    <img class="img-fluid" src="img/patner/patner5.png" alt="partner image">
+                                </a>
+                            </div><!-- //.single logo item -->
+                        </div>
+                        <div class="col-4 remove-col-padding partner-logos">
+                            <div class="single-logo-item">
+                                <!-- single logo item -->
+                                <a href="#">
+                                    <img class="img-fluid" src="img/patner/patner6.png" alt="partner image">
+                                </a>
+                            </div><!-- //.single logo item -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonial Area End -->
+
+    <!-- Counter Area Start -->
+    <section id="counter" class="counter">
+        <div class="container">
+            <div class="row">
+                <div class=" col-md-6 col-xl-3">
+                    <div class="c-box">
+                        <span class="count">1000</span><sup>+</sup>
+                        <h3>Satisfy Clients</h3>
+                    </div>
+                </div>
+                <div class=" col-md-6 col-xl-3">
+                    <div class="c-box">
+                        <span class="count">300</span><sup>+</sup>
+                        <h3>Winning Awards</h3>
+                    </div>
+                </div>
+                <div class=" col-md-6 col-xl-3">
+                    <div class="c-box">
+                        <span class="count">9999</span><sup>+</sup>
+                        <h3>Lines Of Coding</h3>
+                    </div>
+                </div>
+                <div class=" col-md-6 col-xl-3">
+                    <div class="c-box">
+                        <span class="count">2000</span><sup>+</sup>
+                        <h3>Users Around World</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Counter Area End -->
+
+{% endblock content %}
+
+ {% block extra-js %}
+    <script type="text/javascript">
+    $('.nav-link').removeClass('active')
+    $('#profile-nav-link').addClass('active')
+    </script>
+{% endblock extra-js %}

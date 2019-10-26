@@ -1,7 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
-#from location.models import LGA
+# from location.models import LGA
 from provider.models import CareProvider
 from ranger.models import Ranger
 
@@ -43,7 +45,7 @@ class Client(models.Model):
     FEMALE = 'F'
     MALE = 'M'
     SEXES = (('F', 'Female'), ('M', 'Male'))
-    #SEXES = enumerate(('Female', 'Male'))
+    # SEXES = enumerate(('Female', 'Male'))
 
     SINGLE = 'S'
     MARRIED = 'M'
@@ -76,6 +78,7 @@ class Client(models.Model):
         ('B', 'Bank Deposit')
     )
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
@@ -100,7 +103,7 @@ class Client(models.Model):
     office_address = models.TextField(blank=True)
     hmo = models.ForeignKey(
         HMO, null=True, blank=True, on_delete=models.SET_NULL)
-    #informal_sector_group = models.CharField(
+    # informal_sector_group = models.CharField(
     #    max_length=200, blank=True, null=True)
     associations = models.ManyToManyField('Association')
     package_option = models.CharField(
@@ -114,3 +117,6 @@ class Client(models.Model):
 
     def __str__(self):
         return self.surname
+
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'pk': self.pk})
