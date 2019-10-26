@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 
-from client.models import Client
+from client.models import Client, Association, Dependant
 
 
 class RegForm(forms.ModelForm):
@@ -39,3 +39,22 @@ class PersonalInfoForm(forms.ModelForm):
         model = Client
         fields = ['first_name', 'surname', 'middle_name', 'dob',
                   'sex', 'marital_status']
+
+
+class AssociationsForm(forms.ModelForm):
+    associations = forms.ModelMultipleChoiceField(
+        queryset=Association.objects.all(),
+        widget=forms.CheckboxSelectMultiple())
+
+    class Meta:
+        model = Client
+        fields = ['associations']
+
+
+class DependantForm(forms.ModelForm):
+    dob = forms.DateField(
+        widget=forms.SelectDateWidget(years=range(1970, 2019)))
+
+    class Meta:
+        model = Dependant
+        exclude = ['primary']

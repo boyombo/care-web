@@ -117,7 +117,7 @@ Profile
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-eyedropper"></i>
+                        <a href="{% url 'profile_pcp' pk=profile.id %}"><i class="pe-7s-eyedropper"></i></a>
                         <h3>
                             Primary Care Provider
                         </h3>
@@ -128,18 +128,7 @@ Profile
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-users"></i>
-                        <h3>
-                            Dependants
-                        </h3>
-                        <p>
-                            Your spouse, children and other dependants you want to cover with your health plan.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="box">
-                        <i class="pe-7s-tools"></i>
+                        <a href="{% url 'profile_associations' pk=profile.id %}"><i class="pe-7s-tools"></i></a>
                         <h3>
                             Associations
                         </h3>
@@ -148,6 +137,18 @@ Profile
                         </p>
                     </div>
                 </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box">
+                        <a href="{% url 'profile_dependants' pk=profile.id %}"><i class="pe-7s-users"></i></a>
+                        <h3>
+                            Dependants
+                        </h3>
+                        <p>
+                            Your spouse, children and other dependants you want to cover with your health plan.
+                        </p>
+                    </div>
+                </div>
+          
             </div>
         </div>
     </div>

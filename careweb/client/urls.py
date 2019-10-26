@@ -15,4 +15,10 @@ urlpatterns = [
     path('contact/<int:pk>/', views.ContactView.as_view(),
          name='profile_contact'),
     path('work/<int:pk>/', views.WorkView.as_view(), name='profile_work'),
+    path('pcp/<int:pk>/', views.PCPView.as_view(), name='profile_pcp'),
+    path('associations/<int:pk>/', views.AssociationsView.as_view(),
+         name='profile_associations'),
+    path('dependants/<int:pk>/', views.dependants, name='profile_dependants'),
+    path('add_dependant/', views.add_dependant,
+         name='profile_add_dependant'),
 ]
