@@ -1,7 +1,7 @@
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 # from location.models import LGA
 from provider.models import CareProvider
@@ -117,3 +117,6 @@ class Client(models.Model):
 
     def __str__(self):
         return self.surname
+
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'pk': self.pk})

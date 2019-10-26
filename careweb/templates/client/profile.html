@@ -20,7 +20,7 @@ Profile
                         <div class="links">
                             <ul>
                                 <li>
-                                    <a href="index.html">Home</a>
+                                    <a href="/">Home</a>
                                 </li>
                                 <li>
                                     <span>/</span>
@@ -53,9 +53,10 @@ Profile
                         <div class="row">
                             <div class=" col-md-12">
                                 {% if profile.package_option %}
-                                    <h1>{{profile.get_package_option_display }}</h1>
+                                    <h5>Plan: {{profile.get_package_option_display }}</h5>
+                                    <small>Paid {{profile.get_payment_option_display }} by {{profile.get_payment_instrument_display }}</small>
                                 {%else%}
-                                    <a href="" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-note2"> </i> Choose a Health Plan</a>
+                                    <a href="{% url 'profile_plan' pk=profile.id %}" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-note2"> </i> Choose a Health Plan</a>
                                 {% endif %}
                             </div>
                         
@@ -83,7 +84,7 @@ Profile
             <div class="row">
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <a href=""><i class="pe-7s-user"></i></a>
+                        <a href="{% url 'profile_personal' pk=profile.id %}"><i class="pe-7s-user"></i></a>
                         <h3>
                             Personal Information
                         </h3>
@@ -94,7 +95,7 @@ Profile
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-phone"></i>
+                        <a href="{% url 'profile_contact' pk=profile.id %}"><i class="pe-7s-phone"></i></a>
                         <h3>
                             Contact
                         </h3>
@@ -105,7 +106,7 @@ Profile
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="box">
-                        <i class="pe-7s-culture"></i>
+                        <a href="{% url 'profile_work' pk=profile.id %}"><i class="pe-7s-culture"></i></a>
                         <h3>
                             Work/Employment
                         </h3>
