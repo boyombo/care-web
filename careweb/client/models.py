@@ -67,11 +67,13 @@ class Client(models.Model):
     )
 
     TRANSFER = 'T'
+    CARD = 'D'
     EWALLET = 'E'
     CHEQUE = 'C'
     BANK_DEPOSIT = 'B'
     PAYMENT_INSTRUMENTS = (
         ('T', 'Transfer'),
+        ('D', 'Debit Card'),
         ('E', 'E-Wallet'),
         ('C', 'Cheque'),
         ('B', 'Bank Deposit')
