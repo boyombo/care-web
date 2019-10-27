@@ -97,7 +97,7 @@ def upload_photo(request, id):
         pprint(form)
         if form.is_valid():
             form.save()
-            host = 'http://{}'.format(request.get_host())
+            host = 'https://{}'.format(request.get_host())
             if cl.photo:
                 photo_url = '{}{}'.format(host, cl.photo.url)
             else:
