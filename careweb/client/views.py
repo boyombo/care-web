@@ -66,7 +66,7 @@ def login_api(request):
                         }
                     )
                 else:
-                    host = 'http://{}'.format(request.get_host())
+                    host = 'https://{}'.format(request.get_host())
                     if client.photo:
                         photo_url = '{}{}'.format(host, client.photo.url)
                     else:
