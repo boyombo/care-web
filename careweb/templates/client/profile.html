@@ -42,7 +42,7 @@ Profile
         <div class="container">
             <div class="row">
                 
-                <div class="col-md-8 col-xs-12">
+                <div class="col-md-7 col-xs-12">
                     <div class="content">
                         <h2>Welcome, {{profile.first_name}}</h2>
                         <p>
@@ -63,6 +63,140 @@ Profile
                         </div>
                     </div>
                 </div>
+                <div class="col-md-5 col-xs-12">
+                    <div class="historyBox">
+                            <ul>
+                                <li>
+                                    <div class="content">
+                                        {% if profile.first_name and profile.surname  and profile.middle_name and profile.dob and profile.sex and profile.marital_status %}
+                                            <div class="box good">
+                                                <i class="pe-7s-check"></i>
+                                            </div>
+                                        {% else %}
+                                            <div class="box bad">
+                                                <i class="pe-7s-close-circle"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="right">
+                                            <a href="{% url 'profile_personal' pk=profile.id %}">
+                                                Personal Information
+                                            </a>
+                                            <p>
+                                            
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="content">
+                                        {% if profile.pcp %}
+                                            <div class="box good">
+                                                <i class="pe-7s-check"></i>
+                                            </div>
+                                        {% else %}
+                                            <div class="box bad">
+                                                <i class="pe-7s-close-circle"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="right">
+                                            <a href="{% url 'profile_pcp' pk=profile.id %}">
+                                                Primary Care Provider
+                                            </a>
+                                            <p>
+                                               
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="content">
+                                        {% if profile.surname and profile.first_name  and profile.middle_name   and profile.dob   and profile.relationship   and profile.pcp %}
+                                            <div class="box good">
+                                                <i class="pe-7s-check"></i>
+                                            </div>
+                                        {% else %}
+                                            <div class="box bad">
+                                                <i class="pe-7s-close-circle"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="right">
+                                            <a href="{% url 'profile_dependants' pk=profile.id %}">
+                                                Dependants
+                                            </a>
+                                            <p>
+                                            
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="content">
+                                        {% if profile.occupation and profile.company  and profile.office_address %}
+                                            <div class="box good">
+                                                <i class="pe-7s-check"></i>
+                                            </div>
+                                        {% else %}
+                                            <div class="box bad">
+                                                <i class="pe-7s-close-circle"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="right">
+                                            <a href="{% url 'profile_work' pk=profile.id %}">
+                                                Work/Employment
+                                            </a>
+                                            <p>
+                                            
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="content">
+                                        {% if profile.associations %}
+                                            <div class="box good">
+                                                <i class="pe-7s-check"></i>
+                                            </div>
+                                        {% else %}
+                                            <div class="box bad">
+                                                <i class="pe-7s-close-circle"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="right">
+                                            <a href="{% url 'profile_associations' pk=profile.id %}">
+                                                Associations
+                                            </a>
+                                            <p>
+                                                
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="content">
+                                        {% if profile.phone_no and profile.whatsapp_no  and profile.home_address %}
+                                            <div class="box good">
+                                                <i class="pe-7s-check"></i>
+                                            </div>
+                                        {% else %}
+                                            <div class="box bad">
+                                                <i class="pe-7s-close-circle"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="right">
+                                            <a href="{% url 'profile_contact' pk=profile.id %}">
+                                                Contact
+                                            </a>
+                                            <p>
+                                                
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                
             </div>
         </div>
     </section>
@@ -82,7 +216,7 @@ Profile
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4">            
                     <div class="box">
                         <a href="{% url 'profile_personal' pk=profile.id %}"><i class="pe-7s-user"></i></a>
                         <h3>
