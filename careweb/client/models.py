@@ -80,14 +80,16 @@ class Client(models.Model):
         ('B', 'Bank Deposit')
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True)
-    dob = models.DateField(null=True, blank=True)
-    sex = models.CharField(max_length=10, choices=SEXES)
+    dob = models.DateField('Date of Birth', null=True, blank=True)
+    sex = models.CharField('Gender', max_length=10, choices=SEXES, null=True)
     #sex = models.PositiveIntegerField(choices=SEXES)
-    marital_status = models.CharField(max_length=10, choices=MARITAL_STATUSES)
+    marital_status = models.CharField(
+        max_length=10, choices=MARITAL_STATUSES, null=True)
     national_id_card_no = models.CharField(max_length=50, blank=True)
     drivers_licence_no = models.CharField(max_length=50, blank=True)
     lashma_no = models.CharField(max_length=50, blank=True)
@@ -107,7 +109,7 @@ class Client(models.Model):
         HMO, null=True, blank=True, on_delete=models.SET_NULL)
     # informal_sector_group = models.CharField(
     #    max_length=200, blank=True, null=True)
-    associations = models.ManyToManyField('Association')
+    associations = models.ManyToManyField('Association', related_name='client_associations')
     package_option = models.CharField(
         max_length=50, choices=PACKAGE_OPTIONS, null=True)
     payment_option = models.CharField(

@@ -32,3 +32,71 @@ class ClientAdmin(admin.ModelAdmin):
     inlines = [DependantInline, AssociationInline]
     autocomplete_fields = ['ranger', 'pcp']
     exclude = ['associations']
+    fieldsets = [
+        (
+            'Names',
+            {
+                'fields': ['surname', 'first_name', 'middle_name'],
+                'classes': [
+                    'baton-tabs-init',
+                    'baton-tab-fs-personal',
+                    'baton-tab-fs-contact',
+                    'baton-tab-fs-ids',
+                    'baton-tab-fs-work',
+                    'baton-tab-fs-package',
+                    'baton-tab-inline-associations',
+                    'baton-tab-inline-dependant',
+                ]
+            }
+        ),
+        (
+            'Personal',
+            {
+                'fields': ['dob', 'sex', 'marital_status'],
+                'classes': ['tab-fs-personal']
+            }
+        ),
+        (
+            'Contact',
+            {
+                'fields': ['phone_no', 'whatsapp_no', 'email', 'home_address'],
+                'classes': ['tab-fs-contact']
+            }
+        ),
+        (
+            'IDs',
+            {
+                'fields': [
+                    'national_id_card_no',
+                    'drivers_licence_no',
+                    'lagos_resident_no',
+                    'lashma_no',
+                    'lashma_quality_life_no'
+                ],
+                'classes': ['tab-fs-ids']
+            }
+        ),
+        (
+            'Work',
+            {
+                'fields': [
+                    'occupation',
+                    'company',
+                    'office_address',
+                ],
+                'classes': ['tab-fs-work']
+            }
+        ),
+        (
+            'Package',
+            {
+                'fields': [
+                    'package_option',
+                    'payment_option',
+                    'payment_instrument',
+                ],
+                'classes': ['tab-fs-package']
+            }
+        ),
+
+    ]
