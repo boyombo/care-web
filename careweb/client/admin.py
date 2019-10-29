@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from client.models import HMO, Dependant, Client, Association
+from client.models import HMO, Dependant, Client,\
+    Association, ClientAssociation
 
 
 @admin.register(HMO)
@@ -14,7 +15,8 @@ class AssociationAdmin(admin.ModelAdmin):
 
 
 class AssociationInline(admin.TabularInline):
-    model = Client.associations.through
+    model = ClientAssociation
+    extra = 1
 
 
 @admin.register(Dependant)
@@ -29,9 +31,10 @@ class DependantInline(admin.TabularInline):
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['surname', 'first_name', 'dob', 'sex', 'pcp']
+    inlines = [DependantInline]
     inlines = [DependantInline, AssociationInline]
     autocomplete_fields = ['ranger', 'pcp']
-    exclude = ['associations']
+    exclude = ['user']
     fieldsets = [
         (
             'Basic',
@@ -45,6 +48,7 @@ class ClientAdmin(admin.ModelAdmin):
                     'baton-tab-fs-work',
                     'baton-tab-fs-package',
                     'baton-tab-inline-dependant',
+                    'baton-tab-inline-clientassociation',
                 ]
             }
         ),
