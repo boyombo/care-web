@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
-from django.contrib.auth.models import User
 
 # from location.models import LGA
 from provider.models import CareProvider
@@ -14,6 +13,17 @@ class Association(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ClientAssociation(models.Model):
+    client = models.ForeignKey('Client', on_delete=models.CASCADE)
+    association = models.ForeignKey('Association', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Associations'
+
+    def __str__(self):
+        return str(self.association)
 
 
 class HMO(models.Model):
@@ -110,7 +120,7 @@ class Client(models.Model):
         HMO, null=True, blank=True, on_delete=models.SET_NULL)
     # informal_sector_group = models.CharField(
     #    max_length=200, blank=True, null=True)
-    associations = models.ManyToManyField('Association', related_name='client_associations')
+    #associations = models.ManyToManyField('Association', related_name='client_associations')
     package_option = models.CharField(
         max_length=50, choices=PACKAGE_OPTIONS, null=True)
     payment_option = models.CharField(
