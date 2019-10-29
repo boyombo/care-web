@@ -1,0 +1,106 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="zxx">
+<!--<![endif]-->
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<title>CareWEB :: {% block title %}{% endblock title %}</title>
+	<!--Favicon-->
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+	<!--Bootstrap Stylesheet-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+	<!--Slick Slider-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/slick.css' %}">
+	<!--Font Awesome Stylesheet-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/fontawesome.all.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/pe-icon-7-stroke.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/helper.css' %}">
+
+	<!--Animate Stylesheet-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+
+	<!--Venobox Stylesheet-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/venobox.css' %}">
+	<!--Owl carosul-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/owl.carousel.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/owl.transitions.css' %}">
+	<!--Main Stylesheet-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<!--Responsive Stylesheet-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/responsive.css' %}">
+</head>
+
+<body>
+{% comment %}
+	<!--Start Preloader-->
+	<div class="site-preloader">
+		<div class="spinner">
+			<div class="double-bounce1"></div>
+			<div class="double-bounce2"></div>
+		</div>
+	</div>
+	<!--End Preloader-->
+{% endcomment %}
+
+	<!-- Main Menu Area Start -->
+	{% block header %}
+  	{% include 'header.html' %}
+    {% endblock header %}
+	<!-- Main Menu Area End -->
+
+    {% block content %}
+    {% include 'content.html' %}
+
+    
+  
+    {% endblock content %}
+
+
+	<!--  Footer Section End -->
+	{% block footer %}
+  	{% include 'footer.html' %}
+    {% endblock footer %}
+
+	<!--Start ClickToTop-->
+	<div class="totop">
+		<a href="#top">
+			<p>
+				<i class="fas fa-angle-up"></i>
+			</p>
+		</a>
+	</div>
+	<!--End ClickToTop-->
+
+	<!--jQuery JS-->
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<!--Bootstrap JS-->
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/popper.js' %}"></script>
+	<!-- Way Point js -->
+	<script src="{% static 'js/waypoints.min.js' %}"></script>
+	<script src="{% static 'js/counter.js' %}"></script>
+	<!-- Contact js -->
+	<script src="{% static 'js/contact.js' %}"></script>
+	<!-- Owl carosul js -->
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<!-- Venobox JS-->
+	<script src="{% static 'js/venobox.min.js' %}"></script>
+	<!--Main-->
+	<script src="{% static 'js/main.js' %}"></script>
+
+	{% block extra-js %}
+	{% endblock extra-js %}
+
+</body>
+
+</html>

@@ -1,27 +1,6 @@
 from django.contrib import admin
 
-from client.models import CareProvider, Ranger, HMO, Dependant,\
-    Client, Location, LGA
-
-
-@admin.register(LGA)
-class LGAAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
-@admin.register(Location)
-class LocationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'lga']
-
-
-@admin.register(CareProvider)
-class CareProviderAdmin(admin.ModelAdmin):
-    list_display = ['name', 'phone1', 'lga']
-
-
-@admin.register(Ranger)
-class RangerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'phone', 'location']
+from client.models import HMO, Dependant, Client, Association
 
 
 @admin.register(HMO)
@@ -29,9 +8,18 @@ class HMOAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+@admin.register(Association)
+class AssociationAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
+class AssociationInline(admin.TabularInline):
+    model = Client.associations.through
+
+
 @admin.register(Dependant)
 class DependantAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'first_name', 'dob', 'designation']
+    list_display = ['surname', 'first_name', 'dob', 'relationship']
 
 
 class DependantInline(admin.TabularInline):
@@ -41,4 +29,73 @@ class DependantInline(admin.TabularInline):
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['surname', 'first_name', 'dob', 'sex', 'pcp']
-    inlines = [DependantInline]
+    inlines = [DependantInline, AssociationInline]
+    autocomplete_fields = ['ranger', 'pcp']
+    exclude = ['associations']
+    fieldsets = [
+        (
+            'Basic',
+            {
+                'fields': ['surname', 'first_name', 'middle_name', 'photo'],
+                'classes': [
+                    'baton-tabs-init',
+                    'baton-tab-fs-personal',
+                    'baton-tab-fs-contact',
+                    'baton-tab-fs-ids',
+                    'baton-tab-fs-work',
+                    'baton-tab-fs-package',
+                    'baton-tab-inline-dependant',
+                ]
+            }
+        ),
+        (
+            'Personal',
+            {
+                'fields': ['dob', 'sex', 'marital_status'],
+                'classes': ['tab-fs-personal']
+            }
+        ),
+        (
+            'Contact',
+            {
+                'fields': ['phone_no', 'whatsapp_no', 'email', 'home_address'],
+                'classes': ['tab-fs-contact']
+            }
+        ),
+        (
+            'IDs',
+            {
+                'fields': [
+                    'national_id_card_no',
+                    'drivers_licence_no',
+                    'lagos_resident_no',
+                    'lashma_no',
+                    'lashma_quality_life_no'
+                ],
+                'classes': ['tab-fs-ids']
+            }
+        ),
+        (
+            'Work',
+            {
+                'fields': [
+                    'occupation',
+                    'company',
+                    'office_address',
+                ],
+                'classes': ['tab-fs-work']
+            }
+        ),
+        (
+            'Package',
+            {
+                'fields': [
+                    'package_option',
+                    'payment_option',
+                    'payment_instrument',
+                ],
+                'classes': ['tab-fs-package']
+            }
+        ),
+
+    ]

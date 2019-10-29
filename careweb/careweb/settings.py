@@ -25,12 +25,13 @@ SECRET_KEY = 'q7(#m#a%md&pg(i^cc+u(+t&0*nfbn2omp)yu2-u!8a3a6mzbj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148']
+ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148', '192.168.8.100']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'client.apps.ClientConfig',
+    'core.apps.CoreConfig',
+    'ranger.apps.RangerConfig',
+    'location.apps.LocationConfig',
+    'provider.apps.ProviderConfig',
+
+    #baton
+    'baton.autodiscover',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +136,53 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+BATON = {
+    'SITE_HEADER': 'FUTURECARE',
+    'SITE_TITLE': 'FUTURECARE',
+    'INDEX_TITLE': 'Site administration',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'COPYRIGHT': 'Futureview Solutions',
+    'POWERED_BY': 'Futureview',
+    'SUPPORT_HREF': 'http://futurecare.everyday.com.ng',
+}
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+    },
+    'handlers': {
+        'client_logfile': {
+            'formatter': 'simple',
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/client.log'),
+        },
+        'ranger_logfile': {
+            'formatter': 'simple',
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/ranger.log'),
+        },
+    },
+    'loggers': {
+        'client': {
+            'handlers': ['client_logfile'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'ranger': {
+            'handlers': ['ranger_logfile'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 try:
     from .local_settings import *

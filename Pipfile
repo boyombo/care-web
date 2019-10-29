@@ -9,6 +9,10 @@ name = "pypi"
 
 django = "*"
 fabric = "*"
+django-baton = "*"
+ipython = "*"
+pillow = "*"
+django-widget-tweaks = "*"
 
 
 [dev-packages]
