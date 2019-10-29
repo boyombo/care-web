@@ -20,7 +20,7 @@ class ClientAssociation(models.Model):
     association = models.ForeignKey('Association', on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Associations'
+        verbose_name = 'Association'
 
     def __str__(self):
         return str(self.association)
