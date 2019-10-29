@@ -58,3 +58,9 @@ class DependantForm(forms.ModelForm):
     class Meta:
         model = Dependant
         exclude = ['primary']
+
+
+class PhotoForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['photo']

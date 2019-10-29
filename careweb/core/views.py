@@ -6,7 +6,6 @@ from core.forms import LoginForm
 from ranger.models import Ranger
 from provider.models import CareProvider
 from location.models import LGA
-from client.models import Client
 
 
 @csrf_exempt

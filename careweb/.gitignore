@@ -98,5 +98,3 @@ target/
 *.komodoproject
 deploy.sh
 deploy.py
-*Pipfile
-*Pipfile.lock

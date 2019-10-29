@@ -34,9 +34,9 @@ class ClientAdmin(admin.ModelAdmin):
     exclude = ['associations']
     fieldsets = [
         (
-            'Names',
+            'Basic',
             {
-                'fields': ['surname', 'first_name', 'middle_name'],
+                'fields': ['surname', 'first_name', 'middle_name', 'photo'],
                 'classes': [
                     'baton-tabs-init',
                     'baton-tab-fs-personal',
@@ -44,7 +44,6 @@ class ClientAdmin(admin.ModelAdmin):
                     'baton-tab-fs-ids',
                     'baton-tab-fs-work',
                     'baton-tab-fs-package',
-                    'baton-tab-inline-associations',
                     'baton-tab-inline-dependant',
                 ]
             }

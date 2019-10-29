@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -25,7 +25,7 @@ SECRET_KEY = 'q7(#m#a%md&pg(i^cc+u(+t&0*nfbn2omp)yu2-u!8a3a6mzbj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148', '127.0.0.1']
+ALLOWED_HOSTS = ['futurecare.everyday.com.ng', 'localhost', '174.138.47.148', '192.168.8.100']
 
 
 # Application definition
@@ -45,10 +45,9 @@ INSTALLED_APPS = [
     'location.apps.LocationConfig',
     'provider.apps.ProviderConfig',
 
-    'widget_tweaks',
-
     #baton
     'baton.autodiscover',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -149,5 +148,43 @@ BATON = {
 }
 
 
-LOGIN_REDIRECT_URL = '/client/profile'
-LOGOUT_REDIRECT_URL = '/'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+    },
+    'handlers': {
+        'client_logfile': {
+            'formatter': 'simple',
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/client.log'),
+        },
+        'ranger_logfile': {
+            'formatter': 'simple',
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/ranger.log'),
+        },
+    },
+    'loggers': {
+        'client': {
+            'handlers': ['client_logfile'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'ranger': {
+            'handlers': ['ranger_logfile'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
