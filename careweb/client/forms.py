@@ -6,6 +6,7 @@ from client.models import Client, Association, Dependant
 
 
 class RegForm(forms.ModelForm):
+    email = forms.EmailField()
     password = forms.CharField(max_length=100, widget=forms.PasswordInput)
     confirm = forms.CharField(max_length=100, widget=forms.PasswordInput)
 
