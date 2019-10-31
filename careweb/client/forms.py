@@ -7,6 +7,7 @@ from client.models import Client, Association, Dependant
 
 class RegForm(forms.ModelForm):
     password = forms.CharField(max_length=100, widget=forms.PasswordInput)
+    confirm = forms.CharField(max_length=100, widget=forms.PasswordInput)
 
     class Meta:
         model = Client
@@ -21,6 +22,12 @@ class RegForm(forms.ModelForm):
                 return email
             else:
                 raise forms.ValidationError("The email has already been used")
+
+    def clean(self):
+        if "password" in self.cleaned_data and "confirm" in self.cleaned_data:
+            if self.cleaned_data["password"] != self.cleaned_data["confirm"]:
+                raise forms.ValidationError("The passwords do not match!")
+            return self.cleaned_data
 
 
 class LoginForm(forms.Form):
