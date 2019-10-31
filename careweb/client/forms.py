@@ -34,12 +34,12 @@ class LoginForm(forms.Form):
             user = authenticate(username=username, password=password)
             if user is None:
                 raise forms.ValidationError("Wrong username/password")
-            try:
-                Client.objects.get(user=user)
-            except Client.DoesNotExist:
-                raise forms.ValidationError(
-                    "Your account is not registered as a client"
-                )
+            # try:
+            #    Client.objects.get(user=user)
+            # except Client.DoesNotExist:
+            #    raise forms.ValidationError(
+            #        "Your account is not registered as a client"
+            #    )
             return self.cleaned_data
 
 
