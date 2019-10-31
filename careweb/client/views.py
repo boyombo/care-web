@@ -72,8 +72,13 @@ def client_login(request):
             user = authenticate(username=username, password=password)
             login(request, user)
 
-            cl = Client.objects.get(user=request.user)
-            return redirect("profile", pk=cl.id)
+            # A client?
+            try:
+                cl = Client.objects.get(user=request.user)
+            except Client.DoesNotExist:
+                return redirect("/admin/")
+            else:
+                return redirect("profile", pk=cl.id)
     else:
         form = LoginForm()
     return render(request, "client/login.html", {"form": form})
