@@ -125,6 +125,9 @@ USE_TZ = True
 # Session
 SESSION_COOKIE_AGE = 300
 
+# login
+LOGIN_URL = "/client/login/"
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
