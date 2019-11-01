@@ -17,6 +17,7 @@ from django.views.generic.edit import UpdateView
 from client.models import Client, Dependant, ClientAssociation, Association
 from client.forms import (
     RegForm,
+    ApiRegForm,
     LoginForm,
     PersonalInfoForm,
     AssociationsForm,
@@ -178,8 +179,7 @@ def add_dependant(request):
 @csrf_exempt
 def register_api(request):
     if request.method == "POST":
-        # import pdb;pdb.set_trace()
-        form = RegForm(request.POST)
+        form = ApiRegForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
