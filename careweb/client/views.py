@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView
 
 # from django.urls import reverse_lazy
 
-from client.models import Client, Dependant
+from client.models import Client, Dependant, ClientAssociation
 from client.forms import (
     RegForm,
     LoginForm,
@@ -116,6 +116,15 @@ class PCPView(ClientView):
 class AssociationsView(ClientView):
     template_name = "client/associations.html"
     form_class = AssociationsForm
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        associations = form.cleaned_data["associations"]
+        for association in associations:
+            ClientAssociation.objects.get_or_create(
+                client=self.object, association=association
+            )
+        return response
 
 
 def dependants(request, pk):
