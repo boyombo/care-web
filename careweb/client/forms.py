@@ -5,6 +5,25 @@ from django.contrib.auth.models import User
 from client.models import Client, Association, Dependant
 
 
+class ApiRegForm(forms.ModelForm):
+    email = forms.EmailField()
+    password = forms.CharField(max_length=100, widget=forms.PasswordInput)
+
+    class Meta:
+        model = Client
+        fields = ["email", "first_name", "surname"]
+
+    def clean_email(self):
+        if "email" in self.cleaned_data:
+            email = self.cleaned_data["email"]
+            try:
+                User.objects.get(username=email)
+            except User.DoesNotExist:
+                return email
+            else:
+                raise forms.ValidationError("The email has already been used")
+
+
 class RegForm(forms.ModelForm):
     email = forms.EmailField()
     password = forms.CharField(max_length=100, widget=forms.PasswordInput)
