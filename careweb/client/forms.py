@@ -66,14 +66,11 @@ class PersonalInfoForm(forms.ModelForm):
         ]
 
 
-class AssociationsForm(forms.ModelForm):
-    associations = forms.ModelMultipleChoiceField(
-        queryset=Association.objects.all(), widget=forms.CheckboxSelectMultiple()
+class AssociationsForm(forms.Form):
+    associations = forms.MultipleChoiceField(
+        choices=[(i.id, i.name) for i in Association.objects.all()],
+        widget=forms.CheckboxSelectMultiple(),
     )
-
-    class Meta:
-        model = Client
-        fields = ["associations"]
 
 
 class DependantForm(forms.ModelForm):
