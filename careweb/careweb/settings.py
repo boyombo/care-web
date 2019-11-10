@@ -26,6 +26,8 @@ SECRET_KEY = "q7(#m#a%md&pg(i^cc+u(+t&0*nfbn2omp)yu2-u!8a3a6mzbj"
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "futurecare.ng",
+    "futurecare.com.ng",
     "futurecare.everyday.com.ng",
     "localhost",
     "174.138.47.148",
