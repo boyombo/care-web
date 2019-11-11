@@ -46,11 +46,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # local
     "client.apps.ClientConfig",
     "core.apps.CoreConfig",
     "ranger.apps.RangerConfig",
     "location.apps.LocationConfig",
     "provider.apps.ProviderConfig",
+    "payment.apps.PaymentConfig",
     # baton
     "baton.autodiscover",
     "widget_tweaks",
@@ -170,10 +172,21 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": os.path.join(BASE_DIR, "logs/ranger.log"),
         },
+        "payment_logfile": {
+            "formatter": "simple",
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/payment.log"),
+        },
     },
     "loggers": {
         "client": {"handlers": ["client_logfile"], "level": "INFO", "propagate": True,},
         "ranger": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True,},
+        "payment": {
+            "handlers": ["payment_logfile"],
+            "level": "INFO",
+            "propagate": True,
+        },
     },
 }
 
