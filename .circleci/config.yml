@@ -57,7 +57,8 @@ jobs:
             ls `pwd`
             mkdir logs
             #pipenv run ./manage.py migrate
-            pipenv run python manage.py test
+            #pipenv run python manage.py test
+            pipenv run pytest
 
       - store_test_results:
           path: test-results
