@@ -13,6 +13,8 @@ django-baton = "*"
 ipython = "*"
 pillow = "*"
 django-widget-tweaks = "*"
+requests = "*"
+"psycopg2" = "*"
 
 
 [dev-packages]
