@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.utils.functional import lazy
 
 from client.models import Client, Association, Dependant
 
@@ -85,10 +86,13 @@ class PersonalInfoForm(forms.ModelForm):
         ]
 
 
+def get_association_choices():
+    return [(i.id, i.name) for i in Association.objects.all()]
+
+
 class AssociationsForm(forms.Form):
     associations = forms.MultipleChoiceField(
-        choices=[(i.id, i.name) for i in Association.objects.all()],
-        widget=forms.CheckboxSelectMultiple(),
+        choices=get_association_choices, widget=forms.CheckboxSelectMultiple(),
     )
 
 
