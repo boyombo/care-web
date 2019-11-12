@@ -24,9 +24,7 @@ def new_payment(request):
             kobo = amount * 100
 
             reference = get_reference()
-            pymt = Payment.objects.create(
-                amount=amount, payment_type=Payment.FUNDING, reference=reference
-            )
+            pymt = Payment.objects.create(amount=amount, reference=reference)
             usr = User.objects.get(username=email)
             ranger = Ranger.objects.get(user=usr)
             WalletFunding.objects.create(
