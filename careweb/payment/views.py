@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -89,3 +89,22 @@ def paystack_success(request):
 
 def paystack_error(request):
     return JsonResponse({"success": False})
+
+
+def verify_paystack_payment(request):
+    # TODO: process failed verifications as well
+    ref = request.GET.get("reference")
+    pymt = get_object_or_404(Payment, reference=ref)
+    resp = verify(pymt)
+    logger.info(resp)
+    pymt.status = Payment.SUCCESSFUL
+    pymt.save()
+    funding = WalletFunding.objects.get(payment=pymt)
+    funding.status = WalletFunding.SUCCESSFUL
+    funding.save()
+    ranger = funding.ranger
+    ranger.wallet_balance += pymt.amount
+    ranger.save()
+    return JsonResponse(
+        {"success": True, "balance": "{}".format(ranger.wallet_balance)}
+    )

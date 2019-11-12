@@ -8,4 +8,5 @@ urlpatterns = [
     path("paystack_callback/", views.paystack_callback),
     path("paystack_success/", views.paystack_success, name="paystack_success"),
     path("paystack_error/", views.paystack_error, name="paystack_error"),
+    path("paystack_verify/", views.verify_paystack_payment),
 ]
