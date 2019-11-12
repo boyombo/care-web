@@ -144,6 +144,9 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "otherstatic"),)
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
+PAYSTACK_PUBLIC_KEY = ""
+PAYSTACK_SECRET_KEY = ""
+
 BATON = {
     "SITE_HEADER": "FUTURECARE",
     "SITE_TITLE": "FUTURECARE",
