@@ -53,6 +53,7 @@ jobs:
           name: run tests
           command: |
             echo `pwd`
+            ls `pwd`
             pipenv run ./manage.py test
 
       - store_test_results:
