@@ -18,6 +18,8 @@ requests = "*"
 pytest = "*"
 pytest-django = "*"
 pytest-mock = "*"
+requests-mock = "*"
+model-bakery = "*"
 
 
 [dev-packages]
