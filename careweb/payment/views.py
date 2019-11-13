@@ -21,7 +21,7 @@ def new_payment(request):
         if form.is_valid():
             email = form.cleaned_data["email"]
             amount = form.cleaned_data["amount"]
-            kobo = amount * 100
+            kobo = amount
 
             reference = get_reference()
             pymt = Payment.objects.create(amount=amount, reference=reference)
