@@ -78,7 +78,7 @@ def paystack_callback(request):
             funding.status = WalletFunding.SUCCESSFUL
             funding.save()
             ranger = funding.ranger
-            ranger.wallet_balance += pymt.amount
+            ranger.balance += pymt.amount
             ranger.save()
             return redirect("paystack_success")
 
@@ -103,7 +103,7 @@ def verify_paystack_payment(request):
     funding.status = WalletFunding.SUCCESSFUL
     funding.save()
     ranger = funding.ranger
-    ranger.wallet_balance += pymt.amount
+    ranger.balance += pymt.amount
     ranger.save()
     return JsonResponse(
         {"success": True, "balance": "{}".format(ranger.wallet_balance)}
