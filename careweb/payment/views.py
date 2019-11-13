@@ -97,14 +97,13 @@ def verify_paystack_payment(request):
     pymt = get_object_or_404(Payment, reference=ref)
     resp = verify(pymt)
     logger.info(resp)
-    pymt.status = Payment.SUCCESSFUL
-    pymt.save()
-    funding = WalletFunding.objects.get(payment=pymt)
-    funding.status = WalletFunding.SUCCESSFUL
-    funding.save()
-    ranger = funding.ranger
-    ranger.balance += pymt.amount
-    ranger.save()
-    return JsonResponse(
-        {"success": True, "balance": "{}".format(ranger.wallet_balance)}
-    )
+    if pymt.status == Payment.PENDING:
+        pymt.status = Payment.SUCCESSFUL
+        pymt.save()
+        funding = WalletFunding.objects.get(payment=pymt)
+        funding.status = WalletFunding.SUCCESSFUL
+        funding.save()
+        ranger = funding.ranger
+        ranger.balance += pymt.amount
+        ranger.save()
+    return JsonResponse({"success": True, "balance": "{}".format(ranger.balance)})
