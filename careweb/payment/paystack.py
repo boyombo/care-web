@@ -1,3 +1,4 @@
+# from pprint import pprint
 import requests
 
 import logging
@@ -8,7 +9,7 @@ from django.conf import settings
 
 
 SECRET_KEY = settings.PAYSTACK_SECRET_KEY
-PUBLIC_KEY = settings.PAYSTACK_PUBLIC_KEY
+# PUBLIC_KEY = settings.PAYSTACK_PUBLIC_KEY
 INITIATE_URL = "https://api.paystack.co/transaction/initialize/"
 VERIFY_URL = "https://api.paystack.co/transaction/verify/"
 
@@ -20,8 +21,10 @@ VERIFY_URL = "https://api.paystack.co/transaction/verify/"
 
 
 def get_headers():
+    # import pdb
+    # pdb.set_trace()
     headers = {
-        "Authorization": "Bearer {}".format(SECRET_KEY),
+        "Authorization": "Bearer {}".format(settings.PAYSTACK_SECRET_KEY),
         "Content-Type": "application/json",
     }
     return headers

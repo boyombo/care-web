@@ -17,6 +17,9 @@ requests = "*"
 "psycopg2" = "*"
 pytest = "*"
 pytest-django = "*"
+pytest-mock = "*"
+requests-mock = "*"
+model-bakery = "*"
 
 
 [dev-packages]
