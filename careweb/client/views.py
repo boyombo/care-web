@@ -15,6 +15,8 @@ from django.views.generic.edit import UpdateView
 # from django.urls import reverse_lazy
 
 from client.models import Client, Dependant, ClientAssociation, Association
+
+# from client.models import Plan
 from client.forms import (
     RegForm,
     ApiRegForm,
@@ -90,7 +92,7 @@ class ClientView(UpdateView):
 
 
 class PlanView(ClientView):
-    fields = ["package_option", "payment_option", "payment_instrument"]
+    fields = ["plan", "payment_option", "payment_instrument"]
     template_name = "client/plan.html"
 
 
@@ -210,8 +212,7 @@ def login_api(request):
     if request.method == "POST":
         # import pdb;pdb.set_trace()
         logger.info("logging in...")
-        form = LoginForm(request.POST)
-        logger.info("form {}".format(form.data))
+        form = LoginForm(request.POST) logger.info("form {}".format(form.data))
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
@@ -234,6 +235,10 @@ def login_api(request):
                         photo_url = "{}{}".format(host, client.photo.url)
                     else:
                         photo_url = ""
+                    if client.dob:
+                        dob = client.dob.strftime('%Y-%m-%d')
+                    else:
+                        dob = None
                     return JsonResponse(
                         {
                             "client": {
@@ -241,8 +246,27 @@ def login_api(request):
                                 "surname": client.surname,
                                 "firstName": client.first_name,
                                 "phone": client.phone_no,
+                                'whatsapp': client.whatsapp_no,
                                 "email": client.email,
-                                "photo": photo_url,
+                                "imageUri": photo_url,
+                                'dob': dob,
+                                'sex': client.sex,
+                                'maritalStatus': client.marital_status,
+                                'nationalIdNo': client.national_id_card_no,
+                                'driversLicenceNo': client.drivers_licence_no,
+                                'lagosResidentsNo': client.lagos_resident_no,
+                                'lashmaNo': client.lashma_no,
+                                'lashmaQualityLifeNo': client.lashma_quality_life_no,
+                                'pcp': client.pcp.id if client.pcp else None,
+                                'ranger': client.ranger.id if client.ranger else None,
+                                'homeAddress': client.home_address,
+                                'occupation': client.occupation,
+                                'company': client.company,
+                                'officeAddress': client.office_address,
+                                'packageOption': client.package_option,
+                                'plan': client.plan.id if client.plan else None,
+                                'paymentOption': client.payment_option,
+                                'paymentInstrument': client.payment_instrument,
                             },
                             "success": True,
                         }
