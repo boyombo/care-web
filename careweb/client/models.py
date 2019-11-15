@@ -6,6 +6,7 @@ from django.urls import reverse
 # from location.models import LGA
 from provider.models import CareProvider
 from ranger.models import Ranger
+from core.models import Plan
 
 
 class Association(models.Model):
@@ -122,12 +123,14 @@ class Client(models.Model):
     #    max_length=200, blank=True, null=True)
     # associations = models.ManyToManyField('Association', related_name='client_associations')
     package_option = models.CharField(max_length=50, choices=PACKAGE_OPTIONS, null=True)
+    plan = models.ForeignKey(Plan, null=True, blank=True, on_delete=models.SET_NULL)
     payment_option = models.CharField(max_length=50, choices=PAYMENT_OPTIONS, null=True)
     payment_instrument = models.CharField(
         max_length=20, choices=PAYMENT_INSTRUMENTS, null=True
     )
     registration_date = models.DateField(default=timezone.now)
     photo = models.ImageField(upload_to="clientphoto", null=True, blank=True)
+    # balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
