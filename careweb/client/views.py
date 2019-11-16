@@ -240,6 +240,17 @@ def login_api(request):
                         dob = client.dob.strftime("%Y-%m-%d")
                     else:
                         dob = None
+                    dependants = [
+                        {
+                            "dob": dependant.dob.strftime("%Y-%m-%d"),
+                            "first_name": dependant.first_name,
+                            "last_name": dependant.last_name,
+                            "middle_name": dependant.middle_name,
+                            "relationship": dependant.relationship,
+                            "pcp": dependant.pcp.id if dependant.pcp else None,
+                        }
+                        for dependant in Dependant.objects.filter(primary=client)
+                    ]
                     return JsonResponse(
                         {
                             "client": {
@@ -268,6 +279,7 @@ def login_api(request):
                                 "plan": client.plan.id if client.plan else None,
                                 "paymentOption": client.payment_option,
                                 "paymentInstrument": client.payment_instrument,
+                                "dependants": dependants,
                             },
                             "success": True,
                         }
