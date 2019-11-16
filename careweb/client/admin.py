@@ -88,7 +88,7 @@ class ClientAdmin(admin.ModelAdmin):
         (
             "Package",
             {
-                "fields": ["package_option", "payment_option", "payment_instrument",],
+                "fields": ["plan", "payment_option", "payment_instrument",],
                 "classes": ["tab-fs-package"],
             },
         ),
