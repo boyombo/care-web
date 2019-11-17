@@ -244,7 +244,7 @@ def login_api(request):
                         {
                             "dob": dependant.dob.strftime("%Y-%m-%d"),
                             "first_name": dependant.first_name,
-                            "last_name": dependant.surname,
+                            "surname": dependant.surname,
                             "middle_name": dependant.middle_name,
                             "relationship": dependant.relationship,
                             "pcp": dependant.pcp.id if dependant.pcp else None,
