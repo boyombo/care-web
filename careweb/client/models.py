@@ -7,6 +7,7 @@ from django.urls import reverse
 from provider.models import CareProvider
 from ranger.models import Ranger
 from core.models import Plan
+from payment.models import Payment
 
 
 class Association(models.Model):
@@ -143,6 +144,7 @@ class Client(models.Model):
 class Subscription(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)
     payment_date = models.DateField(default=timezone.now)
     ranger = models.ForeignKey(Ranger, null=True, blank=True, on_delete=models.SET_NULL)
 
