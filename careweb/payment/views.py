@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 from ranger.models import WalletFunding, Ranger
+from client.models import Client, Subscription
 from payment.models import Payment
 from payment.forms import PaymentForm
 from payment.utils import get_reference
@@ -26,14 +27,29 @@ def new_payment(request):
             reference = get_reference()
             pymt = Payment.objects.create(amount=kobo / 100.0, reference=reference)
             usr = User.objects.get(username=email)
-            ranger = Ranger.objects.get(user=usr)
-            WalletFunding.objects.create(
-                ranger=ranger,
-                amount=kobo / 100.0,
-                payment=pymt,
-                status=WalletFunding.PENDING,
-                bank="Paystack",
-            )
+
+            # a ranger or a client?
+            try:
+                ranger = Ranger.objects.get(user=usr)
+            except Ranger.DoesNotExist:
+                try:
+                    client = Client.objects.get(user=usr)
+                except Client.DoesNotExist:
+                    return JsonResponse(
+                        {"success": False, "error": "Account does not exist"}
+                    )
+                else:
+                    Subscription.objects.create(
+                        client=client, amount=amount / 100.0, payment=pymt
+                    )
+            else:
+                WalletFunding.objects.create(
+                    ranger=ranger,
+                    amount=kobo / 100.0,
+                    payment=pymt,
+                    status=WalletFunding.PENDING,
+                    bank="Paystack",
+                )
             res = initiate(email, kobo, reference)
             logger.info(res)
             # data = res.json()
