@@ -125,3 +125,27 @@ def verify_paystack_payment(request):
         ranger.balance += pymt.amount
         ranger.save()
     return JsonResponse({"success": True, "balance": "{}".format(ranger.balance)})
+
+
+def verify_paystack_subscription(request):
+    # TODO: start and end dates for subscription, status of subscription
+    ref = request.GET.get("reference")
+    pymt = get_object_or_404(Payment, reference=ref)
+    subscription = Subscription.objects.get(payment=pymt)
+    client = subscription.client
+    logger.info(client)
+
+    # funding = WalletFunding.objects.get(payment=pymt)
+    # ranger = funding.ranger
+    resp = verify(pymt)
+    logger.info(resp)
+    if pymt.status == Payment.PENDING:
+        pymt.status = Payment.SUCCESSFUL
+        pymt.save()
+
+        # funding.status = WalletFunding.SUCCESSFUL
+        # funding.save()
+
+        # ranger.balance += pymt.amount
+        # ranger.save()
+    return JsonResponse({"success": True, "balance": "{}".format(ranger.balance)})
