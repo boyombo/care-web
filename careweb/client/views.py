@@ -315,3 +315,13 @@ def upload_photo(request, id):
             "success": True,
         }
     )
+
+
+def get_client_photo(request, id):
+    cl = get_object_or_404(Client, pk=id)
+    host = "https://{}".format(request.get_host())
+    if cl.photo:
+        photo_url = "{}{}".format(host, cl.photo.url)
+    else:
+        photo_url = ""
+    return JsonResponse({"success": True, "imageUri": photo_url})
