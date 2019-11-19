@@ -299,6 +299,8 @@ def upload_photo(request, id):
         form = PhotoForm(request.POST, request.FILES, instance=cl)
         logger.info("photo form")
         logger.info(form)
+        logger.info("files")
+        logger.info(request.FILES)
         # pprint(form)
         if form.is_valid():
             logger.info("photo-form is valid")
