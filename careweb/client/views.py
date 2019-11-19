@@ -288,6 +288,7 @@ def login_api(request):
 
 @csrf_exempt
 def upload_photo(request, id):
+    logger.info("got client for photo upload")
     cl = get_object_or_404(Client, pk=id)
     # import pdb;pdb.set_trace()
     logger.info("got client for photo upload")
