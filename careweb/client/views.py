@@ -290,18 +290,28 @@ def login_api(request):
 def upload_photo(request, id):
     cl = get_object_or_404(Client, pk=id)
     # import pdb;pdb.set_trace()
-    pprint("got client")
-    pprint(cl)
+    logger.info("got client for photo upload")
+    # pprint("got client")
+    logger.info(cl)
+    # pprint(cl)
     if request.method == "POST":
         form = PhotoForm(request.POST, request.FILES, instance=cl)
-        pprint(form)
+        logger.info("photo form")
+        logger.info(form)
+        # pprint(form)
         if form.is_valid():
+            logger.info("photo-form is valid")
             form.save()
             host = "https://{}".format(request.get_host())
             if cl.photo:
                 photo_url = "{}{}".format(host, cl.photo.url)
             else:
                 photo_url = ""
+        else:
+            errors = form.errors
+            logger.info("photo errors")
+            logger.info(errors)
+            return JsonResponse({"success": False})
     return JsonResponse(
         {
             "client": {
