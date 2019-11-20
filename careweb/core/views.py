@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 def login_agent(request):
     if request.method == "POST":
-        # import pdb;pdb.set_trace()
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data["username"]
@@ -32,13 +31,13 @@ def login_agent(request):
                 else:
                     providers = [
                         {
-                            "id": prov.id.hashid,
+                            "id": prov.id.id,
                             "name": prov.name,
                             "address": prov.address,
                             "phone1": prov.phone1,
                             "phone2": prov.phone2,
                             "lga_name": prov.lga.name,
-                            "lga_id": prov.lga.id,
+                            "lga_id": prov.lga.id.id,
                         }
                         for prov in CareProvider.objects.all()
                     ]
@@ -46,29 +45,28 @@ def login_agent(request):
                     logger.info(providers)
 
                     lgas = [
-                        {"id": lga.id.hashid, "name": lga.name}
-                        for lga in LGA.objects.all()
+                        {"id": lga.id.id, "name": lga.name} for lga in LGA.objects.all()
                     ]
                     logger.info("LGAS")
                     logger.info(lgas)
 
-                    return JsonResponse(
-                        {
-                            "success": True,
-                            "ranger": {
-                                "id": agent.id.hashid,
-                                "username": agent.user.username,
-                                "first_name": agent.first_name,
-                                "last_name": agent.last_name,
-                                "phone": agent.phone,
-                                "lga_name": agent.lga.name,
-                                "lga_id": agent.lga.id.hashid,
-                                "balance": "{}".format(agent.balance),
-                            },
-                            "providers": providers,
-                            "lgas": lgas,
-                        }
-                    )
+                    out = {
+                        "success": True,
+                        "ranger": {
+                            "id": agent.id.hashid,
+                            "username": agent.user.username,
+                            "first_name": agent.first_name,
+                            "last_name": agent.last_name,
+                            "phone": agent.phone,
+                            "lga_name": agent.lga.name,
+                            "lga_id": agent.lga.id.id,
+                            "balance": "{}".format(agent.balance),
+                        },
+                        "providers": providers,
+                        "lgas": lgas,
+                    }
+                    # import pdb;pdb.set_trace()
+                    return JsonResponse(out)
         return JsonResponse({"error": "Wrong credentials", "success": False})
     return JsonResponse({"error": "Bad Request", "success": False})
 
