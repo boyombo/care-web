@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 
-from core.forms import LoginForm
+from core.forms import LoginForm, ForgotPwdForm, ChangePwdForm
 from ranger.models import Ranger
 from provider.models import CareProvider
 from location.models import LGA
@@ -60,3 +61,27 @@ def login_agent(request):
                     )
         return JsonResponse({"error": "Wrong credentials", "success": False})
     return JsonResponse({"error": "Bad Request", "success": False})
+
+
+def forgot(request):
+    if request.method == "POST":
+        form = ForgotPwdForm(request.POST)
+        if form.is_valid():
+            # send email
+            return JsonResponse({"success": True})
+        else:
+            errors = form.errors
+            return JsonResponse({"success": False, "errors": errors})
+    return JsonResponse({"success": False})
+
+
+def change_pwd(request):
+    if request.method == "POST":
+        form = ChangePwdForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["email"]
+            pwd = form.cleaned_data["new_password"]
+            usr = User.objects.get(username=username)
+            usr.set_password(pwd)
+            return JsonResponse({"success": True})
+    return JsonResponse({"success": False})
