@@ -42,10 +42,15 @@ def login_agent(request):
                         }
                         for prov in CareProvider.objects.all()
                     ]
+                    logger.info("PROVIDER")
+                    logger.info(providers)
+
                     lgas = [
                         {"id": lga.id.hashid, "name": lga.name}
                         for lga in LGA.objects.all()
                     ]
+                    logger.info("LGAS")
+                    logger.info(lgas)
 
                     return JsonResponse(
                         {
