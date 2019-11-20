@@ -28,7 +28,7 @@ def login_agent(request):
                 else:
                     providers = [
                         {
-                            "id": prov.id,
+                            "id": prov.id.hashid,
                             "name": prov.name,
                             "address": prov.address,
                             "phone1": prov.phone1,
@@ -39,14 +39,15 @@ def login_agent(request):
                         for prov in CareProvider.objects.all()
                     ]
                     lgas = [
-                        {"id": lga.id, "name": lga.name} for lga in LGA.objects.all()
+                        {"id": lga.id.hashid, "name": lga.name}
+                        for lga in LGA.objects.all()
                     ]
 
                     return JsonResponse(
                         {
                             "success": True,
                             "ranger": {
-                                "id": agent.id,
+                                "id": agent.id.hashid,
                                 "username": agent.user.username,
                                 "first_name": agent.first_name,
                                 "last_name": agent.last_name,
