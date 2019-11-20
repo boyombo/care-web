@@ -52,7 +52,7 @@ Profile
                     <div class="col-md-6 counter" style="padding: 10px;">  
                         <div class="row">
                             <div class=" col-md-12">
-                                {% if profile.package_option %}
+                                {% if profile.plan %}
                                     <h5>Plan: {{profile.get_package_option_display }}</h5>
                                     <small>Paid {{profile.get_payment_option_display }} by {{profile.get_payment_instrument_display }}</small>
                                 {%else%}
