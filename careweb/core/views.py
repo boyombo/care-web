@@ -31,13 +31,13 @@ def login_agent(request):
                 else:
                     providers = [
                         {
-                            "id": prov.id.id,
+                            "id": prov.id.hashid,
                             "name": prov.name,
                             "address": prov.address,
                             "phone1": prov.phone1,
                             "phone2": prov.phone2,
                             "lga_name": prov.lga.name,
-                            "lga_id": prov.lga.id.id,
+                            "lga_id": prov.lga.id.hashid,
                         }
                         for prov in CareProvider.objects.all()
                     ]
@@ -45,7 +45,8 @@ def login_agent(request):
                     logger.info(providers)
 
                     lgas = [
-                        {"id": lga.id.id, "name": lga.name} for lga in LGA.objects.all()
+                        {"id": lga.id.hashid, "name": lga.name}
+                        for lga in LGA.objects.all()
                     ]
                     logger.info("LGAS")
                     logger.info(lgas)
@@ -59,7 +60,7 @@ def login_agent(request):
                             "last_name": agent.last_name,
                             "phone": agent.phone,
                             "lga_name": agent.lga.name,
-                            "lga_id": agent.lga.id.id,
+                            "lga_id": agent.lga.id.hashid,
                             "balance": "{}".format(agent.balance),
                         },
                         "providers": providers,
