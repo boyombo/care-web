@@ -8,6 +8,10 @@ from ranger.models import Ranger
 from provider.models import CareProvider
 from location.models import LGA
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @csrf_exempt
 def login_agent(request):
