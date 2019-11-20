@@ -1,9 +1,12 @@
 from django.db import models
 
+from hashid_field import HashidAutoField
+
 from location.models import LGA
 
 
 class CareProvider(models.Model):
+    id = HashidAutoField(primary_key=True)
     code_no = models.CharField(max_length=20, blank=True)
     name = models.CharField(max_length=200)
     address = models.TextField(null=True)
