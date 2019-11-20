@@ -63,6 +63,7 @@ def login_agent(request):
     return JsonResponse({"error": "Bad Request", "success": False})
 
 
+@csrf_exempt
 def forgot(request):
     if request.method == "POST":
         form = ForgotPwdForm(request.POST)
@@ -75,13 +76,16 @@ def forgot(request):
     return JsonResponse({"success": False})
 
 
+@csrf_exempt
 def change_pwd(request):
     if request.method == "POST":
         form = ChangePwdForm(request.POST)
         if form.is_valid():
+            # import pdb;pdb.set_trace()
             username = form.cleaned_data["email"]
             pwd = form.cleaned_data["new_password"]
             usr = User.objects.get(username=username)
             usr.set_password(pwd)
+            usr.save()
             return JsonResponse({"success": True})
     return JsonResponse({"success": False})
