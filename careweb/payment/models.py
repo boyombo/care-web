@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from hashid_field import HashidAutoField
+
 
 class Payment(models.Model):
     PENDING = 0
@@ -8,6 +10,7 @@ class Payment(models.Model):
     SUCCESSFUL = 2
     STATUSES = enumerate(("Pending", "Failed", "Successful"))
 
+    id = HashidAutoField(primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateField(default=timezone.now)
     reference = models.CharField(max_length=200, blank=True)

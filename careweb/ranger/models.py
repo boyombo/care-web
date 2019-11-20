@@ -2,11 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+from hashid_field import HashidAutoField
+
 from location.models import LGA
 from payment.models import Payment
 
 
 class Ranger(models.Model):
+    id = HashidAutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
@@ -24,6 +27,7 @@ class WalletFunding(models.Model):
     SUCCESSFUL = 2
     STATUSES = enumerate(("Pending", "Failed", "Successful"))
 
+    id = HashidAutoField(primary_key=True)
     ranger = models.ForeignKey(Ranger, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     bank = models.CharField(max_length=100, null=True, blank=True)

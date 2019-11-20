@@ -3,6 +3,8 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 
+from hashid_field import HashidAutoField
+
 # from location.models import LGA
 from provider.models import CareProvider
 from ranger.models import Ranger
@@ -11,6 +13,7 @@ from payment.models import Payment
 
 
 class Association(models.Model):
+    id = HashidAutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -18,6 +21,7 @@ class Association(models.Model):
 
 
 class ClientAssociation(models.Model):
+    id = HashidAutoField(primary_key=True)
     client = models.ForeignKey("Client", on_delete=models.CASCADE)
     association = models.ForeignKey("Association", on_delete=models.CASCADE)
 
@@ -29,6 +33,7 @@ class ClientAssociation(models.Model):
 
 
 class HMO(models.Model):
+    id = HashidAutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -42,6 +47,7 @@ class Dependant(models.Model):
     OTHERS = 3
     RELATIONSHIPS = enumerate(("Spouse", "Daughter", "Son", "Others"))
 
+    id = HashidAutoField(primary_key=True)
     primary = models.ForeignKey("Client", null=True, on_delete=models.SET_NULL)
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
@@ -93,6 +99,7 @@ class Client(models.Model):
         ("B", "Bank Deposit"),
     )
 
+    id = HashidAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
@@ -142,6 +149,7 @@ class Client(models.Model):
 
 
 class Subscription(models.Model):
+    id = HashidAutoField(primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)

@@ -20,6 +20,7 @@ pytest-django = "*"
 pytest-mock = "*"
 requests-mock = "*"
 model-bakery = "*"
+django-hashid-field = "*"
 
 
 [dev-packages]
