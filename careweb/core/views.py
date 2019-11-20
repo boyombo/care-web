@@ -53,7 +53,7 @@ def login_agent(request):
                                 "last_name": agent.last_name,
                                 "phone": agent.phone,
                                 "lga_name": agent.lga.name,
-                                "lga_id": agent.lga.id,
+                                "lga_id": agent.lga.id.hashid,
                                 "balance": "{}".format(agent.balance),
                             },
                             "providers": providers,
