@@ -21,6 +21,8 @@ pytest-mock = "*"
 requests-mock = "*"
 model-bakery = "*"
 django-hashid-field = "*"
+django-post-office = "*"
+postmarker = "*"
 
 
 [dev-packages]

@@ -15,6 +15,7 @@ from django.views.generic.edit import UpdateView
 # from django.urls import reverse_lazy
 
 from client.models import Client, Dependant, ClientAssociation, Association
+from core.utils import send_welcome_email
 
 # from client.models import Plan
 from client.forms import (
@@ -56,6 +57,7 @@ def register(request):
             client.save()
             _user = authenticate(username=username, password=pwd)
             if _user:
+                send_welcome_email(username, client.first_name)
                 login(request, _user)
                 return redirect("profile", pk=client.id)
             else:
