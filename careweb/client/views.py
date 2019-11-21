@@ -278,7 +278,7 @@ def login_api(request):
                                 "company": client.company,
                                 "officeAddress": client.office_address,
                                 "packageOption": client.package_option,
-                                "plan": client.plan.id.hashid if client.plan else None,
+                                "plan": client.plan.id if client.plan else None,
                                 "paymentOption": client.payment_option,
                                 "paymentInstrument": client.payment_instrument,
                                 "dependants": dependants,
