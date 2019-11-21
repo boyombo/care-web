@@ -195,7 +195,7 @@ def register_api(request):
                 {
                     "success": True,
                     "client": {
-                        "id": obj.id,
+                        "id": obj.id.hashid,
                         "surname": obj.surname,
                         "firstName": obj.first_name,
                         "email": obj.email,
@@ -247,14 +247,14 @@ def login_api(request):
                             "surname": dependant.surname,
                             "middle_name": dependant.middle_name,
                             "relationship": dependant.relationship,
-                            "pcp": dependant.pcp.id if dependant.pcp else None,
+                            "pcp": dependant.pcp.id.hashid if dependant.pcp else None,
                         }
                         for dependant in Dependant.objects.filter(primary=client)
                     ]
                     return JsonResponse(
                         {
                             "client": {
-                                "id": client.id,
+                                "id": client.id.hashid,
                                 "surname": client.surname,
                                 "firstName": client.first_name,
                                 "phone": client.phone_no,
@@ -269,14 +269,16 @@ def login_api(request):
                                 "lagosResidentsNo": client.lagos_resident_no,
                                 "lashmaNo": client.lashma_no,
                                 "lashmaQualityLifeNo": client.lashma_quality_life_no,
-                                "pcp": client.pcp.id if client.pcp else None,
-                                "ranger": client.ranger.id if client.ranger else None,
+                                "pcp": client.pcp.id.hashid if client.pcp else None,
+                                "ranger": client.ranger.id.hashid
+                                if client.ranger
+                                else None,
                                 "homeAddress": client.home_address,
                                 "occupation": client.occupation,
                                 "company": client.company,
                                 "officeAddress": client.office_address,
                                 "packageOption": client.package_option,
-                                "plan": client.plan.id if client.plan else None,
+                                "plan": client.plan.id.hashid if client.plan else None,
                                 "paymentOption": client.payment_option,
                                 "paymentInstrument": client.payment_instrument,
                                 "dependants": dependants,
