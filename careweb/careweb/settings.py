@@ -35,6 +35,11 @@ ALLOWED_HOSTS = [
     "192.168.1.4",
 ]
 
+# Email settings
+# EMAIL_BACKEND = "postmarker.django.EmailBackend"
+EMAIL_BACKEND = "post_office.EmailBackend"
+
+POST_OFFICE = {"BACKENDS": {"default": "postmarker.django.EmailBackend",}}
 
 # Application definition
 
@@ -53,7 +58,8 @@ INSTALLED_APPS = [
     "location.apps.LocationConfig",
     "provider.apps.ProviderConfig",
     "payment.apps.PaymentConfig",
-    # baton
+    # 3rd party
+    "post_office",
     "baton.autodiscover",
     "widget_tweaks",
 ]
