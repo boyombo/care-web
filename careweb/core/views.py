@@ -115,7 +115,10 @@ def forgot(request):
                 return redirect("password_reset_done")
         else:
             errors = form.errors
-            return JsonResponse({"success": False, "errors": errors})
+            if from_app:
+                return JsonResponse({"success": False, "errors": errors})
+            else:
+                return redirect("password_reset_done")
     else:
         form = ForgotPwdForm()
     return render(request, "registration/password_reset_form.html", {"form": form})
