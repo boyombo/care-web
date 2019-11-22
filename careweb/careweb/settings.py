@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 # Email settings
 # EMAIL_BACKEND = "postmarker.django.EmailBackend"
 EMAIL_BACKEND = "post_office.EmailBackend"
+DEFAULT_FROM_EMAIL = "noreply@futurecare.ng"
 
 POST_OFFICE = {"BACKENDS": {"default": "postmarker.django.EmailBackend",}}
 
