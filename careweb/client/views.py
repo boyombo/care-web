@@ -38,7 +38,10 @@ def profile(request, pk=None):
     if pk:
         client = Client.objects.get(pk=pk)
     else:
-        client = Client.objects.get(user=request.user)
+        try:
+            client = Client.objects.get(user=request.user)
+        except Client.DoesNotExist:
+            return redirect("login")
     return render(request, "client/profile.html", {"profile": client})
 
 

@@ -33,7 +33,8 @@ urlpatterns += [
     ),
     path(
         "accounts/password-reset/",
-        auth_views.PasswordResetView.as_view(from_email="noreply@futurecare.ng"),
+        core_views.forgot,
+        # auth_views.PasswordResetView.as_view(from_email="noreply@futurecare.ng"),
         name="password-reset",
     ),
     path(
@@ -42,8 +43,9 @@ urlpatterns += [
         name="password_reset_done",
     ),
     path(
-        "accounts/reset/<uidb64>/<token>/",
-        auth_views.PasswordResetConfirmView.as_view(post_reset_login=True),
+        "accounts/reset/<uid>/<token>/",
+        core_views.reset_confirm,
+        # auth_views.PasswordResetConfirmView.as_view(post_reset_login=True),
         name="password_reset_confirm",
     ),
     path(
