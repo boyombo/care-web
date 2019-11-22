@@ -14,11 +14,11 @@ class ForgotPwdForm(forms.Form):
     def clean_email(self):
         if "email" in self.cleaned_data:
             try:
-                User.objects.get(username=self.cleaned_data["email"])
+                user = User.objects.get(username=self.cleaned_data["email"])
             except User.DoesNotExist:
                 raise forms.ValidationError("No user exists with this email")
             else:
-                return self.cleaned_data["email"]
+                return user
 
 
 class ChangePwdForm(forms.Form):
@@ -34,3 +34,8 @@ class ChangePwdForm(forms.Form):
             if not usr:
                 raise forms.ValidationError("Username or password invalid")
             return self.cleaned_data
+
+
+class ResetPasswordForm(forms.Form):
+    new_password1 = forms.CharField(max_length=100, widget=forms.PasswordInput)
+    new_password2 = forms.CharField(max_length=100, widget=forms.PasswordInput)
