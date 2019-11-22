@@ -87,6 +87,7 @@ def forgot(request):
             usr = form.cleaned_data["email"]
             # build reset confirmation url
             _id = None
+            name = ""
             try:
                 ranger = Ranger.objects.get(user=usr)
             except Ranger.DoesNotExist:
@@ -96,15 +97,17 @@ def forgot(request):
                     pass
                 else:
                     _id = clt.id.hashid
+                    name = clt.first_name
             else:
                 _id = ranger.id.hashid
+                name = ranger.first_name
 
             if _id:
                 token = default_token_generator.make_token(usr)
                 host = request.get_host()
                 _url = reverse("password_reset_confirm", args=[_id, token])
                 reset_link = "https://{}{}".format(host, _url)
-                send_reset_mail(usr.username, usr.first_name, reset_link)
+                send_reset_mail(usr.username, name, reset_link)
 
             if from_app:
                 return JsonResponse({"success": True})
