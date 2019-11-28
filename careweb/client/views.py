@@ -214,8 +214,8 @@ def register_api(request):
 
 @csrf_exempt
 def login_api(request):
+    # import pdb; pdb.set_trace()
     if request.method == "POST":
-        # import pdb;pdb.set_trace()
         logger.info("logging in...")
         form = LoginForm(request.POST)
         logger.info("form {}".format(form.data))
@@ -291,6 +291,13 @@ def login_api(request):
                             "success": True,
                         }
                     )
+            else:
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "message": "Please check your username and password then try again",
+                    }
+                )
 
 
 @csrf_exempt
