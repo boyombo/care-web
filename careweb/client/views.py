@@ -322,19 +322,19 @@ def upload_photo(request, id):
             logger.info("photo errors")
             logger.info(errors)
             return JsonResponse({"success": False})
-    return JsonResponse(
-        {
-            "client": {
-                "id": cl.id,
-                "surname": cl.surname,
-                "firstName": cl.first_name,
-                "phone": cl.phone_no,
-                "email": cl.email,
-                "photo": photo_url,
-            },
-            "success": True,
-        }
-    )
+        return JsonResponse(
+            {
+                "client": {
+                    "id": cl.id,
+                    "surname": cl.surname,
+                    "firstName": cl.first_name,
+                    "phone": cl.phone_no,
+                    "email": cl.email,
+                    "photo": photo_url,
+                },
+                "success": True,
+            }
+        )
 
 
 def get_client_photo(request, id):
