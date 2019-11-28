@@ -27,14 +27,22 @@ class WalletFunding(models.Model):
     SUCCESSFUL = 2
     STATUSES = enumerate(("Pending", "Failed", "Successful"))
 
+    BANK_TRANSFER = 0
+    BANK_DEPOSIT = 1
+    PAYMENT_TYPE = enumerate(("Bank Transfer", "Bank Deposit"))
+
     id = HashidAutoField(primary_key=True)
     ranger = models.ForeignKey(Ranger, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     bank = models.CharField(max_length=100, null=True, blank=True)
     name = models.CharField(max_length=100, null=True, blank=True)
     payment_date = models.DateField(default=timezone.now)
+    payment_type = models.PositiveIntegerField(
+        choices=PAYMENT_TYPE, default=BANK_TRANSFER
+    )
     payment = models.ForeignKey(Payment, null=True, on_delete=models.SET_NULL)
     status = models.PositiveIntegerField(choices=STATUSES, default=PENDING)
+    rejection_reason = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return str(self.ranger)
