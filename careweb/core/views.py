@@ -59,7 +59,7 @@ def login_agent(request):
                     out = {
                         "success": True,
                         "ranger": {
-                            "id": agent.id.hashid,
+                            "id": agent.id.id,
                             "username": agent.user.username,
                             "first_name": agent.first_name,
                             "last_name": agent.last_name,
