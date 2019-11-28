@@ -291,13 +291,13 @@ def login_api(request):
                             "success": True,
                         }
                     )
-            else:
-                return JsonResponse(
-                    {
-                        "success": False,
-                        "message": "Please check your username and password then try again",
-                    }
-                )
+        else:
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": "Please check your username and password then try again",
+                }
+            )
 
 
 @csrf_exempt
