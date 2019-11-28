@@ -119,6 +119,11 @@ class WalletFundingAdmin(admin.ModelAdmin):
             messages.error(request, "You can only reject one request at a time")
             return
 
+        funding_request = queryset[0]
+        if funding_request.status != WalletFunding.PENDING:
+            messages.error(request, "You can only reject a pending request")
+            return
+
         if request.method == "POST":
             # import pdb;pdb.set_trace()
             form = RejectForm(request.POST)
