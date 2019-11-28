@@ -164,6 +164,8 @@ BATON = {
     "SUPPORT_HREF": "http://futurecare.everyday.com.ng",
 }
 
+HASHID_FIELD_ALLOW_INT_LOOKUP = True
+
 
 LOGGING = {
     "version": 1,
