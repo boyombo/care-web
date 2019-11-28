@@ -19,6 +19,18 @@ class WalletFundingAdmin(admin.ModelAdmin):
     search_fields = ["ranger__first_name", "ranger__last_name", "ranger_phone"]
     date_hierarchy = "payment_date"
     actions = ["approve_funding"]
+    readonly_fields = [
+        "ranger",
+        "amount",
+        "payment_date",
+        "bank",
+        "name",
+        "payment",
+        "status",
+    ]
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
     def approve_funding(modeladmin, request, queryset):
         count = 0
