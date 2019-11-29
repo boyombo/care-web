@@ -292,6 +292,7 @@ def login_api(request):
                         }
                     )
         else:
+            logger.info(form.errors)
             return JsonResponse(
                 {
                     "success": False,
