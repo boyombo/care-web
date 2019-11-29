@@ -148,6 +148,12 @@ class Client(models.Model):
     def get_absolute_url(self):
         return reverse("profile", kwargs={"pk": self.pk})
 
+    @property
+    def active(self):
+        if not self.user:
+            return False
+        return self.user.is_active
+
 
 class Subscription(models.Model):
     id = HashidAutoField(primary_key=True)
