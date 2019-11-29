@@ -29,7 +29,7 @@ class WalletFundingAdmin(admin.ModelAdmin):
     search_fields = ["ranger__first_name", "ranger__last_name", "ranger_phone"]
     date_hierarchy = "payment_date"
     actions = ["approve_funding", "reject_funding"]
-    readonly_fields = ["ranger", "payment", "status"]
+    readonly_fields = ["ranger", "payment", "status", "rejection_reason"]
     # readonly_fields = [
     #    "ranger",
     #    "amount",
