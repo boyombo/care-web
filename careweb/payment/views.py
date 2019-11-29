@@ -148,4 +148,4 @@ def verify_paystack_subscription(request):
 
         # ranger.balance += pymt.amount
         # ranger.save()
-    return JsonResponse({"success": True, "balance": "{}".format(ranger.balance)})
+    return JsonResponse({"success": True})
