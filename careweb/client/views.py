@@ -201,7 +201,7 @@ def register_api(request):
             usr.active = False
             usr.save()
             # create verification code
-            code = "".join(sample("0123456789"), 5)
+            code = "".join(sample("0123456789", 5))
             logger.info("code is {}".format(code))
 
             obj = form.save(commit=False)
