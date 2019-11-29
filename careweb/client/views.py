@@ -372,3 +372,25 @@ def get_client_photo(request, id):
     else:
         photo_url = ""
     return JsonResponse({"success": True, "imageUri": photo_url})
+
+
+def verify_code(request):
+    code = request.GET.get("code")
+    id = request.GET.get("id")
+    try:
+        cl = Client.objects.get(pk=id)
+    except Client.DoesNotExist:
+        return JsonResponse({"success": False, "error": "User does not exist"})
+
+    usr = cl.user
+    if not usr:
+        return JsonResponse({"success": False, "error": "User not configured properly"})
+    if usr.is_active:
+        return JsonResponse({"success": True})
+    else:
+        if code == cl.verification_code:
+            usr.is_active = True
+            usr.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False, "error": "Wrong code"})

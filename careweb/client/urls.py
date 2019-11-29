@@ -24,4 +24,5 @@ urlpatterns = [
     path("api_login/", views.login_api),
     path("upload_photo/<str:id>/", views.upload_photo),
     path("client_photo/<str:id>/", views.get_client_photo),
+    path("verify/", views.verify_code),
 ]
