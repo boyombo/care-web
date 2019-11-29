@@ -1,4 +1,5 @@
 from pprint import pprint
+from random import sample
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -15,7 +16,7 @@ from django.views.generic.edit import UpdateView
 # from django.urls import reverse_lazy
 
 from client.models import Client, Dependant, ClientAssociation, Association
-from core.utils import send_welcome_email
+from core.utils import send_welcome_email, send_email
 
 # from client.models import Plan
 from client.forms import (
@@ -193,13 +194,24 @@ def register_api(request):
             usr = User.objects.create_user(
                 username=email, password=password, email=email
             )
+            usr.active = False
+            usr.save()
+            # create verification code
+            code = "".join(sample("0123456789"), 5)
+
             obj = form.save(commit=False)
             obj.user = usr
+            obj.verification_code = code
             obj.save()
+            # send verification code in email
+            context = {"name": obj.first_name, "code": code}
+            send_email(email, "welcome_app", context)
+
             return JsonResponse(
                 {
                     "success": True,
                     "client": {
+                        "active": usr.active,
                         "id": obj.id.hashid,
                         "surname": obj.surname,
                         "firstName": obj.first_name,
@@ -259,6 +271,7 @@ def login_api(request):
                     return JsonResponse(
                         {
                             "client": {
+                                "active": client.user.active,
                                 "id": client.id.hashid,
                                 "surname": client.surname,
                                 "firstName": client.first_name,

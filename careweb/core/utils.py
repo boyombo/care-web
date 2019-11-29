@@ -17,3 +17,7 @@ def send_reset_mail(to_email, name, reset_link):
         template="reset_email",
         context={"name": name, "reset_link": reset_link},
     )
+
+
+def send_email(to_email, template, context):
+    mail.send([to_email], "noreply@futurecare.ng", template=template, context=context)
