@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 
 from ranger.models import Ranger, WalletFunding
 from payment.models import Payment
+from payment.utils import approve_funding
 from ranger.forms import RejectForm
 
 
@@ -93,18 +94,19 @@ class WalletFundingAdmin(admin.ModelAdmin):
     def approve_funding(modeladmin, request, queryset):
         count = 0
         for item in queryset:
-            payment = item.payment
-            if payment.status != Payment.PENDING:
-                continue
-            payment.status = Payment.SUCCESSFUL
-            payment.save()
+            approve_funding(item)
+            # payment = item.payment
+            # if payment.status != Payment.PENDING:
+            #    continue
+            # payment.status = Payment.SUCCESSFUL
+            # payment.save()
 
-            item.status = WalletFunding.SUCCESSFUL
-            item.save()
+            # item.status = WalletFunding.SUCCESSFUL
+            # item.save()
 
-            ranger = item.ranger
-            ranger.balance = item.amount
-            ranger.save()
+            # ranger = item.ranger
+            # ranger.balance = item.amount
+            # ranger.save()
             count += 1
         if count > 0:
             messages.success(request, "Funding requests successful")
