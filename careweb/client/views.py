@@ -198,7 +198,7 @@ def register_api(request):
                 username=email, password=password, email=email
             )
             logger.info("created user")
-            usr.active = False
+            usr.is_active = False
             usr.save()
             # create verification code
             code = "".join(sample("0123456789", 5))
@@ -217,7 +217,7 @@ def register_api(request):
                 {
                     "success": True,
                     "client": {
-                        "active": usr.active,
+                        "active": usr.is_active,
                         "id": obj.id.hashid,
                         "surname": obj.surname,
                         "firstName": obj.first_name,
@@ -277,7 +277,7 @@ def login_api(request):
                     return JsonResponse(
                         {
                             "client": {
-                                "active": client.user.active,
+                                "active": client.user.is_active,
                                 "id": client.id.hashid,
                                 "surname": client.surname,
                                 "firstName": client.first_name,
