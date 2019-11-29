@@ -24,6 +24,7 @@ class WalletFundingAdmin(admin.ModelAdmin):
         "bank",
         "status",
         "payment_date",
+        "reference",
         "rejection_reason",
     ]
     list_filter = ["status"]

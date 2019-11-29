@@ -36,6 +36,7 @@ class WalletFunding(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     bank = models.CharField(max_length=100, null=True, blank=True)
     name = models.CharField(max_length=100, null=True, blank=True)
+    reference = models.CharField(max_length=100, null=True, blank=True)
     payment_date = models.DateField(default=timezone.now)
     payment_type = models.PositiveIntegerField(
         choices=PAYMENT_TYPE, default=BANK_TRANSFER
