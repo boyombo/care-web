@@ -29,7 +29,15 @@ class DependantInline(admin.TabularInline):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ["surname", "first_name", "dob", "sex", "package_option", "plan"]
+    list_display = [
+        "surname",
+        "first_name",
+        "dob",
+        "sex",
+        "package_option",
+        "plan",
+        "verification_code",
+    ]
     inlines = [DependantInline]
     inlines = [DependantInline, AssociationInline]
     autocomplete_fields = ["ranger", "pcp"]
