@@ -32,8 +32,7 @@ class ClientAdmin(admin.ModelAdmin):
     list_display = [
         "surname",
         "first_name",
-        "dob",
-        "sex",
+        "active",
         "package_option",
         "plan",
         "verification_code",
