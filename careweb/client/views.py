@@ -187,17 +187,22 @@ def add_dependant(request):
 @csrf_exempt
 def register_api(request):
     if request.method == "POST":
+        logger.info("signing up...")
         form = ApiRegForm(request.POST)
+        logger.info(form.data)
         if form.is_valid():
+            logger.info(form.cleaned_data)
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
             usr = User.objects.create_user(
                 username=email, password=password, email=email
             )
+            logger.info("created user")
             usr.active = False
             usr.save()
             # create verification code
             code = "".join(sample("0123456789"), 5)
+            logger.info("code is {}".format(code))
 
             obj = form.save(commit=False)
             obj.user = usr
@@ -205,6 +210,7 @@ def register_api(request):
             obj.save()
             # send verification code in email
             context = {"name": obj.first_name, "code": code}
+            logger.info("context {}".format(context))
             send_email(email, "welcome_app", context)
 
             return JsonResponse(
