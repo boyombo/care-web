@@ -271,7 +271,7 @@ def login_api(request):
                             "surname": dependant.surname,
                             "middle_name": dependant.middle_name,
                             "relationship": dependant.relationship,
-                            "pcp": dependant.pcp.id.hashid if dependant.pcp else None,
+                            "pcp": dependant.pcp.id.id if dependant.pcp else None,
                         }
                         for dependant in Dependant.objects.filter(primary=client)
                     ]
@@ -281,7 +281,7 @@ def login_api(request):
                             "client": {
                                 "active": client.user.is_active,
                                 "subscription_rate": subscription_rate,
-                                "id": client.id.hashid,
+                                "id": client.id.id,
                                 "surname": client.surname,
                                 "firstName": client.first_name,
                                 "phone": client.phone_no,
@@ -296,8 +296,8 @@ def login_api(request):
                                 "lagosResidentsNo": client.lagos_resident_no,
                                 "lashmaNo": client.lashma_no,
                                 "lashmaQualityLifeNo": client.lashma_quality_life_no,
-                                "pcp": client.pcp.id.hashid if client.pcp else None,
-                                "ranger": client.ranger.id.hashid
+                                "pcp": client.pcp.id.id if client.pcp else None,
+                                "ranger": client.ranger.id.id
                                 if client.ranger
                                 else None,
                                 "homeAddress": client.home_address,
