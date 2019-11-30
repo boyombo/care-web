@@ -11,7 +11,12 @@ def get_subscription_rate(clt):
         Client.QUARTERLY: 4,
         Client.ANNUALLY: 1,
     }
-    divide_by = divisor[clt.payment_option]
+    try:
+        divide_by = divisor[clt.payment_option]
+    except KeyError:
+        return None
+    if not clt.plan:
+        return None
     dependant_amount = 0
     for dependant in Dependant.objects.filter(primary=clt):
         if dependant.relationship == Dependant.SPOUSE:
@@ -50,6 +55,8 @@ def get_next_subscription_date(cl):
 
 def create_subscription(cl, amount):
     # import pdb;pdb.set_trace()
+    if not cl.plan:
+        return None
     rate = get_subscription_rate(cl)
     if rate > (amount + cl.balance):
         return None
