@@ -17,6 +17,7 @@ from django.views.generic.edit import UpdateView
 
 from client.models import Client, Dependant, ClientAssociation, Association
 from core.utils import send_welcome_email, send_email
+from subscription.utils import get_subscription_rate
 
 # from client.models import Plan
 from client.forms import (
@@ -274,10 +275,12 @@ def login_api(request):
                         }
                         for dependant in Dependant.objects.filter(primary=client)
                     ]
+                    subscription_rate = get_subscription_rate(client)
                     return JsonResponse(
                         {
                             "client": {
                                 "active": client.user.is_active,
+                                "subscription_rate": subscription_rate,
                                 "id": client.id.hashid,
                                 "surname": client.surname,
                                 "firstName": client.first_name,
