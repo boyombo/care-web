@@ -139,7 +139,7 @@ class Client(models.Model):
     registration_date = models.DateField(default=timezone.now)
     photo = models.ImageField(upload_to="clientphoto", null=True, blank=True)
     verification_code = models.CharField(max_length=10, blank=True)
-    # balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
