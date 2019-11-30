@@ -4,7 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 from ranger.models import WalletFunding, Ranger
-from client.models import Client, Subscription
+from client.models import Client
+from subscription.models import Subscription
 from payment.models import Payment
 from payment.forms import PaymentForm
 from payment.utils import get_reference

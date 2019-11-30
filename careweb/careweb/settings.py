@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "location.apps.LocationConfig",
     "provider.apps.ProviderConfig",
     "payment.apps.PaymentConfig",
+    "subscription.apps.SubscriptionConfig",
     # 3rd party
     "post_office",
     "baton.autodiscover",

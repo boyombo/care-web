@@ -155,13 +155,13 @@ class Client(models.Model):
         return self.user.is_active
 
 
-class Subscription(models.Model):
-    id = HashidAutoField(primary_key=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)
-    payment_date = models.DateField(default=timezone.now)
-    ranger = models.ForeignKey(Ranger, null=True, blank=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return str(self.client)
+# class Subscription(models.Model):
+#    id = HashidAutoField(primary_key=True)
+#    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+#    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+#    payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)
+#    payment_date = models.DateField(default=timezone.now)
+#    ranger = models.ForeignKey(Ranger, null=True, blank=True, on_delete=models.SET_NULL)
+#
+#    def __str__(self):
+#        return str(self.client)
