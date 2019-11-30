@@ -35,6 +35,7 @@ class ClientAdmin(admin.ModelAdmin):
         "active",
         "package_option",
         "plan",
+        "user",
         "verification_code",
     ]
     inlines = [DependantInline]

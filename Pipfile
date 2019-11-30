@@ -23,6 +23,7 @@ model-bakery = "*"
 django-hashid-field = "*"
 django-post-office = "*"
 postmarker = "*"
+django-debug-toolbar = "*"
 
 
 [dev-packages]
