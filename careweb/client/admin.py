@@ -38,8 +38,8 @@ class ClientAdmin(admin.ModelAdmin):
         "user",
         "verification_code",
     ]
-    inlines = [DependantInline]
     inlines = [DependantInline, AssociationInline]
+    search_fields = ["user__username", "surname", "first_name"]
     autocomplete_fields = ["ranger", "pcp"]
     exclude = ["user"]
     fieldsets = [
