@@ -139,7 +139,7 @@ class Client(models.Model):
     registration_date = models.DateField(default=timezone.now)
     photo = models.ImageField(upload_to="clientphoto", null=True, blank=True)
     verification_code = models.CharField(max_length=10, blank=True)
-    # balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):
@@ -155,13 +155,13 @@ class Client(models.Model):
         return self.user.is_active
 
 
-class Subscription(models.Model):
-    id = HashidAutoField(primary_key=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)
-    payment_date = models.DateField(default=timezone.now)
-    ranger = models.ForeignKey(Ranger, null=True, blank=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return str(self.client)
+# class Subscription(models.Model):
+#    id = HashidAutoField(primary_key=True)
+#    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+#    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+#    payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)
+#    payment_date = models.DateField(default=timezone.now)
+#    ranger = models.ForeignKey(Ranger, null=True, blank=True, on_delete=models.SET_NULL)
+#
+#    def __str__(self):
+#        return str(self.client)
