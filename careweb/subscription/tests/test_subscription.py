@@ -117,6 +117,40 @@ def test_client_balance_excess_subscription():
 
 
 @pytest.mark.django_db
+def test_client_subscription_without_plan():
+    """Test that subscription doesn't work with no plan selected"""
+    client = baker.make("client.Client", plan=None)
+    sub = utils.create_subscription(client, 1000)
+    assert 0 == Subscription.objects.count()
+    assert sub is None
+
+
+@pytest.mark.django_db
+def test_client_subscription_without_payment_option():
+    """Test that subscription doesn't work with no payment option"""
+    client = baker.make("client.Client", payment_option=None)
+    sub = utils.create_subscription(client, 1000)
+    assert 0 == Subscription.objects.count()
+    assert sub is None
+
+
+@pytest.mark.django_db
+def test_client_subscription_rate_without_plan():
+    """Test that subscription rate is None where no plan"""
+    client = baker.make("client.Client", plan=None, payment_option="A")
+    rate = utils.get_subscription_rate(client)
+    assert rate is None
+
+
+@pytest.mark.django_db
+def test_client_subscription_rate_without_payment_option():
+    """Test that subscription rate is None where no payment option"""
+    client = baker.make("client.Client", payment_option=None)
+    rate = utils.get_subscription_rate(client)
+    assert rate is None
+
+
+@pytest.mark.django_db
 def test_client_balance_excess_subscription_multiple():
     """Test that multiple subscriptions will be added to wallet balance"""
     plan = baker.make("core.Plan", client_rate=5200)
