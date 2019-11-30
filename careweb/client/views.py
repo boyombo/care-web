@@ -385,12 +385,11 @@ def verify_code(request):
     usr = cl.user
     if not usr:
         return JsonResponse({"success": False, "error": "User not configured properly"})
-    if usr.is_active:
+    # if usr.is_active:
+    #    return JsonResponse({"success": True})
+    if code == cl.verification_code:
+        usr.is_active = True
+        usr.save()
         return JsonResponse({"success": True})
     else:
-        if code == cl.verification_code:
-            usr.is_active = True
-            usr.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False, "error": "Wrong code"})
+        return JsonResponse({"success": False, "error": "Wrong code"})
