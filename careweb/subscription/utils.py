@@ -50,6 +50,9 @@ def get_next_subscription_date(cl):
 
 def create_subscription(cl, amount):
     # import pdb;pdb.set_trace()
+    rate = get_subscription_rate(cl)
+    if rate > (amount + cl.balance):
+        return None
     active_sub = get_active_subscription(cl)
     if not active_sub:
         next_sub_date = timezone.now().date()
@@ -65,9 +68,12 @@ def create_subscription(cl, amount):
         start_date=next_sub_date,
         expiry_date=timezone.now().date(),
         plan=cl.plan,
-        amount=amount,
+        amount=rate,
         active=is_active,
     )
+    if cl.balance + amount > rate:
+        cl.balance += amount - rate
+        cl.save()
     # if last_sub:
     #    last_sub.next_subscription = _sub
     #    last_sub.save()

@@ -3,6 +3,7 @@ from django.utils import timezone
 from model_bakery import baker
 
 from subscription import utils
+from subscription.models import Subscription
 from client.models import Dependant
 
 
@@ -13,7 +14,7 @@ def plan():
 
 @pytest.fixture
 def client():
-    return baker.make("client.Client")
+    return baker.make("client.Client", payment_option="A")
 
 
 @pytest.mark.django_db
@@ -47,18 +48,19 @@ def test_get_next_subscription_date_inactive(client):
 @pytest.mark.django_db
 def test_create_first_subscription(plan):
     """Test the start date for first subscription"""
-    client = baker.make("client.Client", plan=plan)
+    client = baker.make("client.Client", plan=plan, payment_option="A")
     sub = utils.create_subscription(client, 1000)
     assert sub.start_date == timezone.now().date()
     assert sub.plan == plan
     assert sub.active is True
+    assert 1 == Subscription.objects.count()
 
 
 @pytest.mark.django_db
 def test_create_new_subscription_active(plan):
     """Test new subscription is active when there is no active subscription
     but there are inactive ones"""
-    client = baker.make("client.Client", plan=plan)
+    client = baker.make("client.Client", plan=plan, payment_option="A")
     for i in range(3):
         baker.make("subscription.Subscription", plan=plan, client=client, active=False)
     sub = utils.create_subscription(client, 1000)
@@ -74,7 +76,7 @@ def test_create_subscription_active(plan):
     today = timezone.now().date()
     tomorrow = today + timezone.timedelta(1)
     next_tom = today + timezone.timedelta(2)
-    client = baker.make("client.Client", plan=plan)
+    client = baker.make("client.Client", plan=plan, payment_option="A")
     baker.make(
         "subscription.Subscription",
         client=client,
@@ -86,6 +88,56 @@ def test_create_subscription_active(plan):
     sub = utils.create_subscription(client, 1000)
     assert sub.start_date == next_tom
     assert sub.active is False
+
+
+@pytest.mark.django_db
+def test_wrong_amount_less():
+    """Test that the wrong amount will not create a subscription"""
+    plan = baker.make("core.Plan", client_rate=5200)
+    client = baker.make("client.Client", plan=plan, payment_option="A")
+    utils.create_subscription(client, 5000)
+    assert 0 == Subscription.objects.count()
+
+
+@pytest.mark.django_db
+def test_client_balance_default(plan):
+    """Default client balance is 0"""
+    client = baker.make("client.Client", plan=plan, payment_option="A")
+    assert 0 == client.balance
+
+
+@pytest.mark.django_db
+def test_client_balance_excess_subscription():
+    """Test that excess subscription will be added to wallet balance"""
+    plan = baker.make("core.Plan", client_rate=5200)
+    client = baker.make("client.Client", plan=plan, payment_option="A")
+    utils.create_subscription(client, 6000)
+    assert 1 == Subscription.objects.count()
+    assert 800 == client.balance
+
+
+@pytest.mark.django_db
+def test_client_balance_excess_subscription_multiple():
+    """Test that multiple subscriptions will be added to wallet balance"""
+    plan = baker.make("core.Plan", client_rate=5200)
+    client = baker.make("client.Client", plan=plan, payment_option="A")
+    utils.create_subscription(client, 6000)
+    utils.create_subscription(client, 6000)
+    assert 2 == Subscription.objects.count()
+    assert 1600 == client.balance
+
+
+@pytest.mark.django_db
+def test_client_balance_added_to_subscription():
+    """Wallet balance is used to make up subscription cost"""
+    plan = baker.make("core.Plan", client_rate=5200)
+    client = baker.make("client.Client", plan=plan, payment_option="A")
+    utils.create_subscription(client, 6000)
+    print(client.balance)
+    # should have balance of 800
+    utils.create_subscription(client, 5000)
+    assert 2 == Subscription.objects.count()
+    assert 600 == client.balance
 
 
 @pytest.mark.django_db
@@ -141,7 +193,7 @@ def test_annual_subscription_calculated_correctly():
 
 
 @pytest.mark.django_db
-def _test_quarterly_subscription_calculated_correctly():
+def test_quarterly_subscription_calculated_correctly():
     """biannual subscription calculated correctly"""
     plan = baker.make("core.Plan", client_rate=5200)
     client = baker.make("client.Client", plan=plan, payment_option="Q")
