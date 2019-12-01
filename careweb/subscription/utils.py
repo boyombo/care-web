@@ -7,13 +7,13 @@ from subscription.models import Subscription
 
 def _get_expiry_date(clt, start_date):
     if clt.payment_option == Client.WEEKLY:
-        return start_date + relativedelta(weeks=1)
+        return start_date + relativedelta(weeks=1, days=-1)
     elif clt.payment_option == Client.MONTHLY:
-        return start_date + relativedelta(months=1)
+        return start_date + relativedelta(months=1, days=-1)
     elif clt.payment_option == Client.QUARTERLY:
-        return start_date + relativedelta(months=3)
+        return start_date + relativedelta(months=3, days=-1)
     else:
-        return start_date + relativedelta(years=1)
+        return start_date + relativedelta(years=1, days=-1)
 
 
 def get_subscription_rate(clt):
@@ -83,7 +83,9 @@ def create_subscription(cl, amount):
         is_active = False
 
     # expiry date
+    print("next sub date: {}".format(next_sub_date))
     expiry_date = _get_expiry_date(cl, next_sub_date)
+    print("expiry: {}".format(expiry_date))
 
     _sub = Subscription.objects.create(
         client=cl,

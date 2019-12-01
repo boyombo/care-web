@@ -1,6 +1,7 @@
 import pytest
 from django.utils import timezone
 from model_bakery import baker
+from dateutil.relativedelta import relativedelta
 
 from subscription import utils
 from subscription.models import Subscription
@@ -250,5 +251,28 @@ def test_weekly_subscription_expiry(plan):
     # plan = baker.make("core.Plan", client_rate=5200)
     client = baker.make("client.Client", plan=plan, payment_option="W")
     sub = utils.create_subscription(client, 1000)
-    aweek = timezone.now().date() + timezone.timedelta(7)
+    aweek = timezone.now().date() + timezone.timedelta(6)
     assert aweek == sub.expiry_date
+
+
+@pytest.mark.django_db
+def test_monthly_subscription_expiry(plan):
+    """Test expiry date for weekly subscription"""
+    # plan = baker.make("core.Plan", client_rate=5200)
+    client = baker.make("client.Client", plan=plan, payment_option="M")
+    sub = utils.create_subscription(client, 1000)
+    amonth = timezone.now().date() + relativedelta(months=1, days=-1)
+    assert amonth == sub.expiry_date
+
+
+@pytest.mark.django_db
+def test_multiple_subscription_expiry(plan):
+    """Test that multiple subscriptions have correct expiry"""
+    client = baker.make("client.Client", plan=plan, payment_option="M")
+    sub1 = utils.create_subscription(client, 1000)
+    sub2 = utils.create_subscription(client, 1000)
+    amonth = timezone.now().date() + relativedelta(months=1, days=-1)
+    two_months = timezone.now().date() + relativedelta(months=2, days=-1)
+    assert amonth == sub1.expiry_date
+    assert sub1.active is True
+    assert two_months == sub2.expiry_date
