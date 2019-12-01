@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from ranger.models import WalletFunding, Ranger
 from client.models import Client
-from subscription.models import Subscription
+from subscription.models import Subscription, SubscriptionPayment
 from payment.models import Payment
 from payment.forms import PaymentForm
 from payment.utils import get_reference
@@ -27,6 +27,7 @@ def new_payment(request):
 
             reference = get_reference()
             pymt = Payment.objects.create(amount=kobo / 100.0, reference=reference)
+            logger.info("Payment created")
             usr = User.objects.get(username=email)
 
             # a ranger or a client?
@@ -40,8 +41,12 @@ def new_payment(request):
                         {"success": False, "error": "Account does not exist"}
                     )
                 else:
-                    Subscription.objects.create(
-                        client=client, amount=amount / 100.0, payment=pymt
+                    logger.info("creating subscription for client")
+                    SubscriptionPayment.objects.create(
+                        client=client,
+                        amount=amount / 100.0,
+                        payment=pymt,
+                        payment_type=SubscriptionPayment.CARD,
                     )
             else:
                 WalletFunding.objects.create(
