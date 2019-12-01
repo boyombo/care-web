@@ -266,16 +266,25 @@ def test_monthly_subscription_expiry(plan):
 
 
 @pytest.mark.django_db
-def test_multiple_subscription_expiry(plan):
+def test_multiple_subscription_start_expiry(plan):
     """Test that multiple subscriptions have correct expiry"""
     client = baker.make("client.Client", plan=plan, payment_option="M")
     sub1 = utils.create_subscription(client, 1000)
     sub2 = utils.create_subscription(client, 1000)
     sub3 = utils.create_subscription(client, 1000)
+
+    today = timezone.now().date()
     amonth = timezone.now().date() + relativedelta(months=1, days=-1)
-    two_months = timezone.now().date() + relativedelta(months=2, days=-1)
-    three_months = timezone.now().date() + relativedelta(months=3, days=-1)
+    two_start = amonth + timezone.timedelta(1)
+    two_end = timezone.now().date() + relativedelta(months=2, days=-1)
+    three_start = two_end + timezone.timedelta(1)
+    three_end = timezone.now().date() + relativedelta(months=3, days=-1)
+    assert today == sub1.start_date
     assert amonth == sub1.expiry_date
     assert sub1.active is True
-    assert two_months == sub2.expiry_date
-    assert three_months == sub3.expiry_date
+
+    assert two_start == sub2.start_date
+    assert two_end == sub2.expiry_date
+
+    assert three_start == sub3.start_date
+    assert three_end == sub3.expiry_date
