@@ -271,8 +271,11 @@ def test_multiple_subscription_expiry(plan):
     client = baker.make("client.Client", plan=plan, payment_option="M")
     sub1 = utils.create_subscription(client, 1000)
     sub2 = utils.create_subscription(client, 1000)
+    sub3 = utils.create_subscription(client, 1000)
     amonth = timezone.now().date() + relativedelta(months=1, days=-1)
     two_months = timezone.now().date() + relativedelta(months=2, days=-1)
+    three_months = timezone.now().date() + relativedelta(months=3, days=-1)
     assert amonth == sub1.expiry_date
     assert sub1.active is True
     assert two_months == sub2.expiry_date
+    assert three_months == sub3.expiry_date
