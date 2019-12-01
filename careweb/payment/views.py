@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 
 from ranger.models import WalletFunding, Ranger
 from client.models import Client
-from subscription.models import Subscription, SubscriptionPayment
+from subscription.models import SubscriptionPayment
+from subscription.utils import create_subscription
 from payment.models import Payment
 from payment.forms import PaymentForm
 from payment.utils import get_reference
@@ -134,20 +135,26 @@ def verify_paystack_payment(request):
 
 
 def verify_paystack_subscription(request):
-    # TODO: start and end dates for subscription, status of subscription
     ref = request.GET.get("reference")
     pymt = get_object_or_404(Payment, reference=ref)
-    subscription = Subscription.objects.get(payment=pymt)
-    client = subscription.client
+    subscription_payment = SubscriptionPayment.objects.get(payment=pymt)
+    client = subscription_payment.client
     logger.info(client)
 
     # funding = WalletFunding.objects.get(payment=pymt)
     # ranger = funding.ranger
     resp = verify(pymt)
     logger.info(resp)
-    if pymt.status == Payment.PENDING:
+    if (
+        pymt.status == Payment.PENDING
+        and subscription_payment.status == SubscriptionPayment.PENDING
+    ):
         pymt.status = Payment.SUCCESSFUL
         pymt.save()
+        subscription_payment.status = SubscriptionPayment.SUCCESSFUL
+        subscription_payment.save()
+
+        create_subscription(client, subscription_payment.amount)
 
         # funding.status = WalletFunding.SUCCESSFUL
         # funding.save()
