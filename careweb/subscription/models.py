@@ -31,11 +31,14 @@ class SubscriptionPayment(models.Model):
     BANK_TRANSFER = 0
     BANK_DEPOSIT = 1
     CARD = 2
-    PAYMENT_TYPE = enumerate(("Bank Transfer", "Bank Deposit", "Card"))
+    PAYMENT_TYPES = enumerate(("Bank Transfer", "Bank Deposit", "Card"))
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     payment_date = models.DateField(default=timezone.now)
     payment = models.ForeignKey(Payment, null=True, on_delete=models.SET_NULL)
+    payment_type = models.PositiveIntegerField(
+        choices=PAYMENT_TYPES, default=BANK_TRANSFER
+    )
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     bank = models.CharField(max_length=100, null=True, blank=True)
     name = models.CharField(max_length=100, null=True, blank=True)
