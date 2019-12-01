@@ -1,7 +1,19 @@
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 from client.models import Client, Dependant
 from subscription.models import Subscription
+
+
+def _get_expiry_date(clt, start_date):
+    if clt.payment_option == Client.WEEKLY:
+        return start_date + relativedelta(weeks=1)
+    elif clt.payment_option == Client.MONTHLY:
+        return start_date + relativedelta(months=1)
+    elif clt.payment_option == Client.QUARTERLY:
+        return start_date + relativedelta(months=3)
+    else:
+        return start_date + relativedelta(years=1)
 
 
 def get_subscription_rate(clt):
@@ -70,10 +82,13 @@ def create_subscription(cl, amount):
         next_sub_date = last_sub.expiry_date + timezone.timedelta(1)
         is_active = False
 
+    # expiry date
+    expiry_date = _get_expiry_date(cl, next_sub_date)
+
     _sub = Subscription.objects.create(
         client=cl,
         start_date=next_sub_date,
-        expiry_date=timezone.now().date(),
+        expiry_date=expiry_date,
         plan=cl.plan,
         amount=rate,
         active=is_active,
