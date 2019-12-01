@@ -40,11 +40,14 @@ def get_subscription_rate(clt):
     return (clt.plan.client_rate + dependant_amount) / divide_by
 
 
-def get_last_subscription(sub):
-    next_subscription = sub.next_subscription
-    if not next_subscription:
-        return sub
-    return get_last_subscription(next_subscription)
+def get_last_subscription(clt):
+    subs = Subscription.objects.filter(client=clt).order_by("-expiry_date")
+    if subs:
+        return subs[0]
+    # next_subscription = sub.next_subscription
+    # if not next_subscription:
+    #    return sub
+    # return get_last_subscription(next_subscription)
 
 
 def get_active_subscription(cl):
@@ -78,7 +81,7 @@ def create_subscription(cl, amount):
         last_sub = None
         is_active = True
     else:
-        last_sub = get_last_subscription(active_sub)
+        last_sub = get_last_subscription(cl)
         next_sub_date = last_sub.expiry_date + timezone.timedelta(1)
         is_active = False
 
