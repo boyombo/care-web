@@ -150,6 +150,9 @@ def test_client_subscription_rate_without_payment_option():
     assert rate is None
 
 
+## Management of subscription balance
+
+
 @pytest.mark.django_db
 def test_client_balance_excess_subscription_multiple():
     """Test that multiple subscriptions will be added to wallet balance"""
@@ -172,6 +175,9 @@ def test_client_balance_added_to_subscription():
     utils.create_subscription(client, 5000)
     assert 2 == Subscription.objects.count()
     assert 600 == client.balance
+
+
+##  Calculation of subscription amount
 
 
 @pytest.mark.django_db
@@ -233,3 +239,16 @@ def test_quarterly_subscription_calculated_correctly():
     client = baker.make("client.Client", plan=plan, payment_option="Q")
     rate = utils.get_subscription_rate(client)
     assert rate == 1300
+
+
+##  End dates for subscription
+
+
+@pytest.mark.django_db
+def test_weekly_subscription_expiry(plan):
+    """Test expiry date for weekly subscription"""
+    # plan = baker.make("core.Plan", client_rate=5200)
+    client = baker.make("client.Client", plan=plan, payment_option="W")
+    sub = utils.create_subscription(client, 1000)
+    aweek = timezone.now().date() + timezone.timedelta(7)
+    assert aweek == sub.expiry_date

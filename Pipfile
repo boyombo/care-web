@@ -24,6 +24,7 @@ django-hashid-field = "*"
 django-post-office = "*"
 postmarker = "*"
 django-debug-toolbar = "*"
+python-dateutil = "*"
 
 
 [dev-packages]
