@@ -2,7 +2,7 @@
 from random import sample
 from decimal import Decimal
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -259,12 +259,15 @@ def login_api(request):
                 try:
                     client = Client.objects.get(user=usr)
                 except Client.DoesNotExist:
-                    return JsonResponse(
-                        {
-                            "error": "Please contact support, your account is not configured correctly",
-                            "success": False,
-                        }
+                    return HttpResponseBadRequest(
+                        "Please contact support. Your account is not configured correctly"
                     )
+                    # return JsonResponse(
+                    #    {
+                    #        "error": "Please contact support, your account is not configured correctly",
+                    #        "success": False,
+                    #    }
+                    # )
                 else:
                     host = "https://{}".format(request.get_host())
                     logger.info("client details")
@@ -330,12 +333,15 @@ def login_api(request):
                     # )
         else:
             logger.info(form.errors)
-            return JsonResponse(
-                {
-                    "success": False,
-                    "message": "Please check your username and password then try again",
-                }
+            return HttpResponseBadRequest(
+                "Please contact support. Your account is not configured correctly"
             )
+            # return JsonResponse(
+            #    {
+            #        "success": False,
+            #        "message": "Please check your username and password then try again",
+            #    }
+            # )
 
 
 @csrf_exempt
