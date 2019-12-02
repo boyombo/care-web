@@ -34,6 +34,7 @@ from client.forms import (
     DependantForm,
     PhotoForm,
     AmountForm,
+    PlanForm,
 )
 
 import logging
@@ -113,6 +114,24 @@ def client_login(request):
 
 class ClientView(UpdateView):
     model = Client
+
+
+def update_plan(request):
+    client = Client.objects.get(user=request.user)
+    if request.method == "POST":
+        # form = PlanForm(request.POST)
+        form = PlanForm(request.POST, instance=client)
+        if form.is_valid():
+            client.plan = form.cleaned_data["plan"]
+            client.payment_option = form.cleaned_data["payment_option"]
+            client.payment_instrument = form.cleaned_data["payment_instrument"]
+            client.save()
+            # import pdb;pdb.set_trace()
+            # form.save()
+    else:
+        # form = PlanForm()
+        form = PlanForm(instance=client)
+    return render(request, "client/plan.html", {"form": form, "object": client})
 
 
 class PlanView(ClientView):

@@ -112,3 +112,9 @@ class PhotoForm(forms.ModelForm):
 
 class AmountForm(forms.Form):
     amount = forms.FloatField()
+
+
+class PlanForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ["plan", "payment_option", "payment_instrument"]
