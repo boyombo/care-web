@@ -70,9 +70,32 @@ Provider
                                     {% endfor %}
                                 {% endif %}
                                         <div class="inputArea">
+
+                                         <div class="form-row">
+                                                <div class="col">
+                                                        <div><label>Local Govt</label></div>
+                                                    
+                                                    <div class="input-group">
+                                                        {% if form.lga.errors %}
+                                                            <div class="alert alert-danger">
+                                                                {{ form.lga.errors }}
+                                                            </div>
+                                                        {% endif %}
+                                                        {% render_field form.lga class+="form-control" %}
+                                                         {% comment %} <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="Site">
+                                                                <i class="fas fa-building"></i>
+                                                            </span>
+                                                        </div> {% endcomment %}
+        
+                                                    </div>
+                                                </div>
+                                            </div>
+                               
+
                                             <div class="form-row">
                                                 <div class="col">
-                                                        <div><label>PCP</label></div>
+                                                        <div><label>Primary Care Provider</label></div>
                                                     
                                                     <div class="input-group">
                                                         {% if form.pcp.errors %}
@@ -81,11 +104,11 @@ Provider
                                                             </div>
                                                         {% endif %}
                                                         {% render_field form.pcp class+="form-control" %}
-                                                         <div class="input-group-prepend">
+                                                         {% comment %} <div class="input-group-prepend">
                                                             <span class="input-group-text" id="Site">
                                                                 <i class="fas fa-building"></i>
                                                             </span>
-                                                        </div>
+                                                        </div> {% endcomment %}
         
                                                     </div>
                                                 </div>
@@ -120,5 +143,22 @@ Provider
 
     $('.nav-link').removeClass('active')
     $('#profile-nav-link').addClass('active')
+
+    $("#id_lga").change(function () {
+      var lgaId = $(this).val();  // get the selected country ID from the HTML input
+
+      var url = '/client/load_pcp_list/?lga=' + lgaId   // get the url of the `load_cities` view
+      console.log(url)
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'lga_id': lgaId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_pcp").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
     </script>
 {% endblock extra-js %}

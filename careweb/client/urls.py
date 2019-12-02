@@ -33,4 +33,5 @@ urlpatterns = [
         views.create_client_subscription,
     ),
     path("info/<int:id>/", views.get_client_info),
+    path("load_pcp_list/", views.load_pcp_list, name="load_pcp_list"),
 ]
