@@ -66,18 +66,24 @@ def register(request):
             username = form.cleaned_data["email"]
 
             new_user = User.objects.create_user(username=username, password=pwd)
+            new_user.is_active = False
+            new_user.save()
+            # import pdb
+
+            # pdb.set_trace()
 
             client = form.save(commit=False)
             client.user = new_user
             client.email = username
             client.save()
-            _user = authenticate(username=username, password=pwd)
-            if _user:
-                send_welcome_email(username, client.first_name)
-                login(request, _user)
-                return redirect("profile", pk=client.id)
-            else:
-                return redirect("login")
+            send_welcome_email(username, client.first_name)
+            return redirect("login")
+            # _user = authenticate(username=username, password=pwd)
+            # if _user:
+            #    # login(request, _user)
+            #    # return redirect("profile", pk=client.id)
+            #    return redirect("login")
+            # else:
     else:
         form = RegForm()
     return render(request, "client/register.html", {"form": form})
