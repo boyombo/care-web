@@ -25,7 +25,7 @@ urlpatterns = [
     path("upload_photo/<str:id>/", views.upload_photo),
     path("client_photo/<str:id>/", views.get_client_photo),
     path("verify/", views.verify_code),
-    path("payment/", views.payment, name="paygate_card"),
+    path("payment/", views.payment, name="client_payment"),
     path("get_ranger_clients/<int:id>/", views.get_clients),
     path(
         "ranger_subscription/<int:client_id>/<int:ranger_id>/",
