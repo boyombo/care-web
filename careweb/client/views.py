@@ -267,7 +267,9 @@ def login_api(request):
                     )
                 else:
                     host = "https://{}".format(request.get_host())
+                    logger.info("client details")
                     client_details = get_client_details(client, host)
+                    logger.info(client_details)
                     return JsonResponse({"success": True, "client": client_details})
                     # if client.photo:
                     #    photo_url = "{}{}".format(host, client.photo.url)
