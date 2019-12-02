@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load crispy_forms_tags %}
 
 
 {% block title %}
@@ -69,7 +70,12 @@ Contact
                                     </div>
                                     {% endfor %}
                                 {% endif %}
-                                        <div class="inputArea">
+                                <div class="inputArea">
+                                    {{ form|crispy }}
+                                </div>
+                                <button class="loginnow" type="submit">Save Contact Information</button>
+
+                                        {% comment %} <div class="inputArea">
                                             <div class="form-row">
                                                 <div class="col">
                                                         <div><label>Phone Number</label></div>
@@ -135,7 +141,7 @@ Contact
                                                     <button class="loginnow" type="submit">Save</button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> {% endcomment %}
                                     </form>
                         </div>
                 </div>

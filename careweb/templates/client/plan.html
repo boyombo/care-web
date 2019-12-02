@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load crispy_forms_tags %}
 
 
 {% block title %}
@@ -69,28 +70,29 @@ Plan
                                     </div>
                                     {% endfor %}
                                 {% endif %}
+
+                                <div class="inputArea">
+                                    {{form|crispy}}
+                                </div>
+                                    <button class="loginnow" type="submit">Save Payment</button>
+
+                                       
                                         {% comment %} <div class="inputArea">
-                                            <div class="form-row">
-                                                <div class="col">
-                                                        <div><label>Package Option</label></div>
-                                                    
-                                                    <div class="input-group">
-                                                        {% if form.package_option.errors %}
-                                                            <div class="alert alert-danger">
-                                                                {{ form.package_option.errors }}
-                                                            </div>
-                                                        {% endif %}
-                                                        {% render_field form.package_option class+="form-control" %}
-                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="Site">
-                                                                <i class="fas fa-list"></i>
-                                                            </span>
+                                            {% for fld in form.fields %}
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div><label for="{{fld.label}}">{{fld.label_tag}}</label></div>
+                                                        <div class="input-group">
+                                                            {% if fld.errors %}
+                                                                <div class="alert alert-danger">
+                                                                    {{fld.errors}}
+                                                                </div>
+                                                            {% endif %}
+                                                            {% render_field fld class+="form-control" %}
                                                         </div>
-        
                                                     </div>
                                                 </div>
-                                            </div> {% endcomment %}
-                                             <div class="inputArea">
+                                            {% endfor %}
                                             <div class="form-row">
                                                 <div class="col">
                                                         <div><label>Package Option</label></div>
@@ -157,7 +159,7 @@ Plan
                                                     <button class="loginnow" type="submit">Save</button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> {% endcomment %}
                                     </form>
                         </div>
                 </div>

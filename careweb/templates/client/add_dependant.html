@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load crispy_forms_tags %}
 
 
 {% block title %}
@@ -75,7 +76,13 @@ Add dependant
                                     </div>
                                     {% endfor %}
                                 {% endif %}
-                                        <div class="inputArea">
+
+                                   <div class="inputArea">
+                                    {{ form|crispy }}
+                                </div>
+                                <button class="loginnow" type="submit">Save Dependant</button>
+
+                                        {% comment %} <div class="inputArea">
                                             <div class="form-row">
                                                <div class="col">
                                                     <div><label>Surname</label></div>
@@ -168,13 +175,13 @@ Add dependant
                                                     {% render_field form.pcp class+="form-control" %}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> {% endcomment %}
 
-                                            <div class="form-row">
+                                            {% comment %} <div class="form-row">
                                                 <div class="col-md-12">
                                                     <button class="loginnow" type="submit">Save</button>
                                                 </div>
-                                            </div>
+                                            </div> {% endcomment %}
                                         </div>
                                     </form>
                         </div>

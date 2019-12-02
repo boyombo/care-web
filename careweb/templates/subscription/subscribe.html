@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load crispy_forms_tags %}
 
 
 {% block title %}
@@ -70,6 +71,27 @@ Plan
                                     {% endfor %}
                                 {% endif %}
                                         <div class="inputArea">
+                                        {{ form|crispy }}
+                                        </div>
+                                            <button class="loginnow" type="submit">Save Payment</button>
+
+                                         {% comment %} {% for fld in form.visible_fields %}
+                                                <div class="form-row">
+                                                    <div class="col">
+                                                        <div><label for="{{fld.id_for_label}}">{{fld.label}}</label></div>
+                                                        <div class="input-group">
+                                                            {% if fld.errors %}
+                                                                <div class="alert alert-danger">
+                                                                    {{fld.errors}}
+                                                                </div>
+                                                            {% endif %}
+                                                            {{fld|add_class:"form-control"}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %} {% endcomment %}
+                                        {% comment "" %}
+
                                             <div class="form-row">
                                                 <div class="col">
                                                         <div><label>Payment Date</label></div>
@@ -169,16 +191,17 @@ Plan
                                                     </div>
                                                 </div>
                                             </div>
+                                        {% endcomment %}
 
                                         </div>
                                         
-                                        <div class="inputArea">
+                                        {% comment %} <div class="inputArea">
                                             <div class="form-row">
                                                 <div class="col-md-12">
                                                     <button class="loginnow" type="submit">Save Payment</button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> {% endcomment %}
                                     </form>
                         </div>
                 </div>

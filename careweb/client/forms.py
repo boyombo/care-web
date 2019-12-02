@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.utils.functional import lazy
 
 from client.models import Client, Association, Dependant
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
 
 
 class ApiRegForm(forms.ModelForm):
@@ -72,7 +74,12 @@ class LoginForm(forms.Form):
 
 
 class PersonalInfoForm(forms.ModelForm):
-    dob = forms.DateField(widget=forms.SelectDateWidget(years=range(1950, 2001)))
+    dob = forms.DateField(
+        widget=forms.SelectDateWidget(
+            attrs={"style": "display: inline-block; width: 33%;"},
+            years=range(1950, 2001),
+        )
+    )
 
     class Meta:
         model = Client
@@ -97,7 +104,12 @@ class AssociationsForm(forms.Form):
 
 
 class DependantForm(forms.ModelForm):
-    dob = forms.DateField(widget=forms.SelectDateWidget(years=range(1970, 2019)))
+    dob = forms.DateField(
+        widget=forms.SelectDateWidget(
+            attrs={"style": "display: inline-block; width: 33%;"},
+            years=range(1970, 2019),
+        )
+    )
 
     class Meta:
         model = Dependant
@@ -118,3 +130,15 @@ class PlanForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ["plan", "payment_option", "payment_instrument"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column("payment_date_month", css_class="form-group col-md-4 mb-0"),
+                Column("payment_date_day", css_class="form-group col-md-4 mb-0"),
+                Column("payment_date_year", css_class="form-group col-md-4 mb-0"),
+                css_class="form-row",
+            ),
+        )

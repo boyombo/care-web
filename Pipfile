@@ -25,6 +25,9 @@ django-post-office = "*"
 postmarker = "*"
 django-debug-toolbar = "*"
 python-dateutil = "*"
+"py3rijndael" = "*"
+pycrypto = "*"
+django-crispy-forms = "*"
 
 
 [dev-packages]
