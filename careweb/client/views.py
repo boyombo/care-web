@@ -1,10 +1,11 @@
-from pprint import pprint
+# from pprint import pprint
 from random import sample
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 # from django.forms import inlineformset_factory
 from django.contrib import messages
@@ -18,6 +19,9 @@ from django.views.generic.edit import UpdateView
 from client.models import Client, Dependant, ClientAssociation, Association
 from core.utils import send_welcome_email, send_email
 from subscription.utils import get_subscription_rate
+from payment.utils import get_reference
+from client.utils import get_client_details
+from ranger.models import Ranger
 
 # from client.models import Plan
 from client.forms import (
@@ -44,7 +48,12 @@ def profile(request, pk=None):
             client = Client.objects.get(user=request.user)
         except Client.DoesNotExist:
             return redirect("login")
-    return render(request, "client/profile.html", {"profile": client})
+    subscription_rate = get_subscription_rate(client)
+    return render(
+        request,
+        "client/profile.html",
+        {"profile": client, "subscription_rate": subscription_rate},
+    )
 
 
 def register(request):
@@ -256,63 +265,65 @@ def login_api(request):
                     )
                 else:
                     host = "https://{}".format(request.get_host())
-                    if client.photo:
-                        photo_url = "{}{}".format(host, client.photo.url)
-                    else:
-                        photo_url = ""
-                    if client.dob:
-                        dob = client.dob.strftime("%Y-%m-%d")
-                    else:
-                        dob = None
-                    dependants = [
-                        {
-                            "dob": dependant.dob.strftime("%Y-%m-%d"),
-                            "first_name": dependant.first_name,
-                            "surname": dependant.surname,
-                            "middle_name": dependant.middle_name,
-                            "relationship": dependant.relationship,
-                            "pcp": dependant.pcp.id.id if dependant.pcp else None,
-                        }
-                        for dependant in Dependant.objects.filter(primary=client)
-                    ]
-                    subscription_rate = get_subscription_rate(client)
-                    return JsonResponse(
-                        {
-                            "client": {
-                                "active": client.user.is_active,
-                                "subscription_rate": subscription_rate,
-                                "id": client.id.id,
-                                "surname": client.surname,
-                                "firstName": client.first_name,
-                                "phone": client.phone_no,
-                                "whatsapp": client.whatsapp_no,
-                                "email": client.email,
-                                "imageUri": photo_url,
-                                "dob": dob,
-                                "sex": client.sex,
-                                "maritalStatus": client.marital_status,
-                                "nationalIdNo": client.national_id_card_no,
-                                "driversLicenceNo": client.drivers_licence_no,
-                                "lagosResidentsNo": client.lagos_resident_no,
-                                "lashmaNo": client.lashma_no,
-                                "lashmaQualityLifeNo": client.lashma_quality_life_no,
-                                "pcp": client.pcp.id.id if client.pcp else None,
-                                "ranger": client.ranger.id.id
-                                if client.ranger
-                                else None,
-                                "homeAddress": client.home_address,
-                                "occupation": client.occupation,
-                                "company": client.company,
-                                "officeAddress": client.office_address,
-                                "packageOption": client.package_option,
-                                "plan": client.plan.id if client.plan else None,
-                                "paymentOption": client.payment_option,
-                                "paymentInstrument": client.payment_instrument,
-                                "dependants": dependants,
-                            },
-                            "success": True,
-                        }
-                    )
+                    client_details = get_client_details(client, host)
+                    return JsonResponse({"success": True, "client": client_details})
+                    # if client.photo:
+                    #    photo_url = "{}{}".format(host, client.photo.url)
+                    # else:
+                    #    photo_url = ""
+                    # if client.dob:
+                    #    dob = client.dob.strftime("%Y-%m-%d")
+                    # else:
+                    #    dob = None
+                    # dependants = [
+                    #    {
+                    #        "dob": dependant.dob.strftime("%Y-%m-%d"),
+                    #        "first_name": dependant.first_name,
+                    #        "surname": dependant.surname,
+                    #        "middle_name": dependant.middle_name,
+                    #        "relationship": dependant.relationship,
+                    #        "pcp": dependant.pcp.id.id if dependant.pcp else None,
+                    #    }
+                    #    for dependant in Dependant.objects.filter(primary=client)
+                    # ]
+                    # subscription_rate = get_subscription_rate(client)
+                    # return JsonResponse(
+                    #    {
+                    #        "client": {
+                    #            "active": client.user.is_active,
+                    #            "subscription_rate": subscription_rate,
+                    #            "id": client.id.id,
+                    #            "surname": client.surname,
+                    #            "firstName": client.first_name,
+                    #            "phone": client.phone_no,
+                    #            "whatsapp": client.whatsapp_no,
+                    #            "email": client.email,
+                    #            "imageUri": photo_url,
+                    #            "dob": dob,
+                    #            "sex": client.sex,
+                    #            "maritalStatus": client.marital_status,
+                    #            "nationalIdNo": client.national_id_card_no,
+                    #            "driversLicenceNo": client.drivers_licence_no,
+                    #            "lagosResidentsNo": client.lagos_resident_no,
+                    #            "lashmaNo": client.lashma_no,
+                    #            "lashmaQualityLifeNo": client.lashma_quality_life_no,
+                    #            "pcp": client.pcp.id.id if client.pcp else None,
+                    #            "ranger": client.ranger.id.id
+                    #            if client.ranger
+                    #            else None,
+                    #            "homeAddress": client.home_address,
+                    #            "occupation": client.occupation,
+                    #            "company": client.company,
+                    #            "officeAddress": client.office_address,
+                    #            "packageOption": client.package_option,
+                    #            "plan": client.plan.id if client.plan else None,
+                    #            "paymentOption": client.payment_option,
+                    #            "paymentInstrument": client.payment_instrument,
+                    #            "dependants": dependants,
+                    #        },
+                    #        "success": True,
+                    #    }
+                    # )
         else:
             logger.info(form.errors)
             return JsonResponse(
@@ -396,3 +407,25 @@ def verify_code(request):
         return JsonResponse({"success": True})
     else:
         return JsonResponse({"success": False, "error": "Wrong code"})
+
+
+def get_clients(request, id):
+    host = "http://{}".format(request.get_host())
+    ranger = get_object_or_404(Ranger, pk=id)
+    clients = [
+        get_client_details(cl, host) for cl in Client.objects.filter(ranger=ranger)
+    ]
+    return JsonResponse({"success": True, "clients": clients})
+
+
+def payment(request, id):
+    pass
+
+
+#    cl = get_object_or_404(Client, pk=id)
+#    amount = get_subscription_rate(cl)
+#    email = cl.email
+#    merchant_id = settings.PAYGATE_MERCHANT_ID
+#    curr_code = "566"
+#    order_id = get_reference()
+#    product = "Futurecare Subscription"
