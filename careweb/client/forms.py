@@ -108,3 +108,7 @@ class PhotoForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ["photo"]
+
+
+class AmountForm(forms.Form):
+    amount = forms.FloatField()

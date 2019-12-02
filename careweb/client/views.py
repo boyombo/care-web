@@ -1,5 +1,6 @@
 # from pprint import pprint
 from random import sample
+from decimal import Decimal
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -18,7 +19,7 @@ from django.views.generic.edit import UpdateView
 
 from client.models import Client, Dependant, ClientAssociation, Association
 from core.utils import send_welcome_email, send_email
-from subscription.utils import get_subscription_rate
+from subscription.utils import get_subscription_rate, create_subscription
 from payment.utils import get_reference
 from client.utils import get_client_details
 from ranger.models import Ranger
@@ -32,6 +33,7 @@ from client.forms import (
     AssociationsForm,
     DependantForm,
     PhotoForm,
+    AmountForm,
 )
 
 import logging
@@ -418,8 +420,26 @@ def get_clients(request, id):
     return JsonResponse({"success": True, "clients": clients})
 
 
+@csrf_exempt
+def create_client_subscription(request, client_id, ranger_id):
+    client = get_object_or_404(Client, pk=client_id)
+    ranger = get_object_or_404(Ranger, pk=ranger_id)
+    if request.method == "POST":
+        form = AmountForm(request.POST)
+        if form.is_valid():
+            amount = Decimal(form.cleaned_data["amount"])
+            sub = create_subscription(client, amount)
+            if sub:
+                # deduct from ranger balance
+                ranger.balance -= amount
+                ranger.save()
+                return JsonResponse({"success": True, "newBalance": ranger.balance})
+    return JsonResponse({"success": False})
+
+
 def payment(request, id):
-    pass
+    client = Client.objects.get(user=request.user)
+    return render(request, "client/payment.html", {"client": client})
 
 
 #    cl = get_object_or_404(Client, pk=id)
