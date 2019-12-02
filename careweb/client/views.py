@@ -23,6 +23,8 @@ from subscription.utils import get_subscription_rate, create_subscription
 from payment.utils import get_reference
 from client.utils import get_client_details
 from ranger.models import Ranger
+from location.models import LGA
+from provider.models import CareProvider
 
 # from client.models import Plan
 from client.forms import (
@@ -35,6 +37,7 @@ from client.forms import (
     PhotoForm,
     AmountForm,
     PlanForm,
+    PCPForm,
 )
 
 import logging
@@ -155,8 +158,16 @@ class WorkView(ClientView):
     template_name = "client/work.html"
 
 
+def load_pcp_list(request):
+    lga_id = request.GET.get("lga")
+    lga = LGA.objects.get(pk=lga_id)
+    providers = CareProvider.objects.filter(lga=lga)
+    return render(request, "client/provider_list.html", {"providers": providers})
+
+
 class PCPView(ClientView):
-    fields = ["pcp"]
+    form_class = PCPForm
+    # fields = ["pcp"]
     template_name = "client/pcp.html"
 
 

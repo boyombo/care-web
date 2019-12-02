@@ -7,6 +7,9 @@ from client.models import Client, Association, Dependant
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
+from provider.models import CareProvider
+from location.models import LGA
+
 
 class ApiRegForm(forms.ModelForm):
     email = forms.EmailField()
@@ -110,10 +113,26 @@ class DependantForm(forms.ModelForm):
             years=range(1970, 2019),
         )
     )
+    lga = forms.ModelChoiceField(queryset=LGA.objects.all(), required=False)
 
     class Meta:
         model = Dependant
         exclude = ["primary"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["pcp"].queryset = CareProvider.objects.none()
+
+        if "lga" in self.data:
+            try:
+                lga_id = self.data.get("lga")
+                self.fields["pcp"].queryset = CareProvider.objects.filter(
+                    lga__id=lga_id
+                )
+            except (TypeError, ValueError):
+                pass
+        elif self.instance.pk:
+            self.fields["pcp"].queryset = CareProvider.objects.all()
 
 
 class PhotoForm(forms.ModelForm):
@@ -142,3 +161,27 @@ class PlanForm(forms.ModelForm):
                 css_class="form-row",
             ),
         )
+
+
+class PCPForm(forms.ModelForm):
+    lga = forms.ModelChoiceField(queryset=LGA.objects.all())
+
+    class Meta:
+        model = Client
+        fields = ["pcp"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["pcp"].queryset = CareProvider.objects.none()
+        # import pdb;pdb.set_trace()
+
+        if "lga" in self.data:
+            try:
+                lga_id = self.data.get("lga")
+                self.fields["pcp"].queryset = CareProvider.objects.filter(
+                    lga__id=lga_id
+                )
+            except (TypeError, ValueError):
+                pass
+        elif self.instance.pk:
+            self.fields["pcp"].queryset = CareProvider.objects.all()
