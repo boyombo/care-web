@@ -410,7 +410,7 @@ def verify_code(request):
 
 
 def get_clients(request, id):
-    host = "http://{}".format(request.get_host())
+    host = "https://{}".format(request.get_host())
     ranger = get_object_or_404(Ranger, pk=id)
     clients = [
         get_client_details(cl, host) for cl in Client.objects.filter(ranger=ranger)
