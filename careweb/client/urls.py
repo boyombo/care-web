@@ -25,4 +25,6 @@ urlpatterns = [
     path("upload_photo/<str:id>/", views.upload_photo),
     path("client_photo/<str:id>/", views.get_client_photo),
     path("verify/", views.verify_code),
+    path("payment/", views.payment, name="paygate_card"),
+    path("get_ranger_clients/<int:id>/", views.get_clients),
 ]
