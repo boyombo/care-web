@@ -64,7 +64,9 @@ INSTALLED_APPS = [
     "post_office",
     "baton.autodiscover",
     "widget_tweaks",
+    "crispy_forms",
 ]
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

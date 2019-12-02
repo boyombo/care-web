@@ -135,6 +135,7 @@ def update_plan(request):
 
 
 class PlanView(ClientView):
+    # form_class = PlanForm
     fields = ["plan", "payment_option", "payment_instrument"]
     template_name = "client/plan.html"
 

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load crispy_forms_tags %}
 
 
 {% block title %}
@@ -70,7 +71,8 @@ Personal
                                     {% endfor %}
                                 {% endif %}
                                         <div class="inputArea">
-                                            <div class="form-row">
+                                        {{form|crispy}}
+                                            {% comment %} <div class="form-row">
                                                 <div class="col">
                                                         <div><label>Surname</label></div>
                                                     
@@ -189,7 +191,7 @@ Personal
         
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> {% endcomment %}
                                          
                                             <div class="form-row">
                                                 <div class="col-md-12">
