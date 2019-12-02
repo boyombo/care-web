@@ -55,6 +55,8 @@ Profile
                                 {% if profile.plan %}
                                     <h5>Plan: {{profile.get_package_option_display }}</h5>
                                     <small>Paid {{profile.get_payment_option_display }} by {{profile.get_payment_instrument_display }}</small>
+                                    <a href="{% url 'subscription_new' %}" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-cash"> </i> Make Subscription Payment</a>
+
                                 {%else%}
                                     <a href="{% url 'profile_plan' pk=profile.id %}" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-note2"> </i> Choose a Health Plan</a>
                                 {% endif %}

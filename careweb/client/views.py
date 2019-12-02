@@ -456,9 +456,9 @@ def create_client_subscription(request, client_id, ranger_id):
     return JsonResponse({"success": False})
 
 
-def payment(request, id):
+def payment(request):
     client = Client.objects.get(user=request.user)
-    return render(request, "client/payment.html", {"client": client})
+    return render(request, "client/payment.html", {"object": client})
 
 
 #    cl = get_object_or_404(Client, pk=id)
