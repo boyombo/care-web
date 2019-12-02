@@ -31,4 +31,5 @@ urlpatterns = [
         "ranger_subscription/<int:client_id>/<int:ranger_id>/",
         views.create_client_subscription,
     ),
+    path("info/<int:id>/", views.get_client_info),
 ]

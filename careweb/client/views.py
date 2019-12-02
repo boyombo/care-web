@@ -419,6 +419,13 @@ def verify_code(request):
         return JsonResponse({"success": False, "error": "Wrong code"})
 
 
+def get_client_info(request, id):
+    client = get_object_or_404(Client, pk=id)
+    host = "https://{}".format(request.get_host())
+    details = get_client_details(client, host)
+    return JsonResponse({"success": True, "client": details})
+
+
 def get_clients(request, id):
     host = "https://{}".format(request.get_host())
     ranger = get_object_or_404(Ranger, pk=id)
