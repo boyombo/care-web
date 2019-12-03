@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load humanize %}
+{% load i18n admin_static admin_modify %}
+
+{% block extrahead %}
+{{ block.super }}
+<script type="text/javascript">
+
+console.log('test')
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Subscribe for {{client.first_name}} {{client.surname}} with N{{amount|intcomma}}</h1>
+<div id="content-main">
+<form action="" method="post">
+  {% csrf_token %}
+  <div>
+    <fieldset class="module aligned" style="padding: 20px;">
+      <div>
+        <p class="required">You are about to subscribe for {{client.first_name}}</p>
+        <h4>Plan: {{client.plan}}</h4>
+        <h4>Payment Option: {{client.get_payment_option_display}}</h4>
+        <h5>Your current balance is <strong>N{{ranger.balance|intcomma}}</strong></h5>
+        <p>The amount N{{amount|intcomma}} will be deducted from your balance. Click the "Continue" button to make the payment</p>
+      </div>
+        
+    </fieldset>
+  </div>
+    <div class="submit-row" style="padding: 20px;">
+        <input type="hidden" name="_selected_action" value="{{ client.pk }}" />
+        <input type="hidden" name="action" value="subscribe_client" />
+        <input class="btn btn-success" type="submit" name="apply" value="Continue"/>
+    </div>
+
+
+</form>
+</div>
+{% endblock %}
