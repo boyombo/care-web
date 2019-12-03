@@ -81,7 +81,7 @@ def register(request):
             client.email = username
             client.save()
             send_welcome_email(username, client.first_name)
-            return redirect("login")
+            return redirect("post_register")
             # _user = authenticate(username=username, password=pwd)
             # if _user:
             #    # login(request, _user)
