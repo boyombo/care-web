@@ -1,0 +1,8 @@
+{% extends "admin/change_list.html" %}
+{% load humanize %}
+{% block object-tools %}
+{{ block.super }}
+{% if agent_balance %}
+<h5>Wallet Balance: N{{agent_balance|intcomma}}<h5>
+{% endif %}
+{% endblock %}

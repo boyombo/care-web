@@ -1,6 +1,11 @@
 from django.contrib import admin
+from django.contrib import messages
+from django.shortcuts import render
 
 from client.models import HMO, Dependant, Client, Association, ClientAssociation
+from ranger.models import Ranger
+from subscription.utils import get_subscription_rate, create_subscription
+from subscription.models import SubscriptionPayment
 
 
 @admin.register(HMO)
@@ -42,6 +47,7 @@ class ClientAdmin(admin.ModelAdmin):
     search_fields = ["user__username", "surname", "first_name"]
     autocomplete_fields = ["ranger", "pcp"]
     exclude = ["user"]
+    actions = ["subscribe_client"]
     fieldsets = [
         (
             "Basic",
@@ -107,3 +113,40 @@ class ClientAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(ranger__user=request.user)
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def subscribe_client(self, request, queryset):
+        try:
+            ranger = Ranger.objects.get(user=request.user)
+        except Ranger.DoesNotExist:
+            messages.error(request, "Sorry, you cannot subscriber for a client")
+            return
+
+        if queryset.count() != 1:
+            messages.error(
+                request, "Sorry, you can only subscribe one client at a time"
+            )
+            return
+
+        client = queryset[0]
+        rate = get_subscription_rate(client)
+
+        if request.method == "POST" and "apply" in request.POST:
+            ranger.balance -= rate
+            ranger.save()
+            create_subscription(client, rate)
+            SubscriptionPayment.objects.create(
+                client=client,
+                amount=rate,
+                status=SubscriptionPayment.SUCCESSFUL,
+                ranger=ranger,
+            )
+            messages.success(request, "The subscription was successful")
+        else:
+            return render(
+                request,
+                "admin/client/subscribe.html",
+                {"ranger": ranger, "client": client, "amount": rate},
+            )
