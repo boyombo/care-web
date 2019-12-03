@@ -27,6 +27,12 @@ class AssociationInline(admin.TabularInline):
 class DependantAdmin(admin.ModelAdmin):
     list_display = ["surname", "first_name", "dob", "relationship"]
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(primary__ranger__user=request.user)
+
 
 class DependantInline(admin.TabularInline):
     model = Dependant
@@ -132,6 +138,11 @@ class ClientAdmin(admin.ModelAdmin):
 
         client = queryset[0]
         rate = get_subscription_rate(client)
+        if rate > ranger.balance:
+            messages.error(
+                request, "Sorry, you do not have enough balance for this subscription"
+            )
+            return
 
         if request.method == "POST" and "apply" in request.POST:
             ranger.balance -= rate
