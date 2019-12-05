@@ -170,7 +170,7 @@ class ClientAdmin(admin.ModelAdmin):
         except Ranger.DoesNotExist:
             pass
         else:
-            usr = obj.usr
+            usr = obj.user
             usr.active = True
             usr.save()
             obj.ranger = ranger
