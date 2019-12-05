@@ -163,3 +163,16 @@ class ClientAdmin(admin.ModelAdmin):
                 "admin/client/subscribe.html",
                 {"ranger": ranger, "client": client, "amount": rate},
             )
+
+    def save_model(self, request, obj, form, change):
+        try:
+            ranger = Ranger.objects.get(user=request.user)
+        except Ranger.DoesNotExist:
+            pass
+        else:
+            usr = obj.usr
+            usr.active = True
+            usr.save()
+            obj.ranger = ranger
+            obj.save()
+        super().save_model(request, obj, form, change)
