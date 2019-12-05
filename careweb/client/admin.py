@@ -120,9 +120,10 @@ class ClientAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(ranger__user=request.user)
 
-    def has_delete_permission(self, request, obj=None):
+     def has_delete_permission(self, request, obj=None):
         if not request.user.is_superuser:
             return False
+        return True
 
     def subscribe_client(self, request, queryset):
         try:
