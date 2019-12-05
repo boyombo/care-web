@@ -28,7 +28,7 @@ class WalletFundingAdmin(admin.ModelAdmin):
         "rejection_reason",
     ]
     list_filter = ["status"]
-    search_fields = ["ranger__first_name", "ranger__last_name", "ranger_phone"]
+    search_fields = ["ranger__first_name", "ranger__last_name", "ranger__phone"]
     date_hierarchy = "payment_date"
     actions = ["approve_funding", "reject_funding"]
     readonly_fields = ["ranger", "payment", "status", "rejection_reason"]
