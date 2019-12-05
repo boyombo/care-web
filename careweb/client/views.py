@@ -70,7 +70,7 @@ def register(request):
             username = form.cleaned_data["email"]
 
             new_user = User.objects.create_user(username=username, password=pwd)
-            new_user.is_active = False
+            # new_user.is_active = False
             new_user.save()
             # import pdb
 
