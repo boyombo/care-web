@@ -170,9 +170,9 @@ class ClientAdmin(admin.ModelAdmin):
         except Ranger.DoesNotExist:
             pass
         else:
-            usr = obj.user
-            usr.active = True
-            usr.save()
+            # usr = obj.user
+            # usr.active = True
+            # usr.save()
             obj.ranger = ranger
             obj.save()
         super().save_model(request, obj, form, change)
