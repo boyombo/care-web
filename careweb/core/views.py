@@ -28,6 +28,8 @@ def login_agent(request):
             password = form.cleaned_data["password"]
             usr = authenticate(username=username, password=password)
             if usr is not None:
+                logger.info("authenticated {}".format(username))
+
                 try:
                     agent = Ranger.objects.get(user=usr)
                 except Ranger.DoesNotExist:
@@ -35,6 +37,7 @@ def login_agent(request):
                         {"error": "The user is not a ranger", "success": False}
                     )
                 else:
+                    logger.info("everything seems fine")
                     providers = [
                         {
                             "id": prov.id.hashid,
@@ -47,7 +50,7 @@ def login_agent(request):
                         }
                         for prov in CareProvider.objects.all()
                     ]
-                    logger.info("PROVIDER")
+                    logger.info("PROVIDERS")
                     logger.info(providers)
 
                     lgas = [
