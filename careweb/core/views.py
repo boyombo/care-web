@@ -23,7 +23,9 @@ def login_agent(request):
     logger.info("logging in agent")
     if request.method == "POST":
         form = LoginForm(request.POST)
+        logger.info("form is {}".format(form))
         if form.is_valid():
+            logger.info("form is valid")
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             usr = authenticate(username=username, password=password)
