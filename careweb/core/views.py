@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def login_agent(request):
+    logger.info("logging in agent")
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -31,7 +32,7 @@ def login_agent(request):
                     agent = Ranger.objects.get(user=usr)
                 except Ranger.DoesNotExist:
                     return JsonResponse(
-                        {"error": "The user is not an ranger", "success": False}
+                        {"error": "The user is not a ranger", "success": False}
                     )
                 else:
                     providers = [

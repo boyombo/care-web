@@ -199,6 +199,7 @@ LOGGING = {
     "loggers": {
         "client": {"handlers": ["client_logfile"], "level": "INFO", "propagate": True,},
         "ranger": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True,},
+        "core": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True,},
         "payment": {
             "handlers": ["payment_logfile"],
             "level": "INFO",
