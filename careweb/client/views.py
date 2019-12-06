@@ -440,19 +440,24 @@ def get_client_photo(request, id):
 
 
 def verify_code(request):
+    logger.info("verifying code...")
     code = request.GET.get("code")
     id = request.GET.get("id")
+    logger.info("code is {}".format(code))
+    logger.info("id is {}".format(id))
     try:
         cl = Client.objects.get(pk=id)
     except Client.DoesNotExist:
         return JsonResponse({"success": False, "error": "User does not exist"})
 
+    logger.info("client seen")
     usr = cl.user
     if not usr:
         return JsonResponse({"success": False, "error": "User not configured properly"})
     # if usr.is_active:
     #    return JsonResponse({"success": True})
     if code == cl.verification_code:
+        logger.info("verified code")
         usr.is_active = True
         usr.save()
         return JsonResponse({"success": True})
