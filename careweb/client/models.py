@@ -140,6 +140,7 @@ class Client(models.Model):
     photo = models.ImageField(upload_to="clientphoto", null=True, blank=True)
     verification_code = models.CharField(max_length=10, blank=True, null=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    verified = models.BooleanField(default=False)
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
     def __str__(self):

@@ -48,6 +48,7 @@ class ClientAdmin(admin.ModelAdmin):
         "plan",
         "user",
         "verification_code",
+        "verified",
     ]
     inlines = [DependantInline, AssociationInline]
     search_fields = ["user__username", "surname", "first_name"]
