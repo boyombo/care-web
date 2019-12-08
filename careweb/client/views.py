@@ -278,7 +278,7 @@ def register_api(request):
                 }
             )
         else:
-            logger.info(form.errors.get_json_data())
+            logger.info(form.errors)
             return JsonResponse(
                 {"success": False, "error": form.errors.get_json_data()}
             )
