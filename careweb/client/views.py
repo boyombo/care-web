@@ -408,6 +408,9 @@ def verify_code(request):
     # if usr.is_active:
     #    return JsonResponse({"success": True})
     if code == cl.verification_code:
+        cl.verified = True
+        cl.save()
+
         logger.info("verified code")
         usr.is_active = True
         usr.save()
