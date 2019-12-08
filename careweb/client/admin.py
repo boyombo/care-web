@@ -175,5 +175,6 @@ class ClientAdmin(admin.ModelAdmin):
             # usr.active = True
             # usr.save()
             obj.ranger = ranger
+            obj.verified = True
             obj.save()
         super().save_model(request, obj, form, change)
