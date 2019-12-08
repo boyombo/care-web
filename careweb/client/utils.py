@@ -24,7 +24,7 @@ def get_client_details(client, host):
         for dependant in Dependant.objects.filter(primary=client)
     ]
     return {
-        "active": client.user.is_active if client.user else False,
+        "active": client.verified,
         "subscription_rate": subscription_rate,
         "id": client.id.id,
         "surname": client.surname,
