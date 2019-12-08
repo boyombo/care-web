@@ -278,16 +278,17 @@ def register_api(request):
                 }
             )
         else:
-            logger.info(form.errors)
-            return JsonResponse(
-                {"success": False, "error": form.errors.get_json_data()}
-            )
+            error_msg = form.errors.as_text().split("*")[-1]
+            logger.info(error_msg)
+            return JsonResponse({"success": False, "error": error_msg})
     return JsonResponse({"success": False})
 
 
 @csrf_exempt
 def login_api(request):
-    # import pdb; pdb.set_trace()
+    # import pdb
+
+    # pdb.set_trace()
     if request.method == "POST":
         logger.info("logging in...")
         form = LoginForm(request.POST)
