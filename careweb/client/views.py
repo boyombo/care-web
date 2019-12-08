@@ -38,6 +38,7 @@ from client.forms import (
     AmountForm,
     PlanForm,
     PCPForm,
+    ClientForm,
 )
 
 import logging
@@ -276,6 +277,11 @@ def register_api(request):
                     },
                 }
             )
+        else:
+            logger.info(form.errors.get_json_data())
+            return JsonResponse(
+                {"success": False, "error": form.errors.get_json_data()}
+            )
     return JsonResponse({"success": False})
 
 
@@ -496,6 +502,22 @@ def create_client_subscription(request, client_id, ranger_id):
                 ranger.save()
                 return JsonResponse({"success": True, "newBalance": ranger.balance})
     return JsonResponse({"success": False})
+
+
+def add_client(request):
+    if request.method == "POST":
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            host = "https://{}".format(request.get_host())
+            ranger = get_object_or_404(Ranger, pk=id)
+            clients = [
+                get_client_details(cl, host)
+                for cl in Client.objects.filter(ranger=ranger)
+            ]
+            return JsonResponse({"success": True, "clients": clients})
+        else:
+            return JsonResponse({"success": False})
 
 
 def payment(request):
