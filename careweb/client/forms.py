@@ -185,3 +185,16 @@ class PCPForm(forms.ModelForm):
                 pass
         elif self.instance.pk:
             self.fields["pcp"].queryset = CareProvider.objects.all()
+
+
+class ClientForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        exclude = [
+            "balance",
+            "verification_code",
+            "photo",
+            "registration_date",
+            "package_option",
+            "hmo",
+        ]
