@@ -1298,6 +1298,7 @@ font-family: 'Dancing Script', cursive;
 }
 .p-small span{
   color: #403D3D;
+  font-size: 18px;
 }
 .counter .c-box h3 {
   font-size: 18px;
