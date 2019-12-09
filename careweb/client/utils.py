@@ -1,5 +1,5 @@
 from subscription.utils import get_subscription_rate
-from client.models import Dependant
+from client.models import Dependant, ClientAssociation
 
 
 def get_client_details(client, host):
@@ -22,6 +22,10 @@ def get_client_details(client, host):
             "pcp": dependant.pcp.id.id if dependant.pcp else None,
         }
         for dependant in Dependant.objects.filter(primary=client)
+    ]
+    associations = [
+        assoc.association_id
+        for assoc in ClientAssociation.objects.filter(client=client)
     ]
     return {
         "active": client.verified,
@@ -52,4 +56,5 @@ def get_client_details(client, host):
         "paymentOption": client.payment_option,
         "paymentInstrument": client.payment_instrument,
         "dependants": dependants,
+        "associations": associations,
     }
