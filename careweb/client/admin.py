@@ -102,14 +102,14 @@ class ClientAdmin(admin.ModelAdmin):
         (
             "Work",
             {
-                "fields": ["occupation", "company", "office_address",],
+                "fields": ["occupation", "company", "office_address", ],
                 "classes": ["tab-fs-work"],
             },
         ),
         (
             "Package",
             {
-                "fields": ["plan", "payment_option", "payment_instrument",],
+                "fields": ["plan", "payment_option", "payment_instrument", ],
                 "classes": ["tab-fs-package"],
             },
         ),
@@ -130,7 +130,7 @@ class ClientAdmin(admin.ModelAdmin):
         try:
             ranger = Ranger.objects.get(user=request.user)
         except Ranger.DoesNotExist:
-            messages.error(request, "Sorry, you cannot subscriber for a client")
+            messages.error(request, "Sorry, you cannot subscribe for a client")
             return
 
         if queryset.count() != 1:
