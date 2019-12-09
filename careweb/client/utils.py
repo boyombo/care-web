@@ -31,7 +31,7 @@ def get_client_details(client, host):
         client_pcp = {
             "id": client.pcp.id.id,
             "name": client.pcp.name,
-            "lga_id": client.pcp.lga.id,
+            "lga_id": client.pcp.lga.id.id,
             "address": client.pcp.address,
             "phone1": client.pcp.phone1,
         }
