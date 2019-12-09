@@ -24,7 +24,7 @@ def get_client_details(client, host):
         for dependant in Dependant.objects.filter(primary=client)
     ]
     associations = [
-        assoc.association_id
+        assoc.association.id.id
         for assoc in ClientAssociation.objects.filter(client=client)
     ]
     return {
