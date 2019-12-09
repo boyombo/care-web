@@ -27,6 +27,16 @@ def get_client_details(client, host):
         assoc.association.id.id
         for assoc in ClientAssociation.objects.filter(client=client)
     ]
+    if client.pcp:
+        client_pcp = {
+            "id": client.pcp.id.id,
+            "name": client.pcp.name,
+            "lga_id": client.pcp.lga.id,
+            "address": client.pcp.address,
+            "phone1": client.pcp.phone1,
+        }
+    else:
+        client_pcp = None
     return {
         "active": client.verified,
         "subscription_rate": subscription_rate,
@@ -45,7 +55,7 @@ def get_client_details(client, host):
         "lagosResidentsNo": client.lagos_resident_no,
         "lashmaNo": client.lashma_no,
         "lashmaQualityLifeNo": client.lashma_quality_life_no,
-        "pcp": client.pcp.id.id if client.pcp else None,
+        "pcp": client_pcp,
         "ranger": client.ranger.id.id if client.ranger else None,
         "homeAddress": client.home_address,
         "occupation": client.occupation,
