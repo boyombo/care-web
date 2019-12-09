@@ -45,16 +45,17 @@ Profile
                 <div class="col-md-7 col-xs-12">
                     <div class="content">
                         <h2>Welcome, {{profile.first_name}}</h2>
-                        <p>
-                            We at FutureCare will try to get a health plan to fit the needs of you and your family.
+                        <p class="p-font">
+                            We at FutureCare will try to get a health plan to fit the needs of your family and you.
                         </p>
                     </div>
                     <div class="col-md-6 counter" style="padding: 10px;">  
                         <div class="row">
                             <div class=" col-md-12">
                                 {% if profile.plan %}
-                                    <h5>Plan: {{profile.plan }}</h5>
-                                    <small>Paid {{profile.get_payment_option_display }} by {{profile.get_payment_instrument_display }}</small>
+                                    <h5 class="h5-font">Plan: {{profile.plan }}</h5>
+                                    <h4 class="h4-font">Balance: {{profile.plan }}</h4>
+                                    <small class="p-small">Next Payment Date: <span>{{profile.get_payment_option_display }}</span></small>
                                     <a href="{% url 'subscription_new' %}" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-cash"> </i> Make Subscription Payment</a>
 
                                 {%else%}
@@ -279,7 +280,7 @@ Profile
     </div>
     <!-- Services Area End -->
 
-
+{% comment %}
     <!-- Testimonial Area Start -->
     <section id="testimonial" class="testimonial">
         <div class="container">
@@ -421,6 +422,7 @@ Profile
         </div>
     </section>
     <!-- Counter Area End -->
+{% endcomment %}
 
 {% endblock content %}
 
