@@ -75,14 +75,14 @@ class Client(models.Model):
     LASHMA_QUALITY_LIFE = "Q"
     PACKAGE_OPTIONS = (("L", "LASHMA"), ("Q", "LASHMA QUALITY LIFE"))
 
+    DAILY = "D"
     WEEKLY = "W"
     MONTHLY = "M"
-    QUARTERLY = "Q"
     ANNUALLY = "A"
     PAYMENT_OPTIONS = (
+        ("D", "Daily"),
         ("W", "Weekly"),
         ("M", "Monthly"),
-        ("Q", "Quarterly"),
         ("A", "Annually"),
     )
 
