@@ -44,7 +44,7 @@ class ClientAdmin(admin.ModelAdmin):
         "surname",
         "first_name",
         "active",
-        "package_option",
+        "payment_option",
         "plan",
         "user",
         "verification_code",
@@ -102,14 +102,14 @@ class ClientAdmin(admin.ModelAdmin):
         (
             "Work",
             {
-                "fields": ["occupation", "company", "office_address", ],
+                "fields": ["occupation", "company", "office_address",],
                 "classes": ["tab-fs-work"],
             },
         ),
         (
             "Package",
             {
-                "fields": ["plan", "payment_option", "payment_instrument", ],
+                "fields": ["plan", "payment_option", "payment_instrument",],
                 "classes": ["tab-fs-package"],
             },
         ),
