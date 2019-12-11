@@ -9,6 +9,7 @@ class PlanAdmin(admin.ModelAdmin):
         "name",
         "code",
         "has_extra",
+        "family_inclusive",
     ]
 
 

@@ -1,43 +1,70 @@
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 
+from core.models import PlanRate
 from client.models import Client, Dependant
 from subscription.models import Subscription
 
 
 def _get_expiry_date(clt, start_date):
+    if clt.payment_option == Client.DAILY:
+        return start_date
     if clt.payment_option == Client.WEEKLY:
         return start_date + relativedelta(weeks=1, days=-1)
     elif clt.payment_option == Client.MONTHLY:
         return start_date + relativedelta(months=1, days=-1)
-    elif clt.payment_option == Client.QUARTERLY:
-        return start_date + relativedelta(months=3, days=-1)
+    # elif clt.payment_option == Client.QUARTERLY:
+    #    return start_date + relativedelta(months=3, days=-1)
     else:
         return start_date + relativedelta(years=1, days=-1)
 
 
 def get_subscription_rate(clt):
-    divisor = {
-        Client.WEEKLY: 52,
-        Client.MONTHLY: 12,
-        Client.QUARTERLY: 4,
-        Client.ANNUALLY: 1,
-    }
-    try:
-        divide_by = divisor[clt.payment_option]
-    except KeyError:
-        return None
-    if not clt.plan:
-        return None
-    dependant_amount = 0
-    for dependant in Dependant.objects.filter(primary=clt):
-        if dependant.relationship == Dependant.SPOUSE:
-            dependant_amount += clt.plan.spouse_dependant_rate
-        elif dependant.relationship in [Dependant.DAUGHTER, Dependant.SON]:
-            dependant_amount += clt.plan.minor_dependant_rate
+    if not clt.payment_option or not clt.plan:
+        return
+    plan = clt.plan
+    plan_rate = PlanRate.objects.get(plan=clt.plan, payment_cycle=clt.payment_option)
+    client_rate = plan_rate.rate
+
+    # dependants
+    family_deps = (
+        Dependant.objects.filter(primary=clt)
+        .exclude(relationship=Dependant.OTHERS)
+        .count()
+    )
+    other_deps = Dependant.objects.filter(
+        primary=clt, relationship=Dependant.OTHERS
+    ).count()
+    if plan.has_extra and plan_rate.extra_rate:
+        if plan.family_inclusive:
+            dep_rate = other_deps * plan_rate.extra_rate
         else:
-            dependant_amount += clt.plan.other_dependant_rate
-    return (clt.plan.client_rate + dependant_amount) / divide_by
+            dep_rate = plan_rate.extra_rate * (family_deps + other_deps)
+    else:
+        dep_rate = 0
+    return client_rate + dep_rate
+
+    # divisor = {
+    #    Client.WEEKLY: 52,
+    #    Client.MONTHLY: 12,
+    #    Client.QUARTERLY: 4,
+    #    Client.ANNUALLY: 1,
+    # }
+    # try:
+    #    divide_by = divisor[clt.payment_option]
+    # except KeyError:
+    #    return None
+    # if not clt.plan:
+    #    return None
+    # dependant_amount = 0
+    # for dependant in Dependant.objects.filter(primary=clt):
+    #    if dependant.relationship == Dependant.SPOUSE:
+    #        dependant_amount += clt.plan.spouse_dependant_rate
+    #    elif dependant.relationship in [Dependant.DAUGHTER, Dependant.SON]:
+    #        dependant_amount += clt.plan.minor_dependant_rate
+    #    else:
+    #        dependant_amount += clt.plan.other_dependant_rate
+    # return (clt.plan.client_rate + dependant_amount) / divide_by
 
 
 def get_last_subscription(clt):
@@ -69,7 +96,7 @@ def get_next_subscription_date(cl):
 
 
 def create_subscription(cl, amount):
-    # import pdb;pdb.set_trace()
+    # import pdb; pdb.set_trace()
     if not cl.plan:
         return None
     rate = get_subscription_rate(cl)
