@@ -1,7 +1,12 @@
-from django.contrib import admin
 from django import forms
 
+from django.contrib import admin
+from django.contrib import messages
+from django.shortcuts import render
+
+from client.models import Client
 from subscription.models import Subscription, SubscriptionPayment
+from subscription.utils import get_subscription_rate #, create_subscription
 
 
 @admin.register(Subscription)
@@ -44,3 +49,33 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(ranger__user=request.user)
+
+    def approve_subscription(self, request, queryset):
+        try:
+            client = Client.objects.get(user=request.user)
+        except Client.DoesNotExist:
+            messages.error(request, "Sorry, you cannot approve for a client")
+            return
+
+        if queryset.count() != 1:
+            messages.error(
+                request, "Sorry, you can only approve one client at a time")
+            return
+
+        client = queryset[0]
+        rate = get_subscription_rate(client)
+        cl_sub_payment = SubscriptionPayment.objects.filter(client=client)[0]
+
+        if request.method == "POST" and "approve" in request.POST:
+            if cl_sub_payment.status == "PENDING":
+                client.balance += cl_sub_payment.amount
+                cl_sub_payment.status = 2
+                cl_sub_payment.save()
+                client.save()
+            # Create Subscription here:
+            messages.success(request, "The approval was successful")
+        else:
+            return render(
+                request,
+                "admin/subscription/approval.html", {"client": client,}
+            )

@@ -19,7 +19,7 @@ from django.views.generic.edit import UpdateView
 
 from client.models import Client, Dependant, ClientAssociation, Association
 from core.utils import send_welcome_email, send_email
-from subscription.utils import get_subscription_rate, create_subscription
+from subscription.utils import get_subscription_rate, create_subscription, get_next_subscription_date  
 from payment.utils import get_reference
 from client.utils import get_client_details
 from ranger.models import Ranger
@@ -56,10 +56,14 @@ def profile(request, pk=None):
         except Client.DoesNotExist:
             return redirect("login")
     subscription_rate = get_subscription_rate(client)
+    next_subscription = get_next_subscription_date(client)
     return render(
         request,
         "client/profile.html",
-        {"profile": client, "subscription_rate": subscription_rate},
+        {
+            "profile": client,
+            "subscription_rate": subscription_rate,
+            "next_subscription": next_subscription},
     )
 
 
