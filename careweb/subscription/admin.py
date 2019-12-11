@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 from client.models import Client
 from subscription.models import Subscription, SubscriptionPayment
-from subscription.utils import get_subscription_rate #, create_subscription
+from subscription.utils import get_subscription_rate, create_subscription
 
 
 @admin.register(Subscription)
@@ -72,6 +72,7 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
                 cl_sub_payment.status = 2
                 cl_sub_payment.save()
                 client.save()
+                create_subscription(client, rate)
             # Create Subscription here:
             messages.success(request, "The approval was successful")
         else:
