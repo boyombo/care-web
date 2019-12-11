@@ -19,7 +19,11 @@ from django.views.generic.edit import UpdateView
 
 from client.models import Client, Dependant, ClientAssociation, Association
 from core.utils import send_welcome_email, send_email
-from subscription.utils import get_subscription_rate, create_subscription, get_next_subscription_date  
+from subscription.utils import (
+    get_subscription_rate,
+    create_subscription,
+    get_next_subscription_date,
+)
 from payment.utils import get_reference
 from client.utils import get_client_details
 from ranger.models import Ranger
@@ -63,7 +67,8 @@ def profile(request, pk=None):
         {
             "profile": client,
             "subscription_rate": subscription_rate,
-            "next_subscription": next_subscription},
+            "next_subscription": next_subscription,
+        },
     )
 
 
@@ -146,6 +151,17 @@ class PlanView(ClientView):
     # form_class = PlanForm
     fields = ["plan", "payment_option", "payment_instrument"]
     template_name = "client/plan.html"
+
+
+class IdentificationView(ClientView):
+    fields = [
+        "national_id_card_no",
+        "drivers_licence_no",
+        "lagos_resident_no",
+        "lashma_no",
+        "lashma_quality_life_no",
+    ]
+    template_name = "client/identification.html"
 
 
 class PersonalInfoView(ClientView):
