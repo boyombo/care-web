@@ -65,6 +65,6 @@ def get_client_details(client, host):
         "plan": client.plan.id if client.plan else None,
         "paymentOption": client.payment_option,
         "paymentInstrument": client.payment_instrument,
-        "dependants": dependants,
+        "dependents": dependants,  # I call it dependents instead of dependants everywhere
         "associations": associations,
     }
