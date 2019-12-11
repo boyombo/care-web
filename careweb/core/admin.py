@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Plan
+from core.models import Plan, PlanRate
 
 
 @admin.register(Plan)
@@ -8,8 +8,10 @@ class PlanAdmin(admin.ModelAdmin):
     list_display = [
         "name",
         "code",
-        "client_rate",
-        "spouse_dependant_rate",
-        "minor_dependant_rate",
-        "other_dependant_rate",
+        "has_extra",
     ]
+
+
+@admin.register(PlanRate)
+class PlanRateAdmin(admin.ModelAdmin):
+    list_display = ["plan", "payment_cycle", "rate", "extra_rate", "has_extra"]
