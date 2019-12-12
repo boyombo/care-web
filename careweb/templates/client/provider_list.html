@@ -1,4 +1,4 @@
 <option value="">---------</option>
 {% for provider in providers %}
-<option value="{{ provider.pk }}">{{ provider.name }}</option>
+<option value="{{ provider.pk }}">{{ provider.name }} -- {{provider.address}}</option>
 {% endfor %}
