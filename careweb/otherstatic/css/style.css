@@ -1289,7 +1289,7 @@ font-family: 'Dancing Script', cursive;
   padding-left: 5px;
 }
 .p-small{
-  font-size: 20px;
+  font-size: 19px;
   display: block;
   margin-bottom: 15px;
   padding-left: 10px;
@@ -1298,7 +1298,7 @@ font-family: 'Dancing Script', cursive;
 }
 .p-small span{
   color: #403D3D;
-  font-size: 18px;
+  font-size: 17px;
 }
 .counter .c-box h3 {
   font-size: 18px;

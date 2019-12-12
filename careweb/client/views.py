@@ -169,6 +169,11 @@ class PersonalInfoView(ClientView):
     template_name = "client/personal.html"
 
 
+class PhotoView(ClientView):
+    fields = ["photo"]
+    template_name = "client/photo.html"
+
+
 class ContactView(ClientView):
     fields = ["phone_no", "whatsapp_no", "home_address"]
     template_name = "client/contact.html"
