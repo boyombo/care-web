@@ -21,6 +21,14 @@ class SubscriptionAdmin(admin.ModelAdmin):
     ]
     search_fields = ["client__user__username", "client_first_name"]
     list_filter = ["active"]
+    readonly_fields = [
+        "client",
+        "subscribed_on",
+        "expiry_date",
+        "plan",
+        "amount",
+        "active",
+    ]
 
 
 class PaymentForm(forms.ModelForm):
