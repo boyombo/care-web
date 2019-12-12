@@ -14,6 +14,7 @@ urlpatterns = [
         "personal/<str:pk>/", views.PersonalInfoView.as_view(), name="profile_personal"
     ),
     path("contact/<str:pk>/", views.ContactView.as_view(), name="profile_contact"),
+    path("photo/<str:pk>/", views.PhotoView.as_view(), name="profile_photo"),
     path(
         "identification/<str:pk>/",
         views.IdentificationView.as_view(),

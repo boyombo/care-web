@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+Provider
+{% endblock title %}
+
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block content %}
+
+<!-- SignUP Area Start -->
+<section class="logRegForm"> 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-10">
+        <div class="contact_form_wrappre2">
+            <h2>
+                Upload Photo
+            </h2>
+                <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                    <div class="inputArea">
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div><label>Choose Image</label></div>
+                            
+                            <div class="input-group">
+                                {% if form.photo.errors %}
+                                    <div class="alert alert-danger">
+                                        {{ form.photo.errors }}
+                                    </div>
+                                {% endif %}
+                                {% render_field form.photo class+="form-control" %}
+                            </div>
+                        </div>
+                    </div>           
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <button class="loginnow" type="submit">Save</button>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<!-- SignUp Area End -->
+    
+
+  {% endblock content %}
+
+  {% block extra-js %}
+    <script type="text/javascript">
+    $('#id_photo').addClass('form-control');
+    $('#id_photo').attr('photo', 'Photo');
+
+    // glyphicon
+    $("#id_lga").change(function () {
+      var lgaId = $(this).val();  // get the selected country ID from the HTML input
+
+      var url = '/client/load_pcp_list/?lga=' + lgaId   // get the url of the `load_cities` view
+      console.log(url)
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'lga_id': lgaId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_pcp").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+    </script>
+{% endblock extra-js %}
