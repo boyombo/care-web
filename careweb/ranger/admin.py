@@ -11,7 +11,7 @@ from ranger.forms import RejectForm
 
 @admin.register(Ranger)
 class RangerAdmin(admin.ModelAdmin):
-    list_display = ["first_name", "last_name", "phone", "lga", "balance"]
+    list_display = ["first_name", "last_name", "phone", "lga", "balance", "user"]
     list_filter = ["lga"]
     search_fields = ["first_name", "last_name"]
 
