@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 from client.models import Client
 from subscription.models import Subscription, SubscriptionPayment
-from subscription.utils import get_subscription_rate #, create_subscription
+from subscription.utils import get_subscription_rate  # , create_subscription
 
 
 @admin.register(Subscription)
@@ -43,6 +43,7 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
     list_filter = ["status"]
     autocomplete_fields = ["client"]
     form = PaymentForm
+    readonly_fields = ["client", "amount"]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -58,8 +59,7 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
             return
 
         if queryset.count() != 1:
-            messages.error(
-                request, "Sorry, you can only approve one client at a time")
+            messages.error(request, "Sorry, you can only approve one client at a time")
             return
 
         client = queryset[0]
@@ -76,6 +76,5 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
             messages.success(request, "The approval was successful")
         else:
             return render(
-                request,
-                "admin/subscription/approval.html", {"client": client,}
+                request, "admin/subscription/approval.html", {"client": client,}
             )
