@@ -14,6 +14,11 @@ urlpatterns = [
         "personal/<str:pk>/", views.PersonalInfoView.as_view(), name="profile_personal"
     ),
     path("contact/<str:pk>/", views.ContactView.as_view(), name="profile_contact"),
+    path(
+        "identification/<str:pk>/",
+        views.IdentificationView.as_view(),
+        name="profile_identification",
+    ),
     path("work/<str:pk>/", views.WorkView.as_view(), name="profile_work"),
     path("pcp/<str:pk>/", views.PCPView.as_view(), name="profile_pcp"),
     # path('associations/<int:pk>/', views.AssociationsView.as_view(),

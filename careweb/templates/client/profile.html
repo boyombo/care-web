@@ -208,7 +208,18 @@ Profile
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-lg-4">            
+                <div class="col-md-6 col-lg-3">            
+                    <div class="box">
+                        <a href="{% url 'profile_personal' pk=profile.id %}"><i class="pe-7s-user"></i></a>
+                        <h3>
+                            Photo
+                        </h3>
+                        <p>
+                            Your Photograph
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">            
                     <div class="box">
                         <a href="{% url 'profile_personal' pk=profile.id %}"><i class="pe-7s-user"></i></a>
                         <h3>
@@ -219,7 +230,7 @@ Profile
                         </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-3">
                     <div class="box">
                         <a href="{% url 'profile_contact' pk=profile.id %}"><i class="pe-7s-phone"></i></a>
                         <h3>
@@ -230,7 +241,7 @@ Profile
                         </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-3">
                     <div class="box">
                         <a href="{% url 'profile_work' pk=profile.id %}"><i class="pe-7s-culture"></i></a>
                         <h3>
@@ -241,7 +252,7 @@ Profile
                         </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-3">
                     <div class="box">
                         <a href="{% url 'profile_pcp' pk=profile.id %}"><i class="pe-7s-eyedropper"></i></a>
                         <h3>
@@ -252,7 +263,7 @@ Profile
                         </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-3">
                     <div class="box">
                         <a href="{% url 'profile_associations' pk=profile.id %}"><i class="pe-7s-tools"></i></a>
                         <h3>
@@ -263,7 +274,7 @@ Profile
                         </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-3">
                     <div class="box">
                         <a href="{% url 'profile_dependants' pk=profile.id %}"><i class="pe-7s-users"></i></a>
                         <h3>
@@ -271,6 +282,18 @@ Profile
                         </h3>
                         <p>
                             Your spouse, children and other dependants you want to cover with your health plan.
+                        </p>
+                    </div>
+                </div>
+
+                 <div class="col-md-6 col-lg-3">
+                    <div class="box">
+                        <a href="{% url 'profile_identification' pk=profile.id %}"><i class="pe-7s-users"></i></a>
+                        <h3>
+                            Identification
+                        </h3>
+                        <p>
+                            Enter your Means of Identification.
                         </p>
                     </div>
                 </div>
