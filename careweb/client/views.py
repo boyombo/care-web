@@ -289,7 +289,7 @@ def register_api(request):
                     "success": True,
                     "client": {
                         "active": obj.verified,
-                        "id": obj.id.hashid,
+                        "id": obj.id.id,
                         "surname": obj.surname,
                         "firstName": obj.first_name,
                         "email": obj.email,
