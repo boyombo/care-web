@@ -22,6 +22,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
     search_fields = ["client__user__username", "client_first_name"]
     list_filter = ["active"]
     readonly_fields = [
+        "start_date",
+        "next_subscription",
+        "dependants",
         "client",
         "subscribed_on",
         "expiry_date",
