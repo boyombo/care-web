@@ -54,7 +54,7 @@ class ClientAdmin(admin.ModelAdmin):
     search_fields = ["user__username", "surname", "first_name"]
     autocomplete_fields = ["ranger", "pcp"]
     exclude = ["user"]
-    actions = ["subscribe_client"]
+    actions = ["subscribe_client", "verify_client"]
     fieldsets = [
         (
             "Basic",
@@ -125,6 +125,25 @@ class ClientAdmin(admin.ModelAdmin):
         if not request.user.is_superuser:
             return False
         return True
+
+    def get_actions(self, request):
+        # import pdb;pdb.set_trace()
+        actions = super().get_actions(request)
+        if request.user.is_superuser:
+            if "subscribe_client" in actions:
+                del actions["subscribe_client"]
+            return actions
+        else:
+            if "verify_client" in actions:
+                del actions["verify_client"]
+            return actions
+        return []
+
+    def verify_client(self, request, queryset):
+        if request.user.is_superuser:
+            queryset.update(verified=True)
+        else:
+            messages.error(request, "Sorry you cannot verify a client")
 
     def subscribe_client(self, request, queryset):
         try:
