@@ -10,4 +10,6 @@ urlpatterns = [
     path("paystack_error/", views.paystack_error, name="paystack_error"),
     path("paystack_verify/", views.verify_paystack_payment),
     path("subscription_verify/", views.verify_paystack_subscription),
+    path("verify_user/", views.verify_user),
+    path("walkin_payment/", views.walkin_payment),
 ]
