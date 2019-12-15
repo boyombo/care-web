@@ -10,11 +10,19 @@ class Payment(models.Model):
     SUCCESSFUL = 2
     STATUSES = enumerate(("Pending", "Failed", "Successful"))
 
+    BANK_PAYMENT = 0
+    CARD_PAYMENT = 1
+    FUND_REQUEST = 2
+    MODES = enumerate(("Bank", "Card", "Fund Request"))
+
     id = HashidAutoField(primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateField(default=timezone.now)
     reference = models.CharField(max_length=200, blank=True)
     status = models.PositiveIntegerField(choices=STATUSES, default=PENDING)
+    payment_mode = models.PositiveIntegerField(choices=MODES, null=True)
+    narration = models.TextField(blank=True)
+    paid_by = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
         return "{}".format(self.amount)

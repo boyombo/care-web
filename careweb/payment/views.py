@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
@@ -8,13 +8,88 @@ from client.models import Client
 from subscription.models import SubscriptionPayment
 from subscription.utils import create_subscription
 from payment.models import Payment
-from payment.forms import PaymentForm
-from payment.utils import get_reference
+from payment.forms import PaymentForm, WalkinPaymentForm
+from payment.utils import get_reference, get_user_for_payment
 from payment.paystack import initiate, verify
 
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+def verify_user(request):
+    username = request.GET.get("username", None)
+    if not username:
+        return HttpResponseBadRequest("Illegal request")
+
+    try:
+        get_user_for_payment(username)
+    except ValueError as err:
+        return HttpResponseBadRequest(err)
+        # return JsonResponse({"success": False, "error": err})
+    else:
+        return JsonResponse({"success": True})
+
+    # try:
+    #    usr = User.objects.get(username=username)
+    # except User.DoesNotExist:
+    #    return JsonResponse({"success": False, "error": "This user does not exist"})
+
+    # try:
+    #    Client.objects.get(user=usr)
+    # except Client.DoesNotExist:
+    #    try:
+    #        Ranger.objects.get(user=usr)
+    #    except Ranger.DoesNotExist:
+    #        return JsonResponse({"success": False, "error": "This user is not active"})
+    #    else:
+    #        return JsonResponse({"success": True})
+    # else:
+    #    return JsonResponse({"success": True})
+
+    return HttpResponseBadRequest("Illegal request")
+
+
+@csrf_exempt
+def walkin_payment(request):
+    if request.method == "POST":
+        form = WalkinPaymentForm(request.POST)
+        if form.is_valid():
+            # import pdb;pdb.set_trace()
+            usr = form.cleaned_data["user"]
+            amount = form.cleaned_data["amount"]
+
+            pymt = form.save(commit=False)
+            pymt.status = Payment.SUCCESSFUL
+            pymt.payment_mode = Payment.BANK_PAYMENT
+            pymt.save()
+
+            try:
+                _client = Client.objects.get(user__username=usr)
+            except Client.DoesNotExist:
+                pass
+            else:
+                create_subscription(_client, amount)
+                return JsonResponse({"success": True})
+
+            try:
+                _ranger = Ranger.objects.get(user__username=usr)
+            except Ranger.DoesNotExist:
+                return JsonResponse({"success": False, "error": "User does not exist"})
+            else:
+                WalletFunding.objects.create(
+                    ranger=_ranger,
+                    amount=amount,
+                    bank="Fidelity",
+                    name=pymt.paid_by,
+                    reference=pymt.reference,
+                    payment_type=WalletFunding.BANK_DEPOSIT,
+                    payment=pymt,
+                    status=WalletFunding.SUCCESSFUL,
+                )
+                _ranger.balance += pymt.amount
+                _ranger.save()
+                return JsonResponse({"success": True})
 
 
 @csrf_exempt
