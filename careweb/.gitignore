@@ -98,3 +98,5 @@ target/
 *.komodoproject
 deploy.sh
 deploy.py
+
+static/
