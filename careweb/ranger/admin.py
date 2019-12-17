@@ -67,9 +67,8 @@ class WalletFundingAdmin(admin.ModelAdmin):
             return redirect("/admin/ranger/walletfunding/")
         email = request.user.username
         amount = float(obj.amount)
-        ref = get_reference()
         # import pdb; pdb.set_trace()
-        res = paystack.initiate(email, amount, ref)
+        res = paystack.initiate(email, amount, obj.reference)
         if res["status"]:
             auth_url = res["data"]["authorization_url"]
             return HttpResponseRedirect(auth_url)
@@ -89,10 +88,9 @@ class WalletFundingAdmin(admin.ModelAdmin):
         except Ranger.DoesNotExist:
             obj.ranger = None
         else:
+            ref = get_reference()
             pymt = Payment.objects.create(
-                amount=obj.amount,
-                reference="{}-{}".format(obj.name, obj.bank),
-                status=Payment.PENDING,
+                amount=obj.amount, reference=ref, status=Payment.PENDING,
             )
             obj.ranger = ranger
             obj.payment = pymt
