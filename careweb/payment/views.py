@@ -103,7 +103,7 @@ def paystack_initiate_subscription(request):
         return redirect("paystack_error")
     else:
         amount = get_subscription_rate(client)
-        kobo = amount * 100
+        # kobo = amount * 100
         reference = get_reference()
         pymt = Payment.objects.create(amount=amount, reference=reference)
         logger.info("payment created")
@@ -114,7 +114,7 @@ def paystack_initiate_subscription(request):
             payment=pymt,
             payment_type=SubscriptionPayment.CARD,
         )
-        res = initiate(email, kobo, reference)
+        res = initiate(email, amount, reference)
         logger.info(res)
         if res["status"]:
             auth_url = res["data"]["authorization_url"]
