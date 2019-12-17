@@ -1,0 +1,78 @@
+
+{% extends "subscription/base.html" %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+
+
+{% block footer %}
+{% endblock footer %}
+
+{% block content %}
+
+{% block breadcrumb %}
+{{block.super}}
+{% endblock breadcrumb %}
+
+<style>
+.lgbtn {
+    padding: 20px;
+    background-color: #9fde50;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    width: "100%";
+}
+</style>
+
+        
+    <!--  BreadCrumb Area Start  -->
+
+<!-- SignUP Area Start -->
+{% block body %}
+
+ <section class="logRegForm"> 
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10">
+                        <div class="contact_form_wrappre2">
+                            <h2>
+                                Debit Card Payment
+                            </h2>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box">
+                                    <p>Email: {{user.username}}</p>
+                                    <p>Amount: N{{amt|floatformat:"2"}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                              <div class="row">
+                                <div class="col-md-12">  
+                                    <div class="box">
+                                    <form method="post" id="upay_form" name="upay_form" action="https://fidelitypaygate.fidelitybank.ng/cipg/MerchantServices/MakePayment.aspx" target="_top">
+                                    <input type="hidden" name="mercId" value="{{mercId}}"/>
+                                    <input type="hidden" name="currCode" value="566"/>
+                                    <input type="hidden" name="amt" value="{{amt}}">
+                                    <input type="hidden" name="orderId" value="{{orderId}}"/>
+                                    <input type="hidden" name="prod" value="{{client.plan.name}}" />
+                                    <input type="hidden" name="email" value="{{user.username}}" />
+                                    <input type="hidden" name="hash" value="{{hash}}" />
+                                    <input type="hidden" name="encryptedKey" value = "{{encryptedKey}}" />
+                                     <div style="text-align: center; margin-bottom: 10px;">
+                                        <input type="submit" name="submit" value="Pay" class="lgbtn" />
+                                    </div>
+                                    </form>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SignUp Area End -->
+{% endblock body %}
+    
+
+{% endblock content %}

@@ -19,7 +19,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("baton/", include("baton.urls")),
     path("agent_app_login/", core_views.login_agent),
-    path("", TemplateView.as_view(template_name="base.html"), name="home"),
+    path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path("forgot-pwd/", core_views.forgot),
     path("change-pwd/", core_views.change_pwd),
     path(
