@@ -68,7 +68,7 @@ class WalletFundingAdmin(admin.ModelAdmin):
         email = request.user.username
         amount = float(obj.amount)
         # import pdb; pdb.set_trace()
-        res = paystack.initiate(email, amount, obj.reference)
+        res = paystack.initiate(email, amount, obj.payment.reference)
         if res["status"]:
             auth_url = res["data"]["authorization_url"]
             return HttpResponseRedirect(auth_url)
