@@ -1,5 +1,6 @@
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from django.db.models import Max
 
 from core.models import PlanRate
 from client.models import Client, Dependant
@@ -87,12 +88,16 @@ def get_active_subscription(cl):
 
 
 def get_next_subscription_date(cl):
-    try:
-        active_sub = Subscription.objects.get(client=cl, active=True)
-    except Subscription.DoesNotExist:
-        return timezone.now().date()
-    else:
-        return active_sub.expiry_date + timezone.timedelta(1)
+    exp = Subscription.objects.filter(client=cl).aggregate(Max("expiry_date"))[
+        "expiry_date__max"
+    ]
+    return exp
+    # try:
+    #    active_sub = Subscription.objects.get(client=cl, active=True)
+    # except Subscription.DoesNotExist:
+    #    return timezone.now().date()
+    # else:
+    #    return active_sub.expiry_date + timezone.timedelta(1)
 
 
 def create_subscription(cl, amount):
