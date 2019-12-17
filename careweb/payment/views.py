@@ -203,12 +203,26 @@ def paystack_callback(request):
             logger.info(resp)
             pymt.status = Payment.SUCCESSFUL
             pymt.save()
-            funding = WalletFunding.objects.get(payment=pymt)
-            funding.status = WalletFunding.SUCCESSFUL
-            funding.save()
-            ranger = funding.ranger
-            ranger.balance += pymt.amount
-            ranger.save()
+            try:
+                sub_payment = SubscriptionPayment.objects.get(payment=pymt)
+            except SubscriptionPayment.DoesNotExist:
+                try:
+                    funding = WalletFunding.objects.get(payment=pymt)
+                except WalletFunding.DoesNotExist:
+                    logger.info(
+                        "Problem finding source for transaction {}".format(txref)
+                    )
+                    return redirect("paystack_error")
+                else:
+                    funding.status = WalletFunding.SUCCESSFUL
+                    funding.save()
+                    ranger = funding.ranger
+                    ranger.balance += pymt.amount
+                    ranger.save()
+            else:
+                sub_payment.status = SubscriptionPayment.SUCCESSFUL
+                sub_payment.save()
+                create_subscription(sub_payment.client, sub_payment.amount)
             return redirect("paystack_success")
 
 
