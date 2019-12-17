@@ -7,11 +7,11 @@ name = "pypi"
 
 [packages]
 
-Django = "*"
+django = "*"
 fabric = "*"
 django-baton = "*"
 ipython = "*"
-Pillow = "*"
+pillow = "*"
 django-widget-tweaks = "*"
 requests = "*"
 "psycopg2" = "*"
@@ -26,6 +26,7 @@ postmarker = "*"
 django-debug-toolbar = "*"
 python-dateutil = "*"
 django-crispy-forms = "*"
+pycryptodome = "*"
 
 
 [dev-packages]
