@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from ranger.models import WalletFunding, Ranger
 from client.models import Client
 from subscription.models import SubscriptionPayment
-from subscription.utils import create_subscription
+from subscription.utils import create_subscription, get_subscription_rate
 from payment.models import Payment
 from payment.forms import PaymentForm, WalkinPaymentForm
 from payment.utils import get_reference, get_user_for_payment
@@ -90,6 +90,37 @@ def walkin_payment(request):
                 _ranger.balance += pymt.amount
                 _ranger.save()
                 return JsonResponse({"success": True})
+
+
+## Paystack
+
+
+def paystack_initiate_subscription(request):
+    email = request.user.username
+    try:
+        client = Client.objects.get(user=request.user)
+    except Client.DoesNotExist:
+        return redirect("paystack_error")
+    else:
+        amount = get_subscription_rate(client)
+        kobo = amount * 100
+        reference = get_reference()
+        pymt = Payment.objects.create(amount=amount, reference=reference)
+        logger.info("payment created")
+
+        SubscriptionPayment.objects.create(
+            client=client,
+            amount=amount,
+            payment=pymt,
+            payment_type=SubscriptionPayment.CARD,
+        )
+        res = initiate(email, kobo, reference)
+        logger.info(res)
+        if res["status"]:
+            auth_url = res["data"]["authorization_url"]
+            return redirect(auth_url)
+        else:
+            return JsonResponse(res)
 
 
 @csrf_exempt

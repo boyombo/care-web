@@ -5,6 +5,11 @@ from payment import views
 
 urlpatterns = [
     path("initiate/", views.new_payment, name="initiate_payment"),
+    path(
+        "initiate_subscription/",
+        views.paystack_initiate_subscription,
+        name="paystack_initiate_subscription",
+    ),
     path("paystack_callback/", views.paystack_callback),
     path("paystack_success/", views.paystack_success, name="paystack_success"),
     path("paystack_error/", views.paystack_error, name="paystack_error"),

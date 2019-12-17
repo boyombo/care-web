@@ -4,5 +4,7 @@ from subscription import views
 
 
 urlpatterns = [
-    path("new/", views.subscribe, name="subscription_new"),
+    path("new/", views.NewSubscriptionView.as_view(), name="subscription_new"),
+    path("bank/", views.bank, name="subscription_bank"),
+    path("card/", views.card_subscription, name="subscription_card"),
 ]

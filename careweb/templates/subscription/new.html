@@ -1,0 +1,63 @@
+
+{% extends "subscription/base.html" %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+
+
+{% block footer %}
+{% endblock footer %}
+
+{% block content %}
+
+{% block breadcrumb %}
+{{block.super}}
+{% endblock breadcrumb %}
+
+<style>
+.lgbtn {
+    padding: 20px;
+    background-color: #9fde50;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    width: "100%";
+}
+</style>
+
+        
+    <!--  BreadCrumb Area Start  -->
+
+<!-- SignUP Area Start -->
+{% block body %}
+
+ <section class="logRegForm"> 
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10">
+                        <div class="contact_form_wrappre2">
+                            <h2>
+                                Choose Payment method
+                            </h2>
+                              <div class="row">
+                                <div class="col-md-12">  
+                                    <div class="box">
+                                        <div style="text-align: center; margin-bottom: 50px;" class="lgbtn">
+                                            <a class="lgbtn" href="{% url 'paystack_initiate_subscription' %}"><i class="fas fa-credit-card"></i> <span> Pay with Debit Card</span></a>
+                                        </div>
+
+                                        <div style="text-align: center; margin-top: 20px;" class="lgbtn">
+                                            <a href="{% url 'subscription_bank' %}" class="lgbtn"><i class="fas fa-university"></i> Pay with Bank Transfer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SignUp Area End -->
+{% endblock body %}
+    
+
+{% endblock content %}

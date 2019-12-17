@@ -1,60 +1,29 @@
-{% extends "base.html" %}
+{% extends "subscription/base.html" %}
 {% comment %} {% load widget_tweaks %} {% endcomment %}
 {% load crispy_forms_tags %}
 
 
-{% block title %}
-Plan
-{% endblock title %}
+
 
 {% comment %}
 {% block header %}
 {% endblock header %}
 {% endcomment %}
 
-{% block footer %}
-{% endblock footer %}
-
 {% block content %}
 
-<section id="insuronbreadcrumb" class="insuronbreadcrumb">
-            <div class="bcoverlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="Content">
-                            <h2>
-                                Subscribe
-                            </h2>
-                            <div class="links">
-                                <ul>
-                                    <li>
-                                        <a href="index.html">Home</a>
-                                    </li>
-                                    <li>
-                                        <span>/</span>
-                                    </li>
-                                    <li>
-                                        <a class="active" href="{% url 'profile' pk=object.id %}">Profile</a>
-                                    </li>
-                                      <li>
-                                        <span>/</span>
-                                    </li>
-                                    <li>
-                                        <a class="active" href="#">Subscribe</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> 
+{% block breadcrumb %}
+{{block.super}}
+{% endblock breadcrumb %}
+
+
         
     <!--  BreadCrumb Area Start  -->
 
 <!-- SignUP Area Start -->
-<section class="logRegForm"> 
+{% block body %}
+
+    <section class="logRegForm"> 
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-7 col-md-10">
@@ -209,9 +178,10 @@ Plan
         </div>
     </section>
     <!-- SignUp Area End -->
+{% endblock body %}
     
 
-  {% endblock content %}
+{% endblock content %}
 
   {% block extra-js %}
     <script type="text/javascript">
