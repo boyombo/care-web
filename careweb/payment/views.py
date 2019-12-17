@@ -2,6 +2,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 from ranger.models import WalletFunding, Ranger
 from client.models import Client
@@ -192,10 +193,6 @@ def paystack_callback(request):
         except Payment.DoesNotExist:
             # redirect to error page
             logger.info("error")
-            pymt.status = Payment.FAILED
-            pymt.save()
-            funding = WalletFunding.objects.get(payment=pymt)
-            funding.status = WalletFunding.FAILED
             return redirect("paystack_error")
         else:
             resp = verify(pymt)
@@ -219,6 +216,8 @@ def paystack_callback(request):
                     ranger = funding.ranger
                     ranger.balance += pymt.amount
                     ranger.save()
+                    messages.success(request, "Payment successful")
+                    return redirect("/admin/ranger/walletfunding/")
             else:
                 sub_payment.status = SubscriptionPayment.SUCCESSFUL
                 sub_payment.save()

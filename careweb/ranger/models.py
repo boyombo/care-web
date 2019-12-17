@@ -29,7 +29,8 @@ class WalletFunding(models.Model):
 
     BANK_TRANSFER = 0
     BANK_DEPOSIT = 1
-    PAYMENT_TYPE = enumerate(("Bank Transfer", "Bank Deposit"))
+    PAYSTACK = 2
+    PAYMENT_TYPE = enumerate(("Bank Transfer", "Bank Deposit", "Paystack"))
 
     id = HashidAutoField(primary_key=True)
     ranger = models.ForeignKey(Ranger, on_delete=models.CASCADE)

@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 
 from ranger.models import Ranger, WalletFunding
 from payment.models import Payment
-from payment.utils import approve_funding
+from payment.utils import approve_funding, get_reference
+from payment import paystack
 from ranger.forms import RejectForm
 
 
@@ -60,6 +61,25 @@ class WalletFundingAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return actions
         return []
+
+    def response_add(self, request, obj, post_url_continue=None):
+        email = request.user.username
+        amount = float(obj.amount)
+        ref = get_reference()
+        # import pdb; pdb.set_trace()
+        res = paystack.initiate(email, amount, ref)
+        if res["status"]:
+            auth_url = res["data"]["authorization_url"]
+            return HttpResponseRedirect(auth_url)
+        else:
+            msg = res.get("message", "Error")
+            messages.error(request, msg)
+            pymt = obj.payment
+            pymt.status = Payment.FAILED
+            pymt.save()
+            obj.status = WalletFunding.FAILED
+            obj.save()
+            return redirect("/admin/ranger/walletfunding/")
 
     def save_model(self, request, obj, form, change):
         try:
