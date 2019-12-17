@@ -63,6 +63,8 @@ class WalletFundingAdmin(admin.ModelAdmin):
         return []
 
     def response_add(self, request, obj, post_url_continue=None):
+        if obj.payment_type != WalletFunding.PAYSTACK:
+            return redirect("/admin/ranger/walletfunding/")
         email = request.user.username
         amount = float(obj.amount)
         ref = get_reference()
