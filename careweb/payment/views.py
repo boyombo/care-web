@@ -223,6 +223,8 @@ def paystack_callback(request):
                 sub_payment.status = SubscriptionPayment.SUCCESSFUL
                 sub_payment.save()
                 create_subscription(sub_payment.client, sub_payment.amount)
+                if request.user.is_authenticated:
+                    return redirect("profile")
             return redirect("paystack_success")
 
 
