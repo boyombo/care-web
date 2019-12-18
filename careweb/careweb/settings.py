@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
     "174.138.47.148",
     "192.168.8.100",
     "192.168.1.4",
-     "127.0.0.1",
+    "127.0.0.1",
 ]
 
 # Email settings
@@ -43,9 +43,12 @@ DEFAULT_FROM_EMAIL = "noreply@futurecare.ng"
 
 POST_OFFICE = {"BACKENDS": {"default": "postmarker.django.EmailBackend",}}
 
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+
 # Application definition
 
 INSTALLED_APPS = [
+    "constance",
     "baton",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -67,7 +70,13 @@ INSTALLED_APPS = [
     "baton.autodiscover",
     "widget_tweaks",
     "crispy_forms",
+    "constance.backends.database",
 ]
+
+CONSTANCE_CONFIG = {
+    "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription")
+}
+
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MIDDLEWARE = [
