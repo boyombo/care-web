@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "aa687e3f4431f2f4a0aa3d1fa65271f98814470330412b58efc501f3f1f2e12c"
+            "sha256": "9c709070f9076220df026cffa57fc25d99cbc7fcf1f177d1ded7273c713c7470"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -173,10 +173,10 @@
         },
         "django": {
             "hashes": [
-                "sha256:6f857bd4e574442ba35a7172f1397b303167dae964cf18e53db5e85fe248d000",
-                "sha256:d98c9b6e5eed147bc51f47c014ff6826bd1ab50b166956776ee13db5a58804ae"
+                "sha256:b61295749be7e1c42467c55bcabdaee9fbe9496fdf9ed2e22cef44d9de2ff953",
+                "sha256:315b11ea265dd15348d47f2cbb044ef71da2018f6e582fed875c889758e6f844"
             ],
-            "version": "==3.0"
+            "version": "==3.0.1"
         },
         "django-baton": {
             "hashes": [
@@ -184,6 +184,13 @@
                 "sha256:08f71fcce842ca72f862af1b614ad52747557af87c93efbf624b3008b3c7e1ee"
             ],
             "version": "==1.5.6"
+        },
+        "django-constance": {
+            "hashes": [
+                "sha256:19ff1ae8295aeffc2917ab67da4b310bfaf8c42f34d570f89e289fd54c4217b0",
+                "sha256:417f9866a4fcd93c198acd16d5bc22b68e491eaabb18efea4c70d183d42daa45"
+            ],
+            "version": "==2.4.0"
         },
         "django-crispy-forms": {
             "hashes": [
@@ -205,6 +212,13 @@
                 "sha256:328e83f13ab0eedd4ed8a384bde8b7a4ce18ee8ee1e1d149247ba7611fc7addb"
             ],
             "version": "==3.0.0"
+        },
+        "django-picklefield": {
+            "hashes": [
+                "sha256:9052f2dcf4882c683ce87b4356f29b4d014c0dad645b6906baf9f09571f52bc8",
+                "sha256:f1733a8db1b6046c0d7d738e785f9875aa3c198215de11993463a9339aa4ea24"
+            ],
+            "version": "==2.0"
         },
         "django-post-office": {
             "hashes": [
@@ -235,10 +249,10 @@
         },
         "google-auth": {
             "hashes": [
-                "sha256:bdf3af2b19368fc50ed0542b891bf64c2e92d8f207d92064a6cf1e1a1014d761",
-                "sha256:bf45ce767ac45704372a6d3677b4a036594a935f4e460e58c7accc3c36925f06"
+                "sha256:a977375be9f9c46cd20ffb90f0532a27fa0e171eb47373de270b6028005b8e8b",
+                "sha256:038a921618620491502eeb4ed5b7af6a8ee2a7950918a5b3e0d718e841aff4da"
             ],
-            "version": "==1.8.2"
+            "version": "==1.9.0"
         },
         "google-auth-httplib2": {
             "hashes": [
