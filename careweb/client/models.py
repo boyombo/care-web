@@ -54,9 +54,9 @@ class Dependant(models.Model):
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
     relationship = models.PositiveIntegerField(choices=RELATIONSHIPS)
-    pcp = models.ForeignKey(
-        CareProvider, null=True, blank=True, on_delete=models.SET_NULL
-    )
+    # pcp = models.ForeignKey(
+    #    CareProvider, null=True, blank=True, on_delete=models.SET_NULL
+    # )
 
     def __str__(self):
         return self.surname
