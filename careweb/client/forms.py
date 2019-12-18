@@ -113,7 +113,7 @@ class DependantForm(forms.ModelForm):
             years=range(1970, 2019),
         )
     )
-    lga = forms.ModelChoiceField(queryset=LGA.objects.all(), required=False)
+    # lga = forms.ModelChoiceField(queryset=LGA.objects.all(), required=False)
 
     class Meta:
         model = Dependant
@@ -121,18 +121,18 @@ class DependantForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["pcp"].queryset = CareProvider.objects.none()
+        # self.fields["pcp"].queryset = CareProvider.objects.none()
 
-        if "lga" in self.data:
-            try:
-                lga_id = self.data.get("lga")
-                self.fields["pcp"].queryset = CareProvider.objects.filter(
-                    lga__id=lga_id
-                )
-            except (TypeError, ValueError):
-                pass
-        elif self.instance.pk:
-            self.fields["pcp"].queryset = CareProvider.objects.all()
+        # if "lga" in self.data:
+        #    try:
+        #        lga_id = self.data.get("lga")
+        #        self.fields["pcp"].queryset = CareProvider.objects.filter(
+        #            lga__id=lga_id
+        #        )
+        #    except (TypeError, ValueError):
+        #        pass
+        # elif self.instance.pk:
+        #    self.fields["pcp"].queryset = CareProvider.objects.all()
 
 
 class PhotoForm(forms.ModelForm):

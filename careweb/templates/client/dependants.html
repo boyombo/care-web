@@ -69,14 +69,12 @@ Dependants
                                     <th>Name</th>
                                     <th>Date of Birth</th>
                                     <th>Relationship</th>
-                                    <th>PCP</th>
                                 </tr>
                                 {% for dep in dependants %}
                                   <tr>
                                     <td>{{dep.first_name}} {{dep.middle_name}}, {{dep.surname}}</td>
                                     <td>{{dep.dob}}</td>
                                     <td>{{dep.get_relationship_display}}</td>
-                                    <td>{{dep.pcp}}</td>
                                   </tr>
                                 {% endfor %}
                                 <tfoot>

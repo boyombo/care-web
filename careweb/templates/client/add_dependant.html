@@ -92,121 +92,9 @@ Add dependant
                                             {{form.dob|as_crispy_field}}
                                             {{form.relationship|as_crispy_field}}
                                             <div class="row">
-                                            <div class="col-md-6">
-
-                                            {{form.lga|as_crispy_field}}
+                                          
                                             </div>
-                                            <div class="col-md-6">
-
-                                            {{form.pcp|as_crispy_field}}
-                                            </div>
-                                            </div>
-                                            {% comment %} </div> {% endcomment %}
-                                               {% comment %} <div class="col"> {% endcomment %}
-                                                    {% comment %} <div><label>Surname</label></div> {% endcomment %}
-                                                {% comment %} <div class="input-group"> {% endcomment %}
-                                                    {% comment %} {% if form.surname.errors %}
-                                                        <div class="alert alert-danger">
-                                                            {{ form.surname.errors }}
-                                                        </div>
-                                                    {% endif %} {% endcomment %}
-                                                    {% comment %} {% render_field form.surname class+="form-control" %} {% endcomment %}
-                                                      {% comment %} <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="Site">
-                                                                <i class="fas fa-user"></i>
-                                                            </span>
-                                                        </div> {% endcomment %}
-                                                {% comment %} </div> {% endcomment %}
-                                            {% comment %} </div> {% endcomment %}
-                                            {% comment %} </div> {% endcomment %}
-                                            {% comment %} <div class="form-row">
-                                            <div class="col">
-                                                    <div><label>First name</label></div>
-                                                <div class="input-group">
-                                                    {% if form.first_name.errors %}
-                                                        <div class="alert alert-danger">
-                                                            {{ form.first_name.errors }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% render_field form.first_name class+="form-control" %}
-                                                    <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="Site">
-                                                                <i class="fas fa-user"></i>
-                                                            </span>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                    <div><label>Middle name</label></div>
-                                                <div class="input-group">
-                                                    {% if form.middle_name.errors %}
-                                                        <div class="alert alert-danger">
-                                                            {{ form.middle_name.errors }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% render_field form.middle_name class+="form-control" %}
-                                                    <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="Site">
-                                                                <i class="fas fa-user"></i>
-                                                            </span>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                    <div><label>Date of Birth</label></div>
-                                                <div class="input-group">
-                                                    {% if form.dob.errors %}
-                                                        <div class="alert alert-danger">
-                                                            {{ form.dob.errors }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% render_field form.dob class+="form-control" %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                    <div><label>Relationship</label></div>
-                                                <div class="input-group">
-                                                    {% if form.relationship.errors %}
-                                                        <div class="alert alert-danger">
-                                                            {{ form.relationship.errors }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% render_field form.relationship class+="form-control" %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                         <div class="form-row">
-                                            <div class="col-md-6">
-                                                    <div><label>Local Govt</label></div>
-                                                <div class="input-group">
-                                                    {% if form.lga.errors %}
-                                                        <div class="alert alert-danger">
-                                                            {{ form.lga.errors }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% render_field form.lga class+="form-control" %}
-                                                </div>
-                                            </div>
-
-                                              <div class="col-md-6">
-                                                    <div><label>Primary Care Provider</label></div>
-                                                <div class="input-group">
-                                                    {% if form.pcp.errors %}
-                                                        <div class="alert alert-danger">
-                                                            {{ form.pcp.errors }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% render_field form.pcp class+="form-control" %}
-                                                </div>
-                                            </div>
-                                        </div>  {% endcomment %}
-
+                                      
                                             <div class="form-row">
                                                 <div class="col-md-12">
                                                     <button class="loginnow" type="submit">Save</button>
@@ -237,21 +125,5 @@ Add dependant
     $('.nav-link').removeClass('active')
     $('#profile-nav-link').addClass('active')
 
-    $("#id_lga").change(function () {
-      var lgaId = $(this).val();  // get the selected country ID from the HTML input
-
-      var url = '/client/load_pcp_list/?lga=' + lgaId   // get the url of the `load_cities` view
-      console.log(url)
-      $.ajax({                       // initialize an AJAX request
-        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-        data: {
-          'lga_id': lgaId       // add the country id to the GET parameters
-        },
-        success: function (data) {   // `data` is the return of the `load_cities` view function
-          $("#id_pcp").html(data);  // replace the contents of the city input with the data that came from the server
-        }
-      });
-
-    });
     </script>
 {% endblock extra-js %}
