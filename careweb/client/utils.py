@@ -1,4 +1,4 @@
-from subscription.utils import get_subscription_rate
+from subscription.utils import get_subscription_rate, get_next_subscription_date
 from client.models import Dependant, ClientAssociation
 
 
@@ -12,6 +12,7 @@ def get_client_details(client, host):
     else:
         dob = None
     subscription_rate = get_subscription_rate(client)
+    next_subscription_date = get_next_subscription_date(client).strftime("%d %b %Y")
     dependants = [
         {
             "dob": dependant.dob.strftime("%Y-%m-%d"),
@@ -40,6 +41,7 @@ def get_client_details(client, host):
     return {
         "active": client.verified,
         "subscription_rate": subscription_rate,
+        "next_subscription_date": next_subscription_date,
         "id": client.id.id,
         "surname": client.surname,
         "firstName": client.first_name,

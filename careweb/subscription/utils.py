@@ -88,9 +88,10 @@ def get_active_subscription(cl):
 
 
 def get_next_subscription_date(cl):
-    exp = Subscription.objects.filter(client=cl).aggregate(Max("expiry_date"))[
-        "expiry_date__max"
-    ]
+    subscriptions = Subscription.objects.filter(client=cl)
+    if not subscriptions:
+        return timezone.now().date()
+    exp = subscriptions.aggregate(Max("expiry_date"))["expiry_date__max"]
     return exp
     # try:
     #    active_sub = Subscription.objects.get(client=cl, active=True)
