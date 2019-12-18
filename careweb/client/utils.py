@@ -27,7 +27,6 @@ def get_client_details(client, host):
             "surname": dependant.surname,
             "middle_name": dependant.middle_name,
             "relationship": dependant.relationship,
-            "pcp": dependant.pcp.id.id if dependant.pcp else None,
         }
         for dependant in Dependant.objects.filter(primary=client)
     ]
