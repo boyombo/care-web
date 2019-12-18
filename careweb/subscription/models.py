@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from constance import config
+from decimal import Decimal
 
 from client.models import Client, Dependant
 from ranger.models import Ranger
@@ -20,6 +22,20 @@ class Subscription(models.Model):
 
     def __str__(self):
         return str(self.client)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.client.ranger:
+            _commission = config.AGENT_COMMISSION * self.amount / 100
+            comm = Commission.objects.create(
+                subscription=self,
+                amount=_commission,
+                subscription_amount=self.amount,
+                ranger=self.client.ranger,
+            )
+            ranger = self.client.ranger
+            ranger.balance += Decimal.from_float(comm.amount)
+            ranger.save()
 
 
 class SubscriptionPayment(models.Model):
@@ -48,3 +64,14 @@ class SubscriptionPayment(models.Model):
 
     def __str__(self):
         return str(self.client)
+
+
+class Commission(models.Model):
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    subscription_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    ranger = models.ForeignKey(Ranger, on_delete=models.CASCADE)
+    when = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(self.subscription)
