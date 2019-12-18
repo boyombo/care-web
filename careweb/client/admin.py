@@ -6,6 +6,7 @@ from client.models import HMO, Dependant, Client, Association, ClientAssociation
 from ranger.models import Ranger
 from subscription.utils import get_subscription_rate, create_subscription
 from subscription.models import SubscriptionPayment
+from client.admin_filters import MyClientFilter
 
 
 @admin.register(HMO)
@@ -55,6 +56,7 @@ class ClientAdmin(admin.ModelAdmin):
     autocomplete_fields = ["ranger", "pcp"]
     exclude = ["user"]
     actions = ["subscribe_client", "verify_client"]
+    list_filter = (MyClientFilter,)
     fieldsets = [
         (
             "Basic",
@@ -115,11 +117,11 @@ class ClientAdmin(admin.ModelAdmin):
         ),
     ]
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(ranger__user=request.user)
+    # def get_queryset(self, request):
+    #    qs = super().get_queryset(request)
+    #    if request.user.is_superuser:
+    #        return qs
+    #    return qs.filter(ranger__user=request.user)
 
     def has_delete_permission(self, request, obj=None):
         if not request.user.is_superuser:
