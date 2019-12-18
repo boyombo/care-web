@@ -27,6 +27,7 @@ django-debug-toolbar = "*"
 python-dateutil = "*"
 django-crispy-forms = "*"
 pycryptodome = "*"
+django-constance = {extras = ["database"]}
 
 
 [dev-packages]
