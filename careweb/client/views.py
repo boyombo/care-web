@@ -25,7 +25,7 @@ from subscription.utils import (
     get_next_subscription_date,
 )
 from payment.utils import get_reference
-from client.utils import get_client_details
+from client.utils import get_client_details, get_quality_life_number
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
@@ -89,6 +89,7 @@ def register(request):
             client = form.save(commit=False)
             client.user = new_user
             client.email = username
+            client.lashma_quality_life_no = get_quality_life_number()
             client.save()
             send_welcome_email(username, client.first_name)
             return redirect("post_register")
@@ -159,7 +160,7 @@ class IdentificationView(ClientView):
         "drivers_licence_no",
         "lagos_resident_no",
         "lashma_no",
-        "lashma_quality_life_no",
+        # "lashma_quality_life_no",
     ]
     template_name = "client/identification.html"
 
@@ -282,6 +283,7 @@ def register_api(request):
             obj = form.save(commit=False)
             obj.user = usr
             obj.verification_code = code
+            obj.lashma_quality_life_no = get_quality_life_number()
             obj.verified = False
             obj.save()
             # send verification code in email

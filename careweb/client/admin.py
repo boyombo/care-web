@@ -55,6 +55,7 @@ class ClientAdmin(admin.ModelAdmin):
     search_fields = ["user__username", "surname", "first_name"]
     autocomplete_fields = ["ranger", "pcp"]
     exclude = ["user"]
+    readonly_fields = ["lashma_quality_life_no"]
     actions = ["subscribe_client", "verify_client"]
     list_filter = (MyClientFilter,)
     fieldsets = [
