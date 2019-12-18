@@ -343,7 +343,7 @@ def login_api(request):
                     logger.info("client details")
                     client_details = get_client_details(client, host)
                     logger.info(client_details)
-                    return JsonResponse({"success": True, "client": client_details})
+                    return JsonResponse({"success": True, "client": client_details,})
         else:
             logger.info(form.errors)
             return HttpResponseBadRequest(
