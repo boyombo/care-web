@@ -327,6 +327,7 @@ def login_api(request):
             logger.info("form {}".format(form.cleaned_data))
 
             usr = authenticate(username=username, password=password)
+            logger.info("authenticated")
             if usr is not None:
                 try:
                     client = Client.objects.get(user=usr)
