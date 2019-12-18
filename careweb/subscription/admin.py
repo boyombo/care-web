@@ -5,8 +5,19 @@ from django.contrib import messages
 from django.shortcuts import render
 
 from client.models import Client
-from subscription.models import Subscription, SubscriptionPayment
+from subscription.models import Subscription, SubscriptionPayment, Commission
 from subscription.utils import get_subscription_rate, create_subscription
+
+
+@admin.register(Commission)
+class CommissionAdmin(admin.ModelAdmin):
+    list_display = ["subscription", "amount", "subscription_amount", "ranger", "when"]
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(ranger__user=request.user)
 
 
 @admin.register(Subscription)
