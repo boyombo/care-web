@@ -7,7 +7,10 @@ from django.contrib import messages
 from ranger.models import WalletFunding, Ranger
 from client.models import Client
 from subscription.models import SubscriptionPayment
-from subscription.utils import create_subscription, get_subscription_rate
+from subscription.utils import (
+    create_subscription,
+    get_subscription_rate,
+)
 from payment.models import Payment
 from payment.forms import PaymentForm, WalkinPaymentForm
 from payment.utils import get_reference, get_user_for_payment
@@ -275,11 +278,12 @@ def verify_paystack_subscription(request):
         subscription_payment.status = SubscriptionPayment.SUCCESSFUL
         subscription_payment.save()
 
-        create_subscription(client, subscription_payment.amount)
+        _sub = create_subscription(client, subscription_payment.amount)
+        expiry = _sub.expiry_date.strftime("%d %b %Y")
 
         # funding.status = WalletFunding.SUCCESSFUL
         # funding.save()
 
         # ranger.balance += pymt.amount
         # ranger.save()
-    return JsonResponse({"success": True})
+    return JsonResponse({"success": True, "expiry": expiry})
