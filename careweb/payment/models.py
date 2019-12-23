@@ -19,6 +19,7 @@ class Payment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateField(default=timezone.now)
     reference = models.CharField(max_length=200, blank=True)
+    cust_reference = models.CharField(max_length=200, blank=True)
     status = models.PositiveIntegerField(choices=STATUSES, default=PENDING)
     payment_mode = models.PositiveIntegerField(choices=MODES, null=True)
     narration = models.TextField(blank=True)
