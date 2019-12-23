@@ -59,11 +59,17 @@ def walkin_payment(request):
     if request.method == "POST":
         form = WalkinPaymentForm(request.POST)
         if form.is_valid():
+            ref = get_reference()
             # import pdb;pdb.set_trace()
             usr = form.cleaned_data["user"]
             amount = form.cleaned_data["amount"]
+            # reference from POST is actually saved as cust_reference
+            # and an auto-generated ref is saved as reference
+            cust_reference = form.cleaned_data["reference"]
 
             pymt = form.save(commit=False)
+            pymt.cust_reference = cust_reference
+            pymt.reference = ref
             pymt.status = Payment.SUCCESSFUL
             pymt.payment_mode = Payment.BANK_PAYMENT
             pymt.save()
@@ -74,7 +80,7 @@ def walkin_payment(request):
                 pass
             else:
                 create_subscription(_client, amount)
-                return JsonResponse({"success": True})
+                return JsonResponse({"success": True, "reference": ref})
 
             try:
                 _ranger = Ranger.objects.get(user__username=usr)
@@ -86,14 +92,14 @@ def walkin_payment(request):
                     amount=amount,
                     bank="Fidelity",
                     name=pymt.paid_by,
-                    reference=pymt.reference,
+                    reference=ref,
                     payment_type=WalletFunding.BANK_DEPOSIT,
                     payment=pymt,
                     status=WalletFunding.SUCCESSFUL,
                 )
                 _ranger.balance += pymt.amount
                 _ranger.save()
-                return JsonResponse({"success": True})
+                return JsonResponse({"success": True, "reference": ref})
 
 
 ## Paystack
