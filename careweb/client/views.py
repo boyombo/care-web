@@ -245,7 +245,7 @@ def dependants(request, pk):
 def add_dependant(request):
     client = Client.objects.get(user=request.user)
     if request.method == "POST":
-        form = DependantForm(request.POST)
+        form = DependantForm(request.POST, primary=client)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.primary = client
@@ -253,7 +253,7 @@ def add_dependant(request):
             messages.info(request, "Dependant added successfully")
             return redirect("profile_dependants", pk=client.id)
     else:
-        form = DependantForm()
+        form = DependantForm(primary=client)
     return render(
         request, "client/add_dependant.html", {"form": form, "object": client}
     )
