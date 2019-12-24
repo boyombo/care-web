@@ -15,6 +15,7 @@ from payment.models import Payment
 from payment.forms import PaymentForm, WalkinPaymentForm
 from payment.utils import get_reference, get_user_for_payment
 from payment.paystack import initiate, verify
+from core.basic import basic_auth, basic_error_response
 
 import logging
 
@@ -22,6 +23,10 @@ logger = logging.getLogger(__name__)
 
 
 def verify_user(request):
+    _usr = basic_auth(request)
+    if not _usr:
+        return basic_error_response()
+
     username = request.GET.get("username", None)
     if not username:
         return HttpResponseBadRequest("Illegal request")
@@ -56,6 +61,10 @@ def verify_user(request):
 
 @csrf_exempt
 def walkin_payment(request):
+    _usr = basic_auth(request)
+    if not _usr:
+        return basic_error_response()
+
     if request.method == "POST":
         form = WalkinPaymentForm(request.POST)
         if form.is_valid():
