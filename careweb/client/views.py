@@ -89,7 +89,9 @@ def register(request):
             client = form.save(commit=False)
             client.user = new_user
             client.email = username
-            client.lashma_quality_life_no = get_quality_life_number()
+            # client.lashma_quality_life_no = get_quality_life_number()
+            client.save()
+            client.lashma_quality_life_no = get_quality_life_number(client)
             client.save()
             send_welcome_email(username, client.first_name)
             return redirect("post_register")
@@ -283,8 +285,10 @@ def register_api(request):
             obj = form.save(commit=False)
             obj.user = usr
             obj.verification_code = code
-            obj.lashma_quality_life_no = get_quality_life_number()
+            # obj.lashma_quality_life_no = get_quality_life_number()
             obj.verified = False
+            obj.save()
+            obj.lashma_quality_life_no = get_quality_life_number(obj)
             obj.save()
             # send verification code in email
             context = {"name": obj.first_name, "code": code}

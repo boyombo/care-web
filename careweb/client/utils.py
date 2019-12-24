@@ -1,12 +1,12 @@
 from subscription.utils import get_subscription_rate, get_next_subscription_date
-from client.models import Dependant, ClientAssociation, Client
+from client.models import Dependant, ClientAssociation
 from django.utils import timezone
 
 
-def get_quality_life_number():
-    yr = timezone.now().year
-    count = Client.objects.filter(registration_date__year=yr).count()
-    return "{}{}".format(yr, str(count).zfill(8))
+def get_quality_life_number(cl):
+    yr = timezone.now().strftime("%y")
+    # count = Client.objects.filter(registration_date__year=yr).count()
+    return "QL{}{}".format(yr, str(cl.id.id + 1471).zfill(6))
 
 
 def get_client_details(client, host):
