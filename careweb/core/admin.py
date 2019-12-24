@@ -5,12 +5,7 @@ from core.models import Plan, PlanRate
 
 @admin.register(Plan)
 class PlanAdmin(admin.ModelAdmin):
-    list_display = [
-        "name",
-        "code",
-        "has_extra",
-        "family_inclusive",
-    ]
+    list_display = ["name", "code", "has_extra", "family_inclusive", "size"]
 
 
 @admin.register(PlanRate)
