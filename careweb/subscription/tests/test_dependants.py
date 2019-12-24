@@ -169,3 +169,26 @@ def test_family_daughters_one_adult(plan):
     )
     rate = utils.get_subscription_rate(primary)
     assert rate == 4200
+
+
+@pytest.mark.django_db
+def test_sigle_with_extras():
+    """Test calculation of subscription amount for family plan with one daughter an adult"""
+    dob = timezone.now() - relativedelta(years=10)
+    return baker.make("core.Plan", has_extra=True, family_inclusive=True, size=1)
+    baker.make(
+        "core.PlanRate", plan=plan, payment_cycle="A", rate=8500, extra_rate=6000
+    )
+    primary = baker.make("client.Client", plan=plan, payment_option="A")
+    baker.make("client.Dependant", relationship=Dependant.SPOUSE, primary=primary)
+    baker.make(
+        "client.Dependant", relationship=Dependant.DAUGHTER, primary=primary, dob=dob
+    )
+    baker.make(
+        "client.Dependant", relationship=Dependant.DAUGHTER, primary=primary, dob=dob
+    )
+    baker.make(
+        "client.Dependant", relationship=Dependant.DAUGHTER, primary=primary, dob=dob
+    )
+    rate = utils.get_subscription_rate(primary)
+    assert rate == 32500
