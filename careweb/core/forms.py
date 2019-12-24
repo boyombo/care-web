@@ -36,6 +36,35 @@ class ChangePwdForm(forms.Form):
             return self.cleaned_data
 
 
+class ChangePwdForm2(forms.Form):
+    # email = forms.CharField(max_length=100, widget=forms.HiddenInput)
+    current_password = forms.CharField(max_length=100, widget=forms.PasswordInput)
+    new_password = forms.CharField(max_length=100, widget=forms.PasswordInput)
+    confirm_new_password = forms.CharField(max_length=100, widget=forms.PasswordInput)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("usr")
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        if (
+            "current_password" in self.cleaned_data
+            and "new_password" in self.cleaned_data
+            and "confirm_new_password" in self.cleaned_data
+        ):
+            # import pdb; pdb.set_trace()
+            pwd1 = self.cleaned_data["new_password"]
+            pwd2 = self.cleaned_data["confirm_new_password"]
+            if pwd1 != pwd2:
+                raise forms.ValidationError("Passwords do not match")
+            pwd = self.cleaned_data["current_password"]
+            email = self.user.username
+            usr = authenticate(username=email, password=pwd)
+            if not usr:
+                raise forms.ValidationError("Password is not correct")
+            return self.cleaned_data
+
+
 class ResetPasswordForm(forms.Form):
     new_password1 = forms.CharField(max_length=100, widget=forms.PasswordInput)
     new_password2 = forms.CharField(max_length=100, widget=forms.PasswordInput)
