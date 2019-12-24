@@ -45,6 +45,9 @@ Profile
                 <div class="col-md-7 col-xs-12">
                     <div class="content">
                         <h2>Welcome, {{profile.first_name}}</h2>
+                         <div>
+                            <a href="{% url 'change_password' %}" class='btn' style="background-color: #9fde50; color: #fff; "><i class="pe-7s-lock"> </i> Change your password</a>
+                        </div>
                         <p class="p-font">
                             We at FutureCare will try to get a health plan to fit the needs of your family and you.
                         </p>
@@ -62,6 +65,7 @@ Profile
                                     <a href="{% url 'profile_plan' pk=profile.id %}" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-note2"> </i> Choose a Health Plan</a>
                                 {% endif %}
                             </div>
+                           
                         
                         </div>
                     </div>

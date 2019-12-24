@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -6,7 +6,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 
-from core.forms import LoginForm, ForgotPwdForm, ChangePwdForm, ResetPasswordForm
+from core.forms import (
+    LoginForm,
+    ForgotPwdForm,
+    ChangePwdForm,
+    ChangePwdForm2,
+    ResetPasswordForm,
+)
 from core.utils import send_reset_mail
 from ranger.models import Ranger
 from client.models import Client
@@ -173,3 +179,19 @@ def change_pwd(request):
             usr.save()
             return JsonResponse({"success": True})
     return JsonResponse({"success": False})
+
+
+def change_pwd_web(request):
+    usr = request.user
+    clt = get_object_or_404(Client, user=usr)
+    if request.method == "POST":
+        # import pdb; pdb.set_trace()
+        form = ChangePwdForm2(request.POST, usr=usr)
+        if form.is_valid():
+            pwd = form.cleaned_data["new_password"]
+            usr.set_password(pwd)
+            usr.save()
+            return redirect("profile")
+    else:
+        form = ChangePwdForm2(usr=usr)
+    return render(request, "client/change_password.html", {"form": form, "object": clt})
