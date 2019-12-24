@@ -100,19 +100,19 @@ def forgot(request):
             # build reset confirmation url
             _id = None
             name = ""
+            # try:
+            #    ranger = Ranger.objects.get(user=usr)
+            # except Ranger.DoesNotExist:
             try:
-                ranger = Ranger.objects.get(user=usr)
-            except Ranger.DoesNotExist:
-                try:
-                    clt = Client.objects.get(user=usr)
-                except Client.DoesNotExist:
-                    pass
-                else:
-                    _id = clt.id.hashid
-                    name = clt.first_name
+                clt = Client.objects.get(user=usr)
+            except Client.DoesNotExist:
+                pass
             else:
-                _id = ranger.id.hashid
-                name = ranger.first_name
+                _id = clt.id.hashid
+                name = clt.first_name
+            # else:
+            #    _id = ranger.id.hashid
+            #    name = ranger.first_name
 
             if _id:
                 token = default_token_generator.make_token(usr)
@@ -137,18 +137,19 @@ def forgot(request):
 
 
 def reset_confirm(request, uid, token):
+    # import pdb; pdb.set_trace()
     usr = None
+    # try:
+    #    ranger = Ranger.objects.get(pk=uid)
+    # except Ranger.DoesNotExist:
     try:
-        ranger = Ranger.objects.get(pk=uid)
-    except Ranger.DoesNotExist:
-        try:
-            clt = Client.objects.get(pk=uid)
-        except Client.DoesNotExist:
-            return HttpResponseBadRequest("Invalid request")
-        else:
-            usr = clt.user
+        clt = Client.objects.get(pk=uid)
+    except Client.DoesNotExist:
+        return HttpResponseBadRequest("Invalid request")
     else:
-        usr = ranger.user
+        usr = clt.user
+    # else:
+    #    usr = ranger.user
     # check if token is valid
     is_valid_token = default_token_generator.check_token(usr, token)
     if not is_valid_token:
