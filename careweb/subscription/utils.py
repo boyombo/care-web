@@ -56,10 +56,11 @@ def get_subscription_rate(clt):
     if family_dep_count > plan.size - 1:
         other_dep_count += family_dep_count + 1 - plan.size
     if plan.has_extra and plan_rate.extra_rate:
-        if plan.family_inclusive:
-            dep_rate = other_dep_count * plan_rate.extra_rate
-        else:
-            dep_rate = plan_rate.extra_rate * (family_dep_count + other_dep_count)
+        dep_rate = plan_rate.extra_rate * other_dep_count
+        # if plan.family_inclusive:
+        #    dep_rate = other_dep_count * plan_rate.extra_rate
+        # else:
+        #    dep_rate = plan_rate.extra_rate * other_dep_count
     else:
         dep_rate = 0
     return client_rate + dep_rate
