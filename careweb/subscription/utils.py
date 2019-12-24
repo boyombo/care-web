@@ -26,21 +26,40 @@ def get_subscription_rate(clt):
     plan = clt.plan
     plan_rate = PlanRate.objects.get(plan=clt.plan, payment_cycle=clt.payment_option)
     client_rate = plan_rate.rate
+    cutoff_age = 18  # cutoff age for dependants
+    cutoff_date = timezone.now().date() - relativedelta(years=cutoff_age)
 
     # dependants
-    family_deps = (
-        Dependant.objects.filter(primary=clt)
-        .exclude(relationship=Dependant.OTHERS)
-        .count()
-    )
-    other_deps = Dependant.objects.filter(
-        primary=clt, relationship=Dependant.OTHERS
-    ).count()
+    # spouse = Dependant.objects.filter(primary=clt, relationship=Dependant.SPOUSE).count()
+    # sons = Dependant.objects.filter(primary=clt, relationship=Dependant.SON, dob__lte=cutoff_date)
+    # daughters = Dependant.objects.filter(primary=clt, relationship=Dependant.SON, dob__lte=cutoff_date)
+    family_dep_count = 0
+    other_dep_count = 0
+    for dependant in Dependant.objects.filter(primary=clt):
+        if dependant.relationship == Dependant.SPOUSE:
+            family_dep_count += 1
+        elif dependant.relationship == Dependant.OTHERS:
+            other_dep_count += 1
+        elif dependant.relationship in [Dependant.SON, Dependant.DAUGHTER]:
+            if dependant.dob > cutoff_date:
+                family_dep_count += 1
+            else:
+                other_dep_count += 1
+    # family_deps = (
+    #    Dependant.objects.filter(primary=clt)
+    #    .exclude(relationship=Dependant.OTHERS)
+    #    .count()
+    # )
+    # other_deps = Dependant.objects.filter(
+    #    primary=clt, relationship=Dependant.OTHERS
+    # ).count()
+    if family_dep_count > plan.size - 1:
+        other_dep_count += family_dep_count + 1 - plan.size
     if plan.has_extra and plan_rate.extra_rate:
         if plan.family_inclusive:
-            dep_rate = other_deps * plan_rate.extra_rate
+            dep_rate = other_dep_count * plan_rate.extra_rate
         else:
-            dep_rate = plan_rate.extra_rate * (family_deps + other_deps)
+            dep_rate = plan_rate.extra_rate * (family_dep_count + other_dep_count)
     else:
         dep_rate = 0
     return client_rate + dep_rate
