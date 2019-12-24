@@ -6,6 +6,7 @@ class Plan(models.Model):
     code = models.CharField(max_length=1, unique=True)
     has_extra = models.BooleanField(default=False)
     family_inclusive = models.BooleanField(default=True)
+    size = models.PositiveIntegerField(null=True)
     # client_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # spouse_dependant_rate = models.DecimalField(
     #    max_digits=10, decimal_places=2, default=0
