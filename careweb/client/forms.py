@@ -120,7 +120,20 @@ class DependantForm(forms.ModelForm):
         exclude = ["primary"]
 
     def __init__(self, *args, **kwargs):
+        self.primary = kwargs.pop("primary")
         super().__init__(*args, **kwargs)
+
+    def clean_relationship(self):
+        if "relationship" in self.cleaned_data:
+            if (
+                Dependant.objects.filter(
+                    primary=self.primary, relationship=Dependant.SPOUSE
+                )
+                and self.cleaned_data["relationship"] == Dependant.SPOUSE
+            ):
+                raise forms.ValidationError("You can have only one spouse on the plan")
+        return self.cleaned_data["relationship"]
+
         # self.fields["pcp"].queryset = CareProvider.objects.none()
 
         # if "lga" in self.data:
