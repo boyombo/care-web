@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.utils.functional import lazy
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 from client.models import Client, Association, Dependant
 from crispy_forms.helper import FormHelper
@@ -95,6 +96,14 @@ class PersonalInfoForm(forms.ModelForm):
             "sex",
             "marital_status",
         ]
+
+    def clean_dob(self):
+        if "dob" in self.cleaned_data:
+            dob = self.cleaned_data["dob"]
+            eighteen = timezone.now().date() - relativedelta(years=18)
+            if dob > eighteen:
+                raise forms.ValidationError("You must be at least 18 years old")
+        return self.cleaned_data["dob"]
 
 
 def get_association_choices():
