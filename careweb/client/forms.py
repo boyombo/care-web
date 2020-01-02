@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.utils.functional import lazy
+from django.utils import timezone
 
 from client.models import Client, Association, Dependant
 from crispy_forms.helper import FormHelper
@@ -80,7 +81,7 @@ class PersonalInfoForm(forms.ModelForm):
     dob = forms.DateField(
         widget=forms.SelectDateWidget(
             attrs={"style": "display: inline-block; width: 33%;"},
-            years=range(1950, 2001),
+            years=range(1950, timezone.now().year),
         )
     )
 
