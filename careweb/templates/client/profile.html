@@ -58,7 +58,7 @@ Profile
                                 {% if profile.plan %}
                                     <h5 class="h5-font">Plan: {{profile.plan }}</h5>
                                     <h4 class="h4-font">Balance: &#8358; {{profile.balance }}</h4>
-                                    <h4 class="h4-font">Subscription Rate: &#8358; {{subscription_rate|floatformat:"2" }}</h4>
+                                    <h4 class="h4-font"><strong>Subscription Rate: &#8358; {{subscription_rate|floatformat:"2" }}</strong></h4>
                                     <small class="p-small">Next Payment due: <span>{{next_subscription }}</span></small>
                                     <a href="{% url 'subscription_new' %}" class='btn btn-lg' style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i class="pe-7s-cash"> </i> Make Subscription Payment (&#8358; {{subscription_rate|floatformat:"2"}})</a>
 
