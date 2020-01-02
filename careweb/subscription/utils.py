@@ -28,6 +28,7 @@ def get_subscription_rate(clt):
     client_rate = plan_rate.rate
     cutoff_age = 18  # cutoff age for dependants
     cutoff_date = timezone.now().date() - relativedelta(years=cutoff_age)
+    # import pdb;pdb.set_trace()
 
     # dependants
     # spouse = Dependant.objects.filter(primary=clt, relationship=Dependant.SPOUSE).count()
