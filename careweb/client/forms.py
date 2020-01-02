@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.functional import lazy
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from django.contrib.auth.password_validation import validate_password
 
 from client.models import Client, Association, Dependant
 from crispy_forms.helper import FormHelper
@@ -34,7 +35,9 @@ class ApiRegForm(forms.ModelForm):
 
 class RegForm(forms.ModelForm):
     email = forms.EmailField()
-    password = forms.CharField(max_length=100, widget=forms.PasswordInput)
+    password = forms.CharField(
+        max_length=100, widget=forms.PasswordInput, validators=[validate_password]
+    )
     confirm = forms.CharField(max_length=100, widget=forms.PasswordInput)
 
     class Meta:
@@ -56,6 +59,10 @@ class RegForm(forms.ModelForm):
             if self.cleaned_data["password"] != self.cleaned_data["confirm"]:
                 raise forms.ValidationError("The passwords do not match!")
             return self.cleaned_data
+
+    # def clean_password(self):
+    #    if "password" in self.cleaned_data:
+    #        validated = validate_password(self.cleaned_data["password"])
 
 
 class LoginForm(forms.Form):
