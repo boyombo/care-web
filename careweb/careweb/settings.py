@@ -150,7 +150,7 @@ USE_TZ = True
 
 
 # Session
-SESSION_COOKIE_AGE = 30000
+SESSION_COOKIE_AGE = 3000
 
 # login
 LOGIN_URL = "/client/login/"
