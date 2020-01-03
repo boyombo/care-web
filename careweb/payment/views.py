@@ -32,12 +32,13 @@ def verify_user(request):
         return HttpResponseBadRequest("Illegal request")
 
     try:
-        get_user_for_payment(username)
+        user_details = get_user_for_payment(username)
     except ValueError as err:
         return HttpResponseBadRequest(err)
         # return JsonResponse({"success": False, "error": err})
     else:
-        return JsonResponse({"success": True})
+        user_details.update({"success": True})
+        return JsonResponse(user_details)
 
     # try:
     #    usr = User.objects.get(username=username)

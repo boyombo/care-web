@@ -38,16 +38,21 @@ def get_user_for_payment(username):
         # return JsonResponse({"success": False, "error": "This user does not exist"})
 
     try:
-        Client.objects.get(user=usr)
+        _client = Client.objects.get(user=usr)
     except Client.DoesNotExist:
         try:
-            Ranger.objects.get(user=usr)
+            _ranger = Ranger.objects.get(user=usr)
         except Ranger.DoesNotExist:
             raise ValueError("This user is not active")
             # return JsonResponse({"success": False, "error": "This user is not active"})
         else:
-            return "ranger"
+            return {
+                "first_name": _ranger.first_name,
+                "last_name": _ranger.last_name,
+            }
+            # return "ranger"
             # return JsonResponse({"success": True})
     else:
-        return "client"
+        return {"first_name": _client.first_name, "last_name": _client.surname}
+        # return "client"
         # return JsonResponse({"success": True})
