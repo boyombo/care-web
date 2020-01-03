@@ -3,17 +3,14 @@ from random import sample
 from decimal import Decimal
 
 from django.http import JsonResponse, HttpResponseBadRequest
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-
-# from django.forms import inlineformset_factory
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import UpdateView
+from django.contrib import messages
+from django.conf import settings
 
 # from django.urls import reverse_lazy
 
@@ -257,6 +254,20 @@ def add_dependant(request):
     return render(
         request, "client/add_dependant.html", {"form": form, "object": client}
     )
+
+
+def remove_dependant(request, pk):
+    dependant = get_object_or_404(Dependant, pk=pk)
+    client = dependant.primary
+    if request.method == "POST":
+        dependant.delete()
+        return redirect("profile_dependants", pk=client.id)
+    else:
+        return render(
+            request,
+            "client/remove_dependant.html",
+            {"dependant": dependant, "object": client},
+        )
 
 
 ## Endpoints
