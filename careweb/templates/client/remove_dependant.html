@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+
 
 
 {% block title %}
-Dependants
+Remove dependant
 {% endblock title %}
 
 {% comment %}
@@ -23,7 +23,7 @@ Dependants
                     <div class="col-lg-12">
                         <div class="Content">
                             <h2>
-                                Dependants
+                                Remove Dependant
                             </h2>
                             <div class="links">
                                 <ul>
@@ -40,7 +40,13 @@ Dependants
                                         <span>/</span>
                                     </li>
                                     <li>
-                                        <a class="active" href="#">Dependants</a>
+                                        <a class="active" href="{% url 'profile_dependants' pk=object.id %}">Dependants</a>
+                                    </li>
+                                      <li>
+                                        <span>/</span>
+                                    </li>
+                                    <li>
+                                        <a class="active" href="#">Remove Dependant</a>
                                     </li>
                                 </ul>
                             </div>
@@ -56,36 +62,40 @@ Dependants
 <section class="logRegForm"> 
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div>
-                        <p><a href="{% url 'profile' %}" class="btn btn-success"> &laquo; Back to Profile</a></p>
-                    </div>
+                <div class="col-lg-7 col-md-10">
                         <div class="contact_form_wrappre2">
                             <h2>
-                                Dependants
+                                Remove Dependant
                             </h2>
-                               <table class="table">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Date of Birth</th>
-                                    <th>Relationship</th>
-                                    <th>remove</th>
-                                </tr>
-                                {% for dep in dependants %}
-                                  <tr>
-                                    <td>{{dep.first_name}} {{dep.middle_name}} {{dep.surname}}</td>
-                                    <td>{{dep.dob}}</td>
-                                    <td>{{dep.get_relationship_display}}</td>
-                                    <td><a href="{% url 'profile_remove_dependant' dep.id %}">remove</a></td>
-                                  </tr>
-                                {% endfor %}
-                                <tfoot>
-                                    <tr><td colspan="4"><a href="{% url 'profile_add_dependant' %}" class="btn btn-default">Add Dependant</a></td></tr>
-                                </tfoot>
+                                <form action="" method="post">{% csrf_token %}
+                              
 
-                               </table>
+                                   {% comment %} <div class="inputArea">
+                                    {{ form|crispy }}
+                                </div>
+                                <button class="loginnow" type="submit">Save Dependant</button> {% endcomment %}
+
+                                         <div class="inputArea">
+
+                                            {% comment %} <div class="form-row"> {% endcomment %}
+                                            {% comment %} <div class="col-md-12"> {% endcomment %}
+                                          
+                                            <div class="row">
+                                                <table class="table">
+                                                    <tr><th>Name: {{dependant.first_name}} {{dependant.surname}}</th></tr>
+                                                    <tr><th>Date of Birth: {{dependant.dob}}</th></tr>
+                                                    <tr><th>Relationship: {{dependant.get_relationship_display}}</th></tr>
+                                                </table>
+                                            </div>
+                                      
+                                            <div class="form-row">
+                                                <div class="col-md-12">
+                                                    <button class="loginnow" type="submit">Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                         </div>
-                       
                 </div>
             </div>
         </div>
@@ -107,5 +117,6 @@ Dependants
 
     $('.nav-link').removeClass('active')
     $('#profile-nav-link').addClass('active')
+
     </script>
 {% endblock extra-js %}
