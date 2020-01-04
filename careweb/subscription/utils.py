@@ -24,7 +24,12 @@ def get_subscription_rate(clt):
     if not clt.payment_option or not clt.plan:
         return
     plan = clt.plan
-    plan_rate = PlanRate.objects.get(plan=clt.plan, payment_cycle=clt.payment_option)
+    try:
+        plan_rate = PlanRate.objects.get(
+            plan=clt.plan, payment_cycle=clt.payment_option
+        )
+    except PlanRate.DoesNotExist:
+        return None
     client_rate = plan_rate.rate
     cutoff_age = 18  # cutoff age for dependants
     cutoff_date = timezone.now().date() - relativedelta(years=cutoff_age)
