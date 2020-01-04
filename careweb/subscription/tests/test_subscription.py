@@ -10,7 +10,7 @@ from client.models import Dependant
 
 @pytest.fixture
 def plan():
-    return baker.make("core.Plan")
+    return baker.make("core.Plan", size=1)
 
 
 @pytest.fixture
@@ -97,7 +97,7 @@ def test_create_subscription_active(plan):
 @pytest.mark.django_db
 def test_wrong_amount_less():
     """Test that the wrong amount will not create a subscription"""
-    plan = baker.make("core.Plan")
+    plan = baker.make("core.Plan", size=1)
     baker.make("core.PlanRate", plan=plan, payment_cycle="A", rate=5200, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="A")
     utils.create_subscription(client, 5000)
@@ -114,7 +114,7 @@ def test_client_balance_default(plan):
 @pytest.mark.django_db
 def test_client_balance_excess_subscription():
     """Test that excess subscription will be added to wallet balance"""
-    plan = baker.make("core.Plan")
+    plan = baker.make("core.Plan", size=1)
     baker.make("core.PlanRate", plan=plan, payment_cycle="A", rate=5200, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="A")
     utils.create_subscription(client, 6000)
@@ -163,7 +163,7 @@ def test_client_subscription_rate_without_payment_option(plan):
 @pytest.mark.django_db
 def test_client_balance_excess_subscription_multiple():
     """Test that multiple subscriptions will be added to wallet balance"""
-    plan = baker.make("core.Plan")
+    plan = baker.make("core.Plan", size=1)
     baker.make("core.PlanRate", plan=plan, payment_cycle="A", rate=5200, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="A")
     utils.create_subscription(client, 6000)
@@ -175,7 +175,7 @@ def test_client_balance_excess_subscription_multiple():
 @pytest.mark.django_db
 def test_client_balance_added_to_subscription():
     """Wallet balance is used to make up subscription cost"""
-    plan = baker.make("core.Plan")
+    plan = baker.make("core.Plan", size=1)
     baker.make("core.PlanRate", plan=plan, payment_cycle="A", rate=5200, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="A")
     utils.create_subscription(client, 6000)
@@ -192,7 +192,7 @@ def test_client_balance_added_to_subscription():
 @pytest.mark.django_db
 def test_calculate_subscription_no_deps():
     """Test the calculation of subscription amount with no dependants"""
-    plan = baker.make("core.Plan")
+    plan = baker.make("core.Plan", size=1)
     baker.make("core.PlanRate", plan=plan, payment_cycle="M", rate=520, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="M")
     rate = utils.get_subscription_rate(client)
@@ -203,11 +203,12 @@ def test_calculate_subscription_no_deps():
 def test_calculate_subscription_deps_family(plan):
     """Test calculation of subscription amount for family plan with dependants
     who are part of the family"""
-    plan = baker.make("core.Plan", has_extra=True, family_inclusive=True)
+    plan = baker.make("core.Plan", has_extra=True, family_inclusive=True, size=4)
     baker.make("core.PlanRate", plan=plan, payment_cycle="M", rate=520, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="M")
+    dob = timezone.now().date() - relativedelta(years=10)
     baker.make("client.Dependant", relationship=Dependant.SPOUSE, primary=client)
-    baker.make("client.Dependant", relationship=Dependant.SON, primary=client)
+    baker.make("client.Dependant", relationship=Dependant.SON, primary=client, dob=dob)
     rate = utils.get_subscription_rate(client)
     assert rate == 520
 
@@ -216,7 +217,7 @@ def test_calculate_subscription_deps_family(plan):
 def test_calculate_subscription_deps_outside_family():
     """Test calculation of subscription amount for family plan with dependants
     who are NOT a part of the family"""
-    plan = baker.make("core.Plan", has_extra=True, family_inclusive=True)
+    plan = baker.make("core.Plan", has_extra=True, family_inclusive=True, size=4)
     baker.make("core.PlanRate", plan=plan, payment_cycle="M", rate=520, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="M")
     baker.make("client.Dependant", relationship=Dependant.OTHERS, primary=client)
@@ -228,22 +229,25 @@ def test_calculate_subscription_deps_outside_family():
 def test_calculate_subscription_deps_single():
     """Test calculation of subscription amount for single plan with dependants
     """
-    plan = baker.make("core.Plan", has_extra=True, family_inclusive=False)
+    plan = baker.make("core.Plan", has_extra=True, size=1)
     baker.make("core.PlanRate", plan=plan, payment_cycle="M", rate=520, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="M")
-    baker.make("client.Dependant", relationship=Dependant.SON, primary=client)
+    dob = timezone.now().date() - relativedelta(years=10)
+    baker.make("client.Dependant", relationship=Dependant.SON, primary=client, dob=dob)
+    # import pdb;pdb.set_trace()
     rate = utils.get_subscription_rate(client)
     assert rate == 920
 
 
 @pytest.mark.django_db
-def test_calculate_subscription_deps_family():
+def test_calculate_subscription_deps_son():
     """Test calculation of subscription amount for family plan with dependants
     """
-    plan = baker.make("core.Plan", has_extra=True, family_inclusive=True)
+    plan = baker.make("core.Plan", has_extra=True, family_inclusive=True, size=4)
     baker.make("core.PlanRate", plan=plan, payment_cycle="M", rate=520, extra_rate=400)
     client = baker.make("client.Client", plan=plan, payment_option="M")
-    baker.make("client.Dependant", relationship=Dependant.SON, primary=client)
+    dob = timezone.now().date() - relativedelta(years=10)
+    baker.make("client.Dependant", relationship=Dependant.SON, primary=client, dob=dob)
     rate = utils.get_subscription_rate(client)
     assert rate == 520
 
@@ -252,7 +256,7 @@ def test_calculate_subscription_deps_family():
 def _test_calculate_subscription_deps_not_supported(plan):
     """TODO: Test attempt to add dependants to plan that does not support
     dependants"""
-    plan = baker.make("core.Plan", has_extra=False)
+    plan = baker.make("core.Plan", has_extra=False, size=1)
     client = baker.make("client.Client", plan=plan, payment_option="A")
     baker.make("client.Dependant", primary=client)
     baker.make("client.Dependant", relationship=Dependant.SON, primary=client)
@@ -324,7 +328,8 @@ def test_monthly_subscription_expiry(plan):
 @pytest.mark.django_db
 def test_multiple_subscription_start_expiry():
     """Test that multiple subscriptions have correct expiry"""
-    plan = baker.make("core.Plan")
+    # import pdb;pdb.set_trace()
+    plan = baker.make("core.Plan", size=1)
     baker.make("core.PlanRate", plan=plan, payment_cycle="M", rate=1000)
     client = baker.make("client.Client", plan=plan, payment_option="M")
     sub1 = utils.create_subscription(client, 1000)
