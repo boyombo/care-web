@@ -110,6 +110,11 @@ def walkin_payment(request):
                 _ranger.balance += pymt.amount
                 _ranger.save()
                 return JsonResponse({"success": True, "reference": ref})
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({"success": False, "errors": errors})
+    else:
+        return JsonResponse({"success": False, "errors": "Only POST allowed"})
 
 
 ## Paystack
