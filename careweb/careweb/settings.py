@@ -71,17 +71,17 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "crispy_forms",
     "constance.backends.database",
-    "easyaudit",
+    # "easyaudit",
 ]
 
 CONSTANCE_CONFIG = {
     "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription")
 }
 
-DJANGO_EASY_AUDIT_UNREGISTERED_URLS_EXTRA = [
-    r"^/baton/app-list-json/",
-    r"/favicon.png$",
-]
+# DJANGO_EASY_AUDIT_UNREGISTERED_URLS_EXTRA = [
+#    r"^/baton/app-list-json/",
+#    r"/favicon.png$",
+# ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
@@ -93,7 +93,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "easyaudit.middleware.easyaudit.EasyAuditMiddleware",
+    # "easyaudit.middleware.easyaudit.EasyAuditMiddleware",
 ]
 
 ROOT_URLCONF = "careweb.urls"
