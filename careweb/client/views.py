@@ -3,6 +3,7 @@ from random import sample
 from decimal import Decimal
 
 from django.http import JsonResponse, HttpResponseBadRequest
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -50,7 +51,13 @@ logger = logging.getLogger(__name__)
 @login_required
 def profile(request, pk=None):
     if pk:
-        client = Client.objects.get(pk=pk)
+        try:
+            client = Client.objects.get(pk=pk)
+        except Client.DoesNotExist:
+            return redirect("login")
+        else:
+            if client.user != request.user:
+                return redirect("login")
     else:
         try:
             client = Client.objects.get(user=request.user)
@@ -127,6 +134,19 @@ def client_login(request):
 
 class ClientView(UpdateView):
     model = Client
+
+    def get(self, request, pk):
+        # import pdb;pdb.set_trace()
+        try:
+            _client = Client.objects.get(pk=pk)
+        except Client.DoesNotExist:
+            return redirect("login")
+
+        if _client.user != request.user:
+            raise PermissionDenied
+            # return redirect("login")
+        else:
+            return super().get(request, pk)
 
 
 def update_plan(request):
