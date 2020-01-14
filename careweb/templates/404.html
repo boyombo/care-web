@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+Not Found
+{% endblock title %}
+
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
+
+{% block extra-css %}
+<style>
+.red {
+    color: #ff0000;
+}
+.center {
+    text-align: center;
+}
+</style>
+{% endblock extra-css %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block content %}
+    <!-- BreadCrumb Area Start -->
+ 
+
+    <!--  BreadCrumb Area Start  -->
+
+
+<!-- SignIn Area Start -->
+<section id="logRegForm" class="logRegForm"> 
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-10">
+                    <div class="contact_form_wrappre2">
+                        <h2>
+                            Not Found
+                        </h2>
+                        <div class="center"><i class="fa fa-3x fa-exclamation-triangle red"></i></div>
+                        <h5 class="center">Sorry, we cannot find the resource you are trying to access</h5>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- SignIn Area Start -->
+{% endblock content %}
+
+
+{% block extra-js %}
+<script type="text/javascript">
+  $('#id_username').addClass('form-control');
+  $('#id_username').attr('placeholder', 'Email');
+
+  // glyphicon
+
+  $('#id_password').addClass('form-control');
+  $('#id_password').attr('placeholder', 'Password');
+
+  $('.nav-link').removeClass('active')
+  $('#login-nav-link').addClass('active')
+</script>
+{% endblock extra-js %}
