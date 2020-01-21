@@ -22,12 +22,13 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path("forgot-pwd/", core_views.forgot),
     path("change-pwd/", core_views.change_pwd),
+    path("post-register/", core_views.PostRegisterView.as_view(), name="post_register"),
     path("change-password/", core_views.change_pwd_web, name="change_password"),
-    path(
-        "post-register/",
-        TemplateView.as_view(template_name="post_register.html"),
-        name="post_register",
-    )
+    # path(
+    #    "post-register/",
+    #    TemplateView.as_view(template_name="post_register.html"),
+    #    name="post_register",
+    # )
     # path('profile', TemplateView.as_view(template_name='base.html'), name='profile'),
     # path('register', TemplateView.as_view(template_name='base.html'), name='register'),
 ]
