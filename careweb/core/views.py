@@ -7,6 +7,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from django.views.generic import TemplateView
 
+from ratelimit.decorators import ratelimit
+
 from core.forms import (
     LoginForm,
     ForgotPwdForm,
@@ -100,6 +102,7 @@ def login_agent(request):
     return JsonResponse({"error": "Bad Request", "success": False})
 
 
+@ratelimit(key="ip", rate="3/h", block=True)
 @csrf_exempt
 def forgot(request):
     if request.method == "POST":
