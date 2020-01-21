@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
+from django.views.generic import TemplateView
 
 from core.forms import (
     LoginForm,
@@ -22,6 +23,16 @@ from location.models import LGA
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+class PostRegisterView(TemplateView):
+    template_name = "post_register.html"
+
+    def get(self, request, *args, **kwargs):
+        if "/client/register/" in request.META.get("HTTP_REFERER", "/"):
+            return super().get(request, *args, **kwargs)
+        else:
+            return redirect("register")
 
 
 @csrf_exempt
