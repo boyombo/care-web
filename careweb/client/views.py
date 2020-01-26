@@ -500,13 +500,17 @@ def get_clients(request, id):
 
 @csrf_exempt
 def create_client_subscription(request, client_id, ranger_id):
+    logger.info("creating client subscription")
     client = get_object_or_404(Client, pk=client_id)
+    logger.info("client is {}".format(client))
     ranger = get_object_or_404(Ranger, pk=ranger_id)
     if request.method == "POST":
         form = AmountForm(request.POST)
+        logger.info("form: {}".form.data)
         if form.is_valid():
             amount = Decimal(form.cleaned_data["amount"])
             sub = create_subscription(client, amount)
+            logger.info("subscription info: {}".format(sub))
             if sub:
                 # deduct from ranger balance
                 ranger.balance -= amount
