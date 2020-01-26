@@ -429,19 +429,19 @@ def upload_photo(request, id):
         host = "https://{}".format(request.get_host())
         details = get_client_details(cl, host)
         return JsonResponse({"success": True, "client": details})
-        # return JsonResponse(
-        #    {
-        #        "client": {
-        #            "id": cl.id.id,
-        #            "surname": cl.surname,
-        #            "firstName": cl.first_name,
-        #            "phone": cl.phone_no,
-        #            "email": cl.email,
-        #            "photo": photo_url,
-        #        },
-        #        "success": True,
-        #    }
-        # )
+
+
+def upload_photo_b64(request, id):
+    """upload photo as base64 string"""
+    logger.info("uploading photo as base64")
+    cl = get_object_or_404(Client, pk=id)
+    # import pdb;pdb.set_trace()
+    logger.info("got client for photo upload")
+    # pprint("got client")
+    logger.info(cl)
+    if request.method == "POST":
+        logger.info(request.POST.get("photo"))
+    return JsonResponse({"success": True})
 
 
 def get_client_photo(request, id):
