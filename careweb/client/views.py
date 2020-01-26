@@ -443,6 +443,7 @@ def upload_photo_b64(request, id):
     # pprint("got client")
     logger.info(cl)
     if request.method == "POST":
+        logger.info(request.body)
         logger.info(request.POST.__dict__)
         logger.info(request.POST.get("photo"))
     return JsonResponse({"success": True})
