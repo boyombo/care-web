@@ -22,7 +22,7 @@ class Payment(models.Model):
     cust_reference = models.CharField(max_length=200, blank=True)
     status = models.PositiveIntegerField(choices=STATUSES, default=PENDING)
     payment_mode = models.PositiveIntegerField(choices=MODES, null=True)
-    narration = models.TextField(blank=True)
+    narration = models.TextField(blank=True, null=True)
     paid_by = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
