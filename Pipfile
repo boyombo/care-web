@@ -29,6 +29,7 @@ pycryptodome = "*"
 django-constance = { extras = [ "database",] }
 django = "==2.2.8"
 django-easy-audit = "*"
+django-ratelimit = "*"
 
 
 [dev-packages]
