@@ -1,6 +1,7 @@
 # from pprint import pprint
 from random import sample
 from decimal import Decimal
+import base64
 
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied
@@ -12,6 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import UpdateView
 from django.contrib import messages
 from django.conf import settings
+from django.core.files.base import ContentFile
 
 # from django.urls import reverse_lazy
 
@@ -441,6 +443,7 @@ def upload_photo_b64(request, id):
     # pprint("got client")
     logger.info(cl)
     if request.method == "POST":
+        logger.info(request.POST.__dict__)
         logger.info(request.POST.get("photo"))
     return JsonResponse({"success": True})
 
