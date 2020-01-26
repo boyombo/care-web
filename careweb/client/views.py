@@ -445,8 +445,15 @@ def upload_photo_b64(request, id):
     if request.method == "POST":
         logger.info(request.body)
         logger.info(request.POST.__dict__)
-        logger.info(request.POST.get("photo"))
-    return JsonResponse({"success": True})
+        logger.info(request.POST)
+        fd = request.body.decode("utf-8")
+        format, imgstr = fd.split(";base64,")
+        ext = format.split("/")[-1]
+        file_name = "pic{}.{}".format(cl.id, ext)
+        data = ContentFile(base64.b64decode(imgstr))
+        cl.photo.save(file_name, data, save=True)
+        logging.info(cl.photo.url)
+    return JsonResponse({"success": True, "image": cl.photo.url})
 
 
 def get_client_photo(request, id):
