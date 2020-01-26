@@ -508,7 +508,7 @@ def create_client_subscription(request, client_id, ranger_id):
     if request.method == "POST":
         logger.info("post method called")
         form = AmountForm(request.POST)
-        logger.info("form: {}".form.data)
+        logger.info("form: {}".format(form.data))
         if form.is_valid():
             amount = Decimal(form.cleaned_data["amount"])
             sub = create_subscription(client, amount)
