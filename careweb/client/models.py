@@ -152,6 +152,10 @@ class Client(models.Model):
         return reverse("profile", kwargs={"pk": self.pk})
 
     @property
+    def full_name(self):
+        return "{} {}".format(self.first_name, self.surname)
+
+    @property
     def active(self):
         if not self.user:
             return False
