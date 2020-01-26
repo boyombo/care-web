@@ -58,6 +58,7 @@ class SubscriptionPaymentAdmin(admin.ModelAdmin):
         "payment_date",
         "amount",
         "bank",
+        "name",
         "status",
         "rejection_reason",
     ]
