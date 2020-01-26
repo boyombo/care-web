@@ -431,6 +431,7 @@ def upload_photo(request, id):
         return JsonResponse({"success": True, "client": details})
 
 
+@csrf_exempt
 def upload_photo_b64(request, id):
     """upload photo as base64 string"""
     logger.info("uploading photo as base64")
