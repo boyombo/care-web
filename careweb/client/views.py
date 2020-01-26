@@ -504,7 +504,9 @@ def create_client_subscription(request, client_id, ranger_id):
     client = get_object_or_404(Client, pk=client_id)
     logger.info("client is {}".format(client))
     ranger = get_object_or_404(Ranger, pk=ranger_id)
+    logger.info("ranger is {}".format(ranger))
     if request.method == "POST":
+        logger.info("post method called")
         form = AmountForm(request.POST)
         logger.info("form: {}".form.data)
         if form.is_valid():
