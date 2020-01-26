@@ -17,6 +17,7 @@ from django.conf import settings
 
 from client.models import Client, Dependant, ClientAssociation, Association
 from core.utils import send_welcome_email, send_email
+from subscription.models import SubscriptionPayment
 from subscription.utils import (
     get_subscription_rate,
     create_subscription,
@@ -517,6 +518,16 @@ def create_client_subscription(request, client_id, ranger_id):
                 # deduct from ranger balance
                 ranger.balance -= amount
                 ranger.save()
+
+                # create subscription payment
+                SubscriptionPayment.objects.create(
+                    client=client,
+                    ranger=ranger,
+                    amount=amount,
+                    name=client.full_name,
+                    status=SubscriptionPayment.SUCCESSFUL,
+                    payment_type=SubscriptionPayment.AGENT,
+                )
                 return JsonResponse({"success": True, "newBalance": ranger.balance})
     return JsonResponse({"success": False})
 

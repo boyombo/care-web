@@ -47,7 +47,8 @@ class SubscriptionPayment(models.Model):
     BANK_TRANSFER = 0
     BANK_DEPOSIT = 1
     CARD = 2
-    PAYMENT_TYPES = enumerate(("Bank Transfer", "Bank Deposit", "Card"))
+    AGENT = 3
+    PAYMENT_TYPES = enumerate(("Bank Transfer", "Bank Deposit", "Card", "Agent"))
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     payment_date = models.DateField(default=timezone.now)
