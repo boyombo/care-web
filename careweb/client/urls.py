@@ -32,6 +32,11 @@ urlpatterns = [
         views.remove_dependant,
         name="profile_remove_dependant",
     ),
+    path(
+        "edit_dependant/<str:pk>/",
+        views.edit_dependant,
+        name="profile_edit_dependant",
+    ),
     path("api_register/", views.register_api),
     path("api_login/", views.login_api),
     path("upload_photo/<str:id>/", views.upload_photo),

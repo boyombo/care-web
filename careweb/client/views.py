@@ -279,6 +279,26 @@ def add_dependant(request):
     )
 
 
+def edit_dependant(request, pk):
+    dependant = get_object_or_404(Dependant, pk=pk)
+    client = dependant.primary
+    if request.method == "POST":
+        form = DependantForm(request.POST, instance = dependant, primary=client)
+        if form.is_valid():
+            print(dependant)
+            dependant = form.save(commit=False)
+            dependant.save()
+            messages.info(request, "Dependant updated successfully")
+            return redirect("profile_dependants", pk=client.id)
+    else:
+        form = DependantForm(instance = dependant, primary=client)
+    return render(
+            request,
+            "client/edit_dependant.html",
+            {"form": form, "object": client},
+        )
+
+
 def remove_dependant(request, pk):
     dependant = get_object_or_404(Dependant, pk=pk)
     client = dependant.primary

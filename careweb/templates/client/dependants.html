@@ -69,14 +69,14 @@ Dependants
                                     <th>Name</th>
                                     <th>Date of Birth</th>
                                     <th>Relationship</th>
-                                    <th>remove</th>
+                                    <th>Remove/Edit</th>
                                 </tr>
                                 {% for dep in dependants %}
                                   <tr>
                                     <td>{{dep.first_name}} {{dep.middle_name}} {{dep.surname}}</td>
                                     <td>{{dep.dob}}</td>
                                     <td>{{dep.get_relationship_display}}</td>
-                                    <td><a href="{% url 'profile_remove_dependant' dep.id %}">remove</a></td>
+                                    <td><a href="{% url 'profile_remove_dependant' dep.id %}"><span style="color:red;">remove</span></a> | <a href="{% url 'profile_edit_dependant' dep.id %}">edit</a></td>
                                   </tr>
                                 {% endfor %}
                                 <tfoot>
