@@ -89,8 +89,11 @@ Remove dependant
                                             </div>
                                       
                                             <div class="form-row">
-                                                <div class="col-md-12">
-                                                    <button class="loginnow" type="submit">Remove</button>
+                                                <div class="col-md-6">
+                                                    <button class="loginnow" type="submit">Remove</button> 
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <a href="{% url 'profile_dependants' pk=object.id %}"><button class="loginnow" style="background:red" type="button">Cancel</button></a>
                                                 </div>
                                             </div>
                                         </div>
