@@ -324,11 +324,13 @@ def register_via_agent(request, id):
                 }
             )
         else:
-            error_msg = form.errors.as_text().split("*")[-1]
+            error_msg = form.errors.as_text()
             logger.info(error_msg)
             logger.info(form.errors)
-            return JsonResponse({"success": False, "error": error_msg})
-    return JsonResponse({"success": False})
+            return HttpResponseBadRequest(error_msg)
+            # return JsonResponse({"success": False, "error": error_msg})
+    return HttpResponseBadRequest("Could not save client")
+    # return JsonResponse({"success": False})
 
 
 @csrf_exempt
