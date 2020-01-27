@@ -299,6 +299,7 @@ def remove_dependant(request, pk):
 
 @csrf_exempt
 def register_via_agent(request, id):
+    logger.info("request in for ranger with pk {}".format(id))
     ranger = get_object_or_404(Ranger, pk=id)
     if request.method == "POST":
         form = BasicRegForm(request.POST)
