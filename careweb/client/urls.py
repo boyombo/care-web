@@ -38,6 +38,7 @@ urlpatterns = [
         name="profile_edit_dependant",
     ),
     path("api_register/", views.register_api),
+    path("api_agent_register/", views.register_via_agent),
     path("api_login/", views.login_api),
     path("upload_photo/<str:id>/", views.upload_photo),
     path("upload_photo_base64/<str:id>/", views.upload_photo_b64),
