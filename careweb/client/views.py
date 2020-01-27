@@ -454,7 +454,8 @@ def upload_photo_b64(request, id):
         data = ContentFile(base64.b64decode(imgstr))
         cl.photo.save(file_name, data, save=True)
         logging.info(cl.photo.url)
-    return JsonResponse({"success": True, "image": cl.photo.url})
+        photo_url = request.host() + cl.photo.url
+    return JsonResponse({"success": True, "image": photo_url})
 
 
 def get_client_photo(request, id):
