@@ -14,6 +14,12 @@ from provider.models import CareProvider
 from location.models import LGA
 
 
+class BasicRegForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ["first_name", "surname", "phone_no"]
+
+
 class ApiRegForm(forms.ModelForm):
     email = forms.EmailField()
     password = forms.CharField(max_length=100, widget=forms.PasswordInput)
