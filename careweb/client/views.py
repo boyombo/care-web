@@ -326,6 +326,7 @@ def register_via_agent(request, id):
         else:
             error_msg = form.errors.as_text().split("*")[-1]
             logger.info(error_msg)
+            logger.info(form.errors)
             return JsonResponse({"success": False, "error": error_msg})
     return JsonResponse({"success": False})
 
