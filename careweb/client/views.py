@@ -447,9 +447,10 @@ def upload_photo_b64(request, id):
         logger.info(request.POST.__dict__)
         logger.info(request.POST)
         fd = request.body.decode("utf-8")
-        format, imgstr = fd.split(";base64,")
-        ext = format.split("/")[-1]
+        fmt, imgstr = fd.split(";base64,")
+        ext = fmt.split("/")[-1]
         file_name = "pic{}.{}".format(cl.id, ext)
+        logger.info("fiile name: {}".format(file_name))
         data = ContentFile(base64.b64decode(imgstr))
         cl.photo.save(file_name, data, save=True)
         logging.info(cl.photo.url)
