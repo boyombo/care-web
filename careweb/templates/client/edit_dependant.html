@@ -1,9 +1,10 @@
 {% extends "base.html" %}
-
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
 
 
 {% block title %}
-Remove dependant
+Edit dependant
 {% endblock title %}
 
 {% comment %}
@@ -23,7 +24,7 @@ Remove dependant
                     <div class="col-lg-12">
                         <div class="Content">
                             <h2>
-                                Remove Dependant
+                                Edit Dependant
                             </h2>
                             <div class="links">
                                 <ul>
@@ -46,7 +47,7 @@ Remove dependant
                                         <span>/</span>
                                     </li>
                                     <li>
-                                        <a class="active" href="#">Remove Dependant</a>
+                                        <a class="active" href="#">Edit Dependant</a>
                                     </li>
                                 </ul>
                             </div>
@@ -65,10 +66,16 @@ Remove dependant
                 <div class="col-lg-7 col-md-10">
                         <div class="contact_form_wrappre2">
                             <h2>
-                                Remove Dependant
+                                Edit Dependant
                             </h2>
                                 <form action="" method="post">{% csrf_token %}
-                              
+                                {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        {{ error }}
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
 
                                    {% comment %} <div class="inputArea">
                                     {{ form|crispy }}
@@ -79,20 +86,22 @@ Remove dependant
 
                                             {% comment %} <div class="form-row"> {% endcomment %}
                                             {% comment %} <div class="col-md-12"> {% endcomment %}
-                                          
+                                            
+                                            {{form.surname|as_crispy_field}}
+                                            {{form.first_name|as_crispy_field}}
+                                            {{form.middle_name|as_crispy_field}}
+                                            {{form.dob|as_crispy_field}}
+                                            {{form.relationship|as_crispy_field}}
+                                            
                                             <div class="row">
-                                                <table class="table">
-                                                    <tr><th>Name: {{dependant.first_name}} {{dependant.surname}}</th></tr>
-                                                    <tr><th>Date of Birth: {{dependant.dob}}</th></tr>
-                                                    <tr><th>Relationship: {{dependant.get_relationship_display}}</th></tr>
-                                                </table>
+                                          
                                             </div>
                                       
                                             <div class="form-row">
                                                 <div class="col-md-6">
-                                                    <button class="loginnow" type="submit">Remove</button> 
+                                                    <button class="loginnow" type="submit">Save</button>
                                                 </div>
-                                                <div class="col-md-6">
+                                                 <div class="col-md-6">
                                                     <a href="{% url 'profile_dependants' pk=object.id %}"><button class="loginnow" style="background:red" type="button">Cancel</button></a>
                                                 </div>
                                             </div>
