@@ -1,6 +1,7 @@
 # from pprint import pprint
 from random import sample
 from decimal import Decimal
+import base64
 
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied
@@ -12,6 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import UpdateView
 from django.contrib import messages
 from django.conf import settings
+from django.core.files.base import ContentFile
 
 # from django.urls import reverse_lazy
 
@@ -429,19 +431,30 @@ def upload_photo(request, id):
         host = "https://{}".format(request.get_host())
         details = get_client_details(cl, host)
         return JsonResponse({"success": True, "client": details})
-        # return JsonResponse(
-        #    {
-        #        "client": {
-        #            "id": cl.id.id,
-        #            "surname": cl.surname,
-        #            "firstName": cl.first_name,
-        #            "phone": cl.phone_no,
-        #            "email": cl.email,
-        #            "photo": photo_url,
-        #        },
-        #        "success": True,
-        #    }
-        # )
+
+
+@csrf_exempt
+def upload_photo_b64(request, id):
+    """upload photo as base64 string"""
+    logger.info("uploading photo as base64")
+    cl = get_object_or_404(Client, pk=id)
+    # import pdb;pdb.set_trace()
+    logger.info("got client for photo upload")
+    # pprint("got client")
+    logger.info(cl)
+    if request.method == "POST":
+        logger.info(request.body)
+        logger.info(request.POST.__dict__)
+        logger.info(request.POST)
+        fd = request.body.decode("utf-8")
+        fmt, imgstr = fd.split(";base64,")
+        ext = fmt.split("/")[-1]
+        file_name = "pic{}.{}".format(cl.id, ext)
+        logger.info("fiile name: {}".format(file_name))
+        data = ContentFile(base64.b64decode(imgstr))
+        cl.photo.save(file_name, data, save=True)
+        logging.info(cl.photo.url)
+    return JsonResponse({"success": True, "image": cl.photo.url})
 
 
 def get_client_photo(request, id):
