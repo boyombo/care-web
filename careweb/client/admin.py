@@ -2,7 +2,14 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render
 
-from client.models import HMO, Dependant, Client, Association, ClientAssociation
+from client.models import (
+    HMO,
+    Dependant,
+    Client,
+    Association,
+    ClientAssociation,
+    MyClient,
+)
 from ranger.models import Ranger
 from subscription.utils import get_subscription_rate, create_subscription
 from subscription.models import SubscriptionPayment
@@ -37,6 +44,69 @@ class DependantAdmin(admin.ModelAdmin):
 
 class DependantInline(admin.TabularInline):
     model = Dependant
+
+
+@admin.register(MyClient)
+class MyClientAdmin(admin.ModelAdmin):
+    list_display = [
+        "surname",
+        "first_name",
+        "active",
+        "payment_option",
+        "plan",
+        "verified",
+    ]
+    actions = ["subscribe_client"]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if not request.user.is_superuser:
+            return False
+        return True
+
+    def subscribe_client(self, request, queryset):
+        try:
+            ranger = Ranger.objects.get(user=request.user)
+        except Ranger.DoesNotExist:
+            messages.error(request, "Sorry, you cannot subscribe for a client")
+            return
+
+        if queryset.count() != 1:
+            messages.error(
+                request, "Sorry, you can only subscribe one client at a time"
+            )
+            return
+
+        client = queryset[0]
+        rate = get_subscription_rate(client)
+        if rate > ranger.balance:
+            messages.error(
+                request, "Sorry, you do not have enough balance for this subscription"
+            )
+            return
+
+        if request.method == "POST" and "apply" in request.POST:
+            ranger.balance -= rate
+            ranger.save()
+            create_subscription(client, rate)
+            SubscriptionPayment.objects.create(
+                client=client,
+                amount=rate,
+                status=SubscriptionPayment.SUCCESSFUL,
+                ranger=ranger,
+            )
+            messages.success(request, "The subscription was successful")
+        else:
+            return render(
+                request,
+                "admin/client/subscribe.html",
+                {"ranger": ranger, "client": client, "amount": rate},
+            )
 
 
 @admin.register(Client)
@@ -118,11 +188,11 @@ class ClientAdmin(admin.ModelAdmin):
         ),
     ]
 
-    # def get_queryset(self, request):
-    #    qs = super().get_queryset(request)
-    #    if request.user.is_superuser:
-    #        return qs
-    #    return qs.filter(ranger__user=request.user)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(ranger__user=request.user)
 
     def has_delete_permission(self, request, obj=None):
         if not request.user.is_superuser:
