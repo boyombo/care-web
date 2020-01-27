@@ -102,7 +102,7 @@ def login_agent(request):
     return JsonResponse({"error": "Bad Request", "success": False})
 
 
-@ratelimit(key="ip", rate="3/h", block=True)
+@ratelimit(key="ip", rate="10/h", block=True)
 @csrf_exempt
 def forgot(request):
     if request.method == "POST":
@@ -124,9 +124,15 @@ def forgot(request):
             else:
                 _id = clt.id.hashid
                 name = clt.first_name
-            # else:
-            #    _id = ranger.id.hashid
-            #    name = ranger.first_name
+
+            if not _id:
+                try:
+                    rng = Ranger.objects.get(user=usr)
+                except Ranger.DoesNotExist:
+                    pass
+                else:
+                    _id = rng.id.hashid
+                    name = rng.first_name
 
             if _id:
                 token = default_token_generator.make_token(usr)
@@ -159,9 +165,20 @@ def reset_confirm(request, uid, token):
     try:
         clt = Client.objects.get(pk=uid)
     except Client.DoesNotExist:
-        return HttpResponseBadRequest("Invalid request")
+        pass
+        # return HttpResponseBadRequest("Invalid request")
     else:
         usr = clt.user
+
+    if not usr:
+        try:
+            rng = Ranger.objects.get(pk=uid)
+        except Ranger.DoesNotExist:
+            pass
+        else:
+            usr = rng.user
+    if not usr:
+        return HttpResponseBadRequest("Invalid Request")
     # else:
     #    usr = ranger.user
     # check if token is valid

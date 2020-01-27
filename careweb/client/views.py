@@ -319,6 +319,7 @@ def remove_dependant(request, pk):
 
 @csrf_exempt
 def register_via_agent(request, id):
+    logger.info("request in for ranger with pk {}".format(id))
     ranger = get_object_or_404(Ranger, pk=id)
     if request.method == "POST":
         form = BasicRegForm(request.POST)
@@ -343,10 +344,13 @@ def register_via_agent(request, id):
                 }
             )
         else:
-            error_msg = form.errors.as_text().split("*")[-1]
+            error_msg = form.errors.as_text()
             logger.info(error_msg)
-            return JsonResponse({"success": False, "error": error_msg})
-    return JsonResponse({"success": False})
+            logger.info(form.errors)
+            return HttpResponseBadRequest(error_msg)
+            # return JsonResponse({"success": False, "error": error_msg})
+    return HttpResponseBadRequest("Could not save client")
+    # return JsonResponse({"success": False})
 
 
 @csrf_exempt
