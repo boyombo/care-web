@@ -102,7 +102,7 @@ def login_agent(request):
     return JsonResponse({"error": "Bad Request", "success": False})
 
 
-@ratelimit(key="ip", rate="3/h", block=True)
+@ratelimit(key="ip", rate="10/h", block=True)
 @csrf_exempt
 def forgot(request):
     if request.method == "POST":
