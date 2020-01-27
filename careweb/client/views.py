@@ -35,6 +35,7 @@ from provider.models import CareProvider
 from client.forms import (
     RegForm,
     ApiRegForm,
+    BasicRegForm,
     LoginForm,
     PersonalInfoForm,
     AssociationsForm,
@@ -294,6 +295,38 @@ def remove_dependant(request, pk):
 
 
 ## Endpoints
+
+
+@csrf_exempt
+def register_via_agent(request, id):
+    ranger = get_object_or_404(Ranger, pk=id)
+    if request.method == "POST":
+        form = BasicRegForm(request.POST)
+        if form.is_valid():
+            cl = form.save()  # has to be committed to get QL number
+            cl.verified = True
+            ranger = ranger
+            cl.lashma_quqlity_life_no = get_quality_life_number(cl)
+            cl.save()
+            return JsonResponse(
+                {
+                    "success": True,
+                    "client": {
+                        "active": cl.verified,
+                        "id": cl.id.id,
+                        "surname": cl.surname,
+                        "firstName": cl.first_name,
+                        "email": "",
+                        "phone": cl.phone_no,
+                        "photo": "",
+                    },
+                }
+            )
+        else:
+            error_msg = form.errors.as_text().split("*")[-1]
+            logger.info(error_msg)
+            return JsonResponse({"success": False, "error": error_msg})
+    return JsonResponse({"success": False})
 
 
 @csrf_exempt
