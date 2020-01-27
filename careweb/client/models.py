@@ -145,6 +145,9 @@ class Client(models.Model):
     verified = models.BooleanField(default=False)
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
+    class Meta:
+        verbose_name = "My Client"
+
     def __str__(self):
         return self.surname
 
@@ -160,3 +163,10 @@ class Client(models.Model):
         if not self.user:
             return False
         return self.user.is_active
+
+
+class MyClient(Client):
+    class Meta:
+        proxy = True
+        # verbose_name = "Client"
+        verbose_name_plural = "All Clients"
