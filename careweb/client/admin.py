@@ -269,4 +269,9 @@ class ClientAdmin(admin.ModelAdmin):
             obj.ranger = ranger
             obj.verified = True
             obj.save()
+            sub_rate = get_subscription_rate(obj)
+            messages.success(
+                request,
+                "The subscription rate for {} is {}".format(obj.full_name, sub_rate),
+            )
         super().save_model(request, obj, form, change)
