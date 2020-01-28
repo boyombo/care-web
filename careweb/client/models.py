@@ -143,6 +143,7 @@ class Client(models.Model):
     verification_code = models.CharField(max_length=10, blank=True, null=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     verified = models.BooleanField(default=False)
+    subscription_rate = models.CharField(max_length=100, blank=True, null=True)
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
     class Meta:
