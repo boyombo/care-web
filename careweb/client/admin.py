@@ -54,6 +54,7 @@ class MyClientAdmin(admin.ModelAdmin):
         "active",
         "payment_option",
         "plan",
+        "subscription_rate",
         "verified",
     ]
     actions = ["subscribe_client"]
