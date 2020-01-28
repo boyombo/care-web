@@ -117,6 +117,7 @@ class ClientAdmin(admin.ModelAdmin):
         "active",
         "payment_option",
         "plan",
+        "subscription_rate",
         "user",
         "verification_code",
         "verified",
@@ -270,6 +271,8 @@ class ClientAdmin(admin.ModelAdmin):
             obj.verified = True
             obj.save()
             sub_rate = get_subscription_rate(obj)
+            obj.subscription_rate = "{}".format(sub_rate)
+            obj.save()
             messages.success(
                 request,
                 "The subscription rate for {} is {}".format(obj.full_name, sub_rate),
