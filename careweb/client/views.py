@@ -183,6 +183,8 @@ class IdentificationView(ClientView):
         "drivers_licence_no",
         "lagos_resident_no",
         "lashma_no",
+        "international_passport_no",
+        "voters_card_no",
         # "lashma_quality_life_no",
     ]
     template_name = "client/identification.html"
