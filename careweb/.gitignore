@@ -100,3 +100,6 @@ deploy.sh
 deploy.py
 
 static/
+.idea
+.idea/*
+
