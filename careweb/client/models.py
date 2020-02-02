@@ -54,6 +54,7 @@ class Dependant(models.Model):
     middle_name = models.CharField(max_length=100, blank=True)
     dob = models.DateField(null=True, blank=True)
     relationship = models.PositiveIntegerField(choices=RELATIONSHIPS)
+    photo = models.ImageField(upload_to="dependantphoto", null=True, blank=True)
 
     # pcp = models.ForeignKey(
     #    CareProvider, null=True, blank=True, on_delete=models.SET_NULL

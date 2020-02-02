@@ -68,7 +68,7 @@ Edit dependant
                             <h2>
                                 Edit Dependant
                             </h2>
-                                <form action="" method="post">{% csrf_token %}
+                                <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
                                 {% if form.non_field_errors %}
                                     {% for error in form.non_field_errors %}
                                     <div class="alert alert-danger">
@@ -92,7 +92,8 @@ Edit dependant
                                             {{form.middle_name|as_crispy_field}}
                                             {{form.dob|as_crispy_field}}
                                             {{form.relationship|as_crispy_field}}
-                                            
+                                            {{form.photo|as_crispy_field}}
+
                                             <div class="row">
                                           
                                             </div>

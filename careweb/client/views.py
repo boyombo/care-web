@@ -268,7 +268,7 @@ def dependants(request, pk):
 def add_dependant(request):
     client = Client.objects.get(user=request.user)
     if request.method == "POST":
-        form = DependantForm(request.POST, primary=client)
+        form = DependantForm(request.POST, request.FILES, primary=client)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.primary = client
@@ -286,7 +286,7 @@ def edit_dependant(request, pk):
     dependant = get_object_or_404(Dependant, pk=pk)
     client = dependant.primary
     if request.method == "POST":
-        form = DependantForm(request.POST, instance = dependant, primary=client)
+        form = DependantForm(request.POST, request.FILES, instance=dependant, primary=client)
         if form.is_valid():
             print(dependant)
             dependant = form.save(commit=False)
@@ -294,12 +294,12 @@ def edit_dependant(request, pk):
             messages.info(request, "Dependant updated successfully")
             return redirect("profile_dependants", pk=client.id)
     else:
-        form = DependantForm(instance = dependant, primary=client)
+        form = DependantForm(instance=dependant, primary=client)
     return render(
-            request,
-            "client/edit_dependant.html",
-            {"form": form, "object": client},
-        )
+        request,
+        "client/edit_dependant.html",
+        {"form": form, "object": client},
+    )
 
 
 def remove_dependant(request, pk):
@@ -443,7 +443,7 @@ def login_api(request):
                     logger.info("client details")
                     client_details = get_client_details(client, host)
                     logger.info(client_details)
-                    return JsonResponse({"success": True, "client": client_details,})
+                    return JsonResponse({"success": True, "client": client_details, })
         else:
             logger.info(form.errors)
             return HttpResponseBadRequest(
@@ -624,7 +624,6 @@ def add_client(request):
 def payment(request):
     client = Client.objects.get(user=request.user)
     return render(request, "client/payment.html", {"object": client})
-
 
 #    cl = get_object_or_404(Client, pk=id)
 #    amount = get_subscription_rate(cl)
