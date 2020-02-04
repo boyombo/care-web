@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 fabric = "*"
 django-baton = "*"
 ipython = "*"
@@ -26,10 +23,9 @@ django-debug-toolbar = "*"
 python-dateutil = "*"
 django-crispy-forms = "*"
 pycryptodome = "*"
-django-constance = { extras = [ "database",] }
+django-constance = {extras = [ "database",]}
 django = "==2.2.8"
 django-easy-audit = "*"
 django-ratelimit = "*"
-
 
 [dev-packages]

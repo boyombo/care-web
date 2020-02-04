@@ -2,7 +2,6 @@ from django.urls import path
 
 from client import views
 
-
 urlpatterns = [
     path("profile/<str:pk>/", views.profile, name="profile"),
     path("profile/", views.profile, name="profile"),
@@ -52,4 +51,7 @@ urlpatterns = [
     ),
     path("info/<int:id>/", views.get_client_info),
     path("load_pcp_list/", views.load_pcp_list, name="load_pcp_list"),
+
+    # AJAX Request
+    path("lga/pcps", views.get_lga_pcp),
 ]
