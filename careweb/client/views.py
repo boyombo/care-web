@@ -625,6 +625,7 @@ def payment(request):
     client = Client.objects.get(user=request.user)
     return render(request, "client/payment.html", {"object": client})
 
+
 #    cl = get_object_or_404(Client, pk=id)
 #    amount = get_subscription_rate(cl)
 #    email = cl.email
@@ -632,3 +633,15 @@ def payment(request):
 #    curr_code = "566"
 #    order_id = get_reference()
 #    product = "Futurecare Subscription"
+
+
+def get_lga_pcp(request):
+    lga = request.GET.get('lga')
+    if lga:
+        pcp_set = CareProvider.objects.filter(lga__id=lga)
+        pcps = [{
+            "id": str(pcp.id),
+            "text": pcp.name
+        } for pcp in pcp_set]
+        return JsonResponse({"pcps": pcps})
+    return JsonResponse({"pcps": []})

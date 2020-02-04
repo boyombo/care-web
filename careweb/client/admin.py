@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render
 
+from client.forms import ClientAdminForm
 from client.models import (
     HMO,
     Dependant,
@@ -10,6 +11,7 @@ from client.models import (
     ClientAssociation,
     MyClient,
 )
+from location.models import LGA
 from ranger.models import Ranger
 from subscription.utils import get_subscription_rate, create_subscription
 from subscription.models import SubscriptionPayment
@@ -111,6 +113,12 @@ class MyClientAdmin(admin.ModelAdmin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
+    class Media:
+        js = (
+            'js/client_admin.js',
+        )
+
+    form = ClientAdminForm
     list_display = [
         "surname",
         "first_name",
@@ -123,7 +131,7 @@ class ClientAdmin(admin.ModelAdmin):
     ]
     inlines = [DependantInline, AssociationInline]
     search_fields = ["user__username", "surname", "first_name"]
-    autocomplete_fields = ["ranger", "pcp"]
+    autocomplete_fields = ["ranger"]
     exclude = ["user"]
     readonly_fields = ["lashma_quality_life_no"]
     actions = ["subscribe_client", "verify_client"]
@@ -137,6 +145,7 @@ class ClientAdmin(admin.ModelAdmin):
                     "baton-tabs-init",
                     "baton-tab-fs-personal",
                     "baton-tab-fs-contact",
+                    "baton-tab-fs-provider",
                     "baton-tab-fs-ids",
                     "baton-tab-fs-work",
                     "baton-tab-fs-package",
@@ -160,6 +169,13 @@ class ClientAdmin(admin.ModelAdmin):
             },
         ),
         (
+            "Provider",
+            {
+                "fields": ["lga", "pcp"],
+                "classes": ["tab-fs-provider"],
+            },
+        ),
+        (
             "IDs",
             {
                 "fields": [
@@ -177,14 +193,14 @@ class ClientAdmin(admin.ModelAdmin):
         (
             "Work",
             {
-                "fields": ["occupation", "company", "office_address",],
+                "fields": ["occupation", "company", "office_address", ],
                 "classes": ["tab-fs-work"],
             },
         ),
         (
             "Package",
             {
-                "fields": ["plan", "payment_option", "payment_instrument",],
+                "fields": ["plan", "payment_option", "payment_instrument", ],
                 "classes": ["tab-fs-package"],
             },
         ),
