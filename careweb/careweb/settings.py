@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "crispy_forms",
     "constance.backends.database",
+    # "easy_select2"
     # "easyaudit",
 ]
 

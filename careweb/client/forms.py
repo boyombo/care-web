@@ -136,6 +136,7 @@ class DependantForm(forms.ModelForm):
             years=range(1970, 2019),
         )
     )
+
     # lga = forms.ModelChoiceField(queryset=LGA.objects.all(), required=False)
 
     class Meta:
@@ -149,10 +150,10 @@ class DependantForm(forms.ModelForm):
     def clean_relationship(self):
         if "relationship" in self.cleaned_data:
             if (
-                Dependant.objects.filter(
-                    primary=self.primary, relationship=Dependant.SPOUSE
-                )
-                and self.cleaned_data["relationship"] == Dependant.SPOUSE
+                    Dependant.objects.filter(
+                        primary=self.primary, relationship=Dependant.SPOUSE
+                    )
+                    and self.cleaned_data["relationship"] == Dependant.SPOUSE
             ):
                 raise forms.ValidationError("You can have only one spouse on the plan")
         return self.cleaned_data["relationship"]
@@ -217,6 +218,30 @@ class PCPForm(forms.ModelForm):
                 self.fields["pcp"].queryset = CareProvider.objects.filter(
                     lga__id=lga_id
                 )
+            except (TypeError, ValueError):
+                pass
+        elif self.instance.pk:
+            self.fields["pcp"].queryset = CareProvider.objects.all()
+
+
+class ClientAdminForm(forms.ModelForm):
+    lga = forms.ModelChoiceField(queryset=LGA.objects.all(), required=False)
+
+    class Meta:
+        model = Client
+        widgets = {
+            "pcp": forms.Select(attrs={"class": "form-control select2", "style": "min-width: 250px"})
+        }
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["pcp"].queryset = CareProvider.objects.none()
+
+        if "lga" in self.data:
+            try:
+                lga_id = self.data.get("lga")
+                self.fields["pcp"].queryset = CareProvider.objects.filter(lga__id=lga_id)
             except (TypeError, ValueError):
                 pass
         elif self.instance.pk:
