@@ -641,7 +641,7 @@ def get_lga_pcp(request):
         pcp_set = CareProvider.objects.filter(lga__id=lga)
         pcps = [{
             "id": str(pcp.id),
-            "text": pcp.name
+            "text": "{name} -- {address}".format(name=pcp.name, address=pcp.address)
         } for pcp in pcp_set]
         return JsonResponse({"pcps": pcps})
     return JsonResponse({"pcps": []})
