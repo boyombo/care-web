@@ -76,7 +76,9 @@ INSTALLED_APPS = [
 ]
 
 CONSTANCE_CONFIG = {
-    "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription")
+    "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription"),
+    "CLIENT_DEFAULT_PASSWORD": ("Qwerty123", "Default password for clients registered by rangers."),
+    "LEN_VERIFICATION_CODE": (5, "Length of verification code for new users"),
 }
 
 # DJANGO_EASY_AUDIT_UNREGISTERED_URLS_EXTRA = [

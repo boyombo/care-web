@@ -1,9 +1,8 @@
 window.onload = function () {
     const $ = jQuery;
-    $('#id_lga').val('');
     $(document).ready(function () {
         const lga_select = $("#id_lga");
-
+        setLga();
         lga_select.change(function () {
             const val = lga_select.val();
             $.ajax({
@@ -29,6 +28,26 @@ window.onload = function () {
                 }
             })
         });
+
+        function setLga() {
+            const pcp = $('#id_pcp').val();
+            $('#id_lga').val("");
+            if (pcp) {
+                $.ajax({
+                    url: "/client/pcp/get-lga",
+                    type: "GET",
+                    data: {pcp: pcp},
+                    dataType: "json",
+                    success: function (data) {
+                        const lga_select = $('#id_lga');
+                        lga_select.val(data.id);
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+        }
     });
 };
 
