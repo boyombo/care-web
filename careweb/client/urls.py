@@ -54,4 +54,5 @@ urlpatterns = [
 
     # AJAX Request
     path("lga/pcps", views.get_lga_pcp),
+    path("pcp/get-lga", views.get_pcp_lga),
 ]
