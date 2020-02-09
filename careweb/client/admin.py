@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.shortcuts import render
 
 from client.forms import ClientAdminForm
@@ -11,7 +12,9 @@ from client.models import (
     ClientAssociation,
     MyClient,
 )
-from location.models import LGA
+from client.utils import get_verification_code
+from core.utils import send_email
+from constance import config
 from ranger.models import Ranger
 from subscription.utils import get_subscription_rate, create_subscription
 from subscription.models import SubscriptionPayment
@@ -116,7 +119,7 @@ class MyClientAdmin(admin.ModelAdmin):
 class ClientAdmin(admin.ModelAdmin):
     class Media:
         js = (
-            'js/client_admin.js',
+            'js/client_admin2.js',
         )
 
     form = ClientAdminForm
@@ -230,7 +233,6 @@ class ClientAdmin(admin.ModelAdmin):
             if "verify_client" in actions:
                 del actions["verify_client"]
             return actions
-        return []
 
     def verify_client(self, request, queryset):
         if request.user.is_superuser:
@@ -287,13 +289,18 @@ class ClientAdmin(admin.ModelAdmin):
             # usr.active = True
             # usr.save()
             obj.ranger = ranger
-            obj.verified = True
-            obj.save()
             sub_rate = get_subscription_rate(obj)
             obj.subscription_rate = "{}".format(sub_rate)
-            obj.save()
-            messages.success(
-                request,
-                "The subscription rate for {} is {}".format(obj.full_name, sub_rate),
-            )
+            messages.success(request, "The subscription rate for {} is {}".format(obj.full_name, sub_rate))
+        if obj.email and not User.objects.filter(username=obj.email).exists():
+            password = config.CLIENT_DEFAULT_PASSWORD
+            usr = User.objects.create_user(username=obj.email, password=password, email=obj.email)
+            code = get_verification_code()
+            obj.user = usr
+            obj.verification_code = code
+            context = {"name": obj.first_name, "code": code}
+            send_email(obj.email, "welcome_app", context)
+        else:
+            obj.verified = True
+        obj.save()
         super().save_model(request, obj, form, change)

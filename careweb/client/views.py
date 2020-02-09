@@ -26,7 +26,7 @@ from subscription.utils import (
     get_next_subscription_date,
 )
 from payment.utils import get_reference
-from client.utils import get_client_details, get_quality_life_number
+from client.utils import get_client_details, get_quality_life_number, get_verification_code
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
@@ -372,7 +372,8 @@ def register_api(request):
             # usr.is_active = False
             # usr.save()
             # create verification code
-            code = "".join(sample("0123456789", 5))
+            # code = "".join(sample("0123456789", 5))
+            code = get_verification_code()
             logger.info("code is {}".format(code))
 
             obj = form.save(commit=False)
@@ -645,3 +646,11 @@ def get_lga_pcp(request):
         } for pcp in pcp_set]
         return JsonResponse({"pcps": pcps})
     return JsonResponse({"pcps": []})
+
+
+def get_pcp_lga(request):
+    pcp = request.GET.get('pcp')
+    if pcp:
+        provider = CareProvider.objects.get(id=pcp)
+        return JsonResponse({"id": str(provider.lga.id), "text": provider.lga.name})
+    return JsonResponse({})

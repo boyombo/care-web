@@ -1,6 +1,10 @@
+from random import choice
+from string import digits
+
 from subscription.utils import get_subscription_rate, get_next_subscription_date
-from client.models import Dependant, ClientAssociation
+from client.models import Dependant, ClientAssociation, Client
 from django.utils import timezone
+from constance import config
 
 
 def get_quality_life_number(cl):
@@ -76,3 +80,12 @@ def get_client_details(client, host):
         "dependents": dependants,  # I call it dependents instead of dependants everywhere
         "associations": associations,
     }
+
+
+def get_verification_code():
+    code = ""
+    for i in range(config.LEN_VERIFICATION_CODE):
+        code += choice(digits)
+    if Client.objects.filter(verification_code=code).exists():
+        return get_verification_code()
+    return code
