@@ -68,3 +68,10 @@ class ChangePwdForm2(forms.Form):
 class ResetPasswordForm(forms.Form):
     new_password1 = forms.CharField(max_length=100, widget=forms.PasswordInput)
     new_password2 = forms.CharField(max_length=100, widget=forms.PasswordInput)
+
+    def clean_new_password2(self):
+        pass1 = self.cleaned_data.get('new_password1')
+        pass2 = self.cleaned_data.get('new_password2')
+        if pass2 != pass1:
+            raise forms.ValidationError("Password fields must match", code="new_password2")
+        return pass2
