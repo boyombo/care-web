@@ -16,7 +16,6 @@ urlpatterns = [
     path("client/", include("client.urls")),
     path("payment/", include("payment.urls")),
     path("subscription/", include("subscription.urls")),
-    path("admin/", admin.site.urls),
     path("baton/", include("baton.urls")),
     path("agent_app_login/", core_views.login_agent),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
@@ -33,9 +32,14 @@ urlpatterns = [
     # path('register', TemplateView.as_view(template_name='base.html'), name='register'),
 ]
 
-
 urlpatterns += [
     # path('accounts/login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    path(
+        'admin/password_reset/',
+        core_views.forgot,
+        name='admin_password_reset',
+    ),
+    path("admin/", admin.site.urls),
     path(
         "accounts/logout/", auth_views.LogoutView.as_view(next_page="/"), name="logout"
     ),
@@ -72,4 +76,4 @@ if settings.DEBUG:
 if settings.DEBUG:
     import debug_toolbar
 
-    urlpatterns = [path("__debug__/", include(debug_toolbar.urls)),] + urlpatterns
+    urlpatterns = [path("__debug__/", include(debug_toolbar.urls)), ] + urlpatterns
