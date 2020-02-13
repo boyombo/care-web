@@ -148,6 +148,8 @@ class Client(models.Model):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     verified = models.BooleanField(default=False)
     subscription_rate = models.CharField(max_length=100, blank=True, null=True)
+    uses_default_password = models.BooleanField(default=False)
+
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
     class Meta:
@@ -168,6 +170,24 @@ class Client(models.Model):
         if not self.user:
             return False
         return self.user.is_active
+
+    @property
+    def salutation(self):
+        if self.sex == self.MALE:
+            return "Mr"
+        if self.marital_status == self.MARRIED:
+            return "Mrs"
+        if self.marital_status == self.SINGLE:
+            return "Miss"
+        if self.marital_status == self.DIVORCED:
+            return "Ms"
+        return ""
+
+    @property
+    def provider_name(self):
+        if self.pcp:
+            return str(self.pcp)
+        return ""
 
 
 class MyClient(Client):

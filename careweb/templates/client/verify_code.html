@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Verify Code
+{% endblock title %}
+
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block content %}
+    <!-- BreadCrumb Area Start -->
+
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
+        <div class="bcoverlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Content">
+                        <h2>
+                            Verification Code
+                        </h2>
+                        <div class="links">
+                            <ul>
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li>
+                                    <span>/</span>
+                                </li>
+                                <li>
+                                    <a class="active">Verification Code</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  BreadCrumb Area Start  -->
+
+
+    <!-- SignIn Area Start -->
+    <section id="logRegForm" class="logRegForm">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10">
+                    <div class="contact_form_wrappre2">
+                        <h2>
+                            Verification Code
+                        </h2>
+                        <form action="#" method="post">
+                            {% csrf_token %}
+                            <div class="inputArea">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="code" placeholder="Supply verification code">
+                                            <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="Site">
+                                                        <i class="fas fa-key"></i>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <button class="loginnow" type="submit">Verify Account</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SignIn Area Start -->
+{% endblock content %}
+
+
+{% block extra-js %}
+    <script type="text/javascript">
+        $('.nav-link').removeClass('active');
+        $('#login-nav-link').addClass('active');
+    </script>
+{% endblock extra-js %}

@@ -7,6 +7,8 @@ urlpatterns = [
     path("profile/", views.profile, name="profile"),
     path("register/", views.register, name="register"),
     path("login/", views.client_login, name="login"),
+    path("verify-account/", views.verify_code_web, name="verify_account"),
+    path("change-password/", views.change_default_password, name="change_default_password"),
     path("plan/<str:pk>/", views.PlanView.as_view(), name="profile_plan"),
     # path("plan/", views.update_plan, name="profile_plan"),
     path(
