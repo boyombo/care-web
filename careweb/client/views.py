@@ -3,12 +3,13 @@ from random import sample
 from decimal import Decimal
 import base64
 
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import UpdateView
 from django.contrib import messages
@@ -45,7 +46,7 @@ from client.forms import (
     PlanForm,
     PCPForm,
     ClientForm,
-)
+    ChangePasswordForm)
 
 import logging
 
@@ -138,6 +139,11 @@ def client_login(request):
             # A client?
             try:
                 cl = Client.objects.get(user=request.user)
+                if not cl.verified:
+                    return HttpResponseRedirect(reverse("verify_account"))
+                if cl.uses_default_password:
+                    messages.warning(request, "You must change your password to proceed")
+                    return HttpResponseRedirect(reverse("change_default_password"))
             except Client.DoesNotExist:
                 return redirect("/admin/")
             else:
@@ -145,6 +151,48 @@ def client_login(request):
     else:
         form = LoginForm()
     return render(request, "client/login.html", {"form": form})
+
+
+@login_required
+def verify_code_web(request):
+    if request.method == 'GET':
+        messages.success(request, "Supply the verification code sent to your email to proceed")
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        client = Client.objects.get(user=request.user)
+        if client.verification_code == code:
+            client.verified = True
+            client.save()
+            messages.success(request, "Account verification was successful")
+            if client.uses_default_password:
+                messages.warning(request, "You need to change your password to proceed.")
+                return HttpResponseRedirect(reverse("change_default_password"))
+            return redirect("profile", pk=client.id)
+        messages.error(request, "Invalid code supplied")
+    return render(request, "client/verify_code.html")
+
+
+@login_required
+def change_default_password(request):
+    form = ChangePasswordForm
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data.get('new_password')
+            user = request.user
+            user.set_password(password)
+            user.is_active = True
+            user.save()
+            client = Client.objects.get(user=user)
+            client.uses_default_password = False
+            client.verified = True
+            client.save()
+            messages.success(request,
+                             "Your password was changed successfully. You can now login with your new password")
+            logout(request)
+            return HttpResponseRedirect(reverse("login"))
+        messages.error(request, "One or more field empty")
+    return render(request, "registration/change_default_password.html", {"form": form})
 
 
 class ClientView(UpdateView):

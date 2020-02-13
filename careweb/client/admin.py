@@ -313,8 +313,11 @@ class ClientAdmin(admin.ModelAdmin):
             usr = User.objects.create_user(username=obj.email, password=password, email=obj.email)
             code = get_verification_code()
             obj.user = usr
+            obj.uses_default_password = True
+            obj.verification_code_verified = False
             obj.verification_code = code
             context = {"name": obj.first_name, "code": code}
+            # print(context)
             send_email(obj.email, "welcome_app", context)
         else:
             obj.verified = True

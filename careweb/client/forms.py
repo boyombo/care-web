@@ -269,3 +269,17 @@ class ClientForm(forms.ModelForm):
             "package_option",
             "hmo",
         ]
+
+
+class ChangePasswordForm(forms.Form):
+    new_password = forms.CharField(max_length=50, widget=forms.PasswordInput(
+        attrs={"class": "form-control", "placeholder": "New Password"}))
+    confirm_password = forms.CharField(max_length=50, widget=forms.PasswordInput(
+        attrs={"class": "form-control", "placeholder": "Retype Password"}))
+
+    def clean_confirm_password(self):
+        password = self.cleaned_data.get('new_password')
+        confirm = self.cleaned_data.get('confirm_password')
+        if confirm != password:
+            raise forms.ValidationError("Password fields must match", code="confirm_password")
+        return confirm
