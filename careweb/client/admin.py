@@ -19,6 +19,7 @@ from ranger.models import Ranger
 from subscription.utils import get_subscription_rate, create_subscription
 from subscription.models import SubscriptionPayment
 from client.admin_filters import MyClientFilter
+import django_excel as excel
 
 
 @admin.register(HMO)
@@ -139,7 +140,7 @@ class ClientAdmin(admin.ModelAdmin):
     autocomplete_fields = ["ranger"]
     exclude = ["user"]
     readonly_fields = ["lashma_quality_life_no"]
-    actions = ["subscribe_client", "verify_client"]
+    actions = ["subscribe_client", "verify_client", "export_clients"]
     list_filter = (MyClientFilter,)
     fieldsets = [
         (
@@ -239,6 +240,21 @@ class ClientAdmin(admin.ModelAdmin):
             queryset.update(verified=True)
         else:
             messages.error(request, "Sorry you cannot verify a client")
+
+    def export_clients(self, request, queryset):
+        column_names = [
+            "Salutation", "First Name", "Middle Name", "Last Name", "Date of Birth", "Phone Number",
+            "Relationship", "Gender", "Premium for Principal", "State ID", "National ID", "Passport",
+            "Staff ID", "Voter ID", "Secondary Phone Number", "LGA", "Preferred Provider Name"
+        ]
+        output = [column_names]
+        rows = [[client.salutation, client.first_name, client.middle_name, client.surname,
+                 client.dob, client.phone_no, "", client.sex, "", client.lagos_resident_no, client.national_id_card_no,
+                 client.international_passport_no, "", client.voters_card_no, "", "", client.provider_name] for client
+                in queryset]
+        output.extend(rows)
+        sheet = excel.pe.Sheet(output)
+        return excel.make_response(sheet, "xls", file_name="Clients")
 
     def subscribe_client(self, request, queryset):
         try:

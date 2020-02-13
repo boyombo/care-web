@@ -228,6 +228,9 @@ LOGGING = {
     },
 }
 
+FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+                        "django_excel.TemporaryExcelFileUploadHandler")
+
 try:
     from .local_settings import *
 except ImportError:
