@@ -79,7 +79,17 @@ class LoginForm(forms.Form):
         if "username" in self.cleaned_data and "password" in self.cleaned_data:
             username = self.cleaned_data["username"]
             password = self.cleaned_data["password"]
-            user = authenticate(username=username, password=password)
+            if not username.__contains__("@"):
+                # this is probably a phone number
+                if Client.objects.filter(phone_no=username).exists():
+                    client = Client.objects.get(phone_no=username)
+                    email = client.email
+                else:
+                    # User typed an invalid string
+                    email = ""
+            else:
+                email = username
+            user = authenticate(username=email, password=password)
             if user is None:
                 raise forms.ValidationError("Wrong username/password")
             # try:
