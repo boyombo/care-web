@@ -122,7 +122,18 @@ def client_login(request):
             # import pdb;pdb.set_trace()
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
-            user = authenticate(username=username, password=password)
+            if not username.__contains__("@"):
+                # this is probably a phone number
+                if Client.objects.filter(phone_no=username).exists():
+                    client = Client.objects.get(phone_no=username)
+                    email = client.email
+                else:
+                    # User typed an invalid string
+                    email = ""
+            else:
+                email = username
+            print(email)
+            user = authenticate(username=email, password=password)
             login(request, user)
 
             # A client?

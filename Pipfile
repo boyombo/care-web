@@ -28,5 +28,7 @@ django = "==2.2.8"
 django-easy-audit = "*"
 django-ratelimit = "*"
 django-excel = "*"
+pyexcel-xls = "*"
+pyexcel-xlsx = "*"
 
 [dev-packages]
