@@ -148,6 +148,7 @@ class Client(models.Model):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     verified = models.BooleanField(default=False)
     subscription_rate = models.CharField(max_length=100, blank=True, null=True)
+    uses_default_password = models.BooleanField(default=False)
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
     class Meta:
