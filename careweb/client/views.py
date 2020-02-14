@@ -27,7 +27,11 @@ from subscription.utils import (
     get_next_subscription_date,
 )
 from payment.utils import get_reference
-from client.utils import get_client_details, get_quality_life_number, get_verification_code
+from client.utils import (
+    get_client_details,
+    get_quality_life_number,
+    get_verification_code,
+)
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
@@ -46,7 +50,8 @@ from client.forms import (
     PlanForm,
     PCPForm,
     ClientForm,
-    ChangePasswordForm)
+    ChangePasswordForm,
+)
 
 import logging
 
@@ -142,7 +147,9 @@ def client_login(request):
                 if not cl.verified:
                     return HttpResponseRedirect(reverse("verify_account"))
                 if cl.uses_default_password:
-                    messages.warning(request, "You must change your password to proceed")
+                    messages.warning(
+                        request, "You must change your password to proceed"
+                    )
                     return HttpResponseRedirect(reverse("change_default_password"))
             except Client.DoesNotExist:
                 return redirect("/admin/")
@@ -155,17 +162,21 @@ def client_login(request):
 
 @login_required
 def verify_code_web(request):
-    if request.method == 'GET':
-        messages.success(request, "Supply the verification code sent to your email to proceed")
-    if request.method == 'POST':
-        code = request.POST.get('code')
+    if request.method == "GET":
+        messages.success(
+            request, "Supply the verification code sent to your email to proceed"
+        )
+    if request.method == "POST":
+        code = request.POST.get("code")
         client = Client.objects.get(user=request.user)
         if client.verification_code == code:
             client.verified = True
             client.save()
             messages.success(request, "Account verification was successful")
             if client.uses_default_password:
-                messages.warning(request, "You need to change your password to proceed.")
+                messages.warning(
+                    request, "You need to change your password to proceed."
+                )
                 return HttpResponseRedirect(reverse("change_default_password"))
             return redirect("profile", pk=client.id)
         messages.error(request, "Invalid code supplied")
@@ -175,10 +186,10 @@ def verify_code_web(request):
 @login_required
 def change_default_password(request):
     form = ChangePasswordForm
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
-            password = form.cleaned_data.get('new_password')
+            password = form.cleaned_data.get("new_password")
             user = request.user
             user.set_password(password)
             user.is_active = True
@@ -187,8 +198,10 @@ def change_default_password(request):
             client.uses_default_password = False
             client.verified = True
             client.save()
-            messages.success(request,
-                             "Your password was changed successfully. You can now login with your new password")
+            messages.success(
+                request,
+                "Your password was changed successfully. You can now login with your new password",
+            )
             logout(request)
             return HttpResponseRedirect(reverse("login"))
         messages.error(request, "One or more field empty")
@@ -345,7 +358,9 @@ def edit_dependant(request, pk):
     dependant = get_object_or_404(Dependant, pk=pk)
     client = dependant.primary
     if request.method == "POST":
-        form = DependantForm(request.POST, request.FILES, instance=dependant, primary=client)
+        form = DependantForm(
+            request.POST, request.FILES, instance=dependant, primary=client
+        )
         if form.is_valid():
             print(dependant)
             dependant = form.save(commit=False)
@@ -355,9 +370,7 @@ def edit_dependant(request, pk):
     else:
         form = DependantForm(instance=dependant, primary=client)
     return render(
-        request,
-        "client/edit_dependant.html",
-        {"form": form, "object": client},
+        request, "client/edit_dependant.html", {"form": form, "object": client},
     )
 
 
@@ -398,7 +411,7 @@ def register_via_agent(request, id):
                         "id": cl.id.id,
                         "surname": cl.surname,
                         "firstName": cl.first_name,
-                        "email": "",
+                        "email": cl.email,
                         "phone": cl.phone_no,
                         "photo": "",
                     },
@@ -503,7 +516,7 @@ def login_api(request):
                     logger.info("client details")
                     client_details = get_client_details(client, host)
                     logger.info(client_details)
-                    return JsonResponse({"success": True, "client": client_details, })
+                    return JsonResponse({"success": True, "client": client_details,})
         else:
             logger.info(form.errors)
             return HttpResponseBadRequest(
@@ -696,19 +709,24 @@ def payment(request):
 
 
 def get_lga_pcp(request):
-    lga = request.GET.get('lga')
+    lga = request.GET.get("lga")
     if lga:
         pcp_set = CareProvider.objects.filter(lga__id=lga)
-        pcps = [{
-            "id": str(pcp.id),
-            "text": "{name} -- {address}".format(name=pcp.name, address=pcp.address)
-        } for pcp in pcp_set]
+        pcps = [
+            {
+                "id": str(pcp.id),
+                "text": "{name} -- {address}".format(
+                    name=pcp.name, address=pcp.address
+                ),
+            }
+            for pcp in pcp_set
+        ]
         return JsonResponse({"pcps": pcps})
     return JsonResponse({"pcps": []})
 
 
 def get_pcp_lga(request):
-    pcp = request.GET.get('pcp')
+    pcp = request.GET.get("pcp")
     if pcp:
         provider = CareProvider.objects.get(id=pcp)
         return JsonResponse({"id": str(provider.lga.id), "text": provider.lga.name})
