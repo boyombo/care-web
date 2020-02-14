@@ -65,6 +65,8 @@ def get_client_details(client, host):
         "nationalIdNo": client.national_id_card_no,
         "driversLicenceNo": client.drivers_licence_no,
         "lagosResidentsNo": client.lagos_resident_no,
+        "votersCardNo": client.voters_card_no,
+        "internationalPassportNo": client.international_passport_no,
         "lashmaNo": client.lashma_no,
         "lashmaQualityLifeNo": client.lashma_quality_life_no,
         "pcp": client_pcp,
