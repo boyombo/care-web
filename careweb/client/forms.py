@@ -10,6 +10,7 @@ from client.models import Client, Association, Dependant
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
+from client.utils import get_email_for_auth
 from provider.models import CareProvider
 from location.models import LGA
 
@@ -79,16 +80,7 @@ class LoginForm(forms.Form):
         if "username" in self.cleaned_data and "password" in self.cleaned_data:
             username = self.cleaned_data["username"]
             password = self.cleaned_data["password"]
-            if not username.__contains__("@"):
-                # this is probably a phone number
-                if Client.objects.filter(phone_no=username).exists():
-                    client = Client.objects.get(phone_no=username)
-                    email = client.email
-                else:
-                    # User typed an invalid string
-                    email = ""
-            else:
-                email = username
+            email = get_email_for_auth(username)  # Enables authentication with phone no
             user = authenticate(username=email, password=password)
             if user is None:
                 raise forms.ValidationError("Wrong username/password")
