@@ -17,7 +17,7 @@ from location.models import LGA
 class BasicRegForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ["first_name", "surname", "phone_no"]
+        fields = ["first_name", "surname", "phone_no", "email"]
 
 
 class ApiRegForm(forms.ModelForm):
@@ -160,10 +160,10 @@ class DependantForm(forms.ModelForm):
     def clean_relationship(self):
         if "relationship" in self.cleaned_data:
             if (
-                    Dependant.objects.filter(
-                        primary=self.primary, relationship=Dependant.SPOUSE
-                    )
-                    and self.cleaned_data["relationship"] == Dependant.SPOUSE
+                Dependant.objects.filter(
+                    primary=self.primary, relationship=Dependant.SPOUSE
+                )
+                and self.cleaned_data["relationship"] == Dependant.SPOUSE
             ):
                 raise forms.ValidationError("You can have only one spouse on the plan")
         return self.cleaned_data["relationship"]
@@ -240,7 +240,9 @@ class ClientAdminForm(forms.ModelForm):
     class Meta:
         model = Client
         widgets = {
-            "pcp": forms.Select(attrs={"class": "form-control select2", "style": "min-width: 250px"})
+            "pcp": forms.Select(
+                attrs={"class": "form-control select2", "style": "min-width: 250px"}
+            )
         }
         fields = "__all__"
 
@@ -251,7 +253,9 @@ class ClientAdminForm(forms.ModelForm):
         if "lga" in self.data:
             try:
                 lga_id = self.data.get("lga")
-                self.fields["pcp"].queryset = CareProvider.objects.filter(lga__id=lga_id)
+                self.fields["pcp"].queryset = CareProvider.objects.filter(
+                    lga__id=lga_id
+                )
             except (TypeError, ValueError):
                 pass
         elif self.instance.pk:
@@ -272,14 +276,24 @@ class ClientForm(forms.ModelForm):
 
 
 class ChangePasswordForm(forms.Form):
-    new_password = forms.CharField(max_length=50, widget=forms.PasswordInput(
-        attrs={"class": "form-control", "placeholder": "New Password"}))
-    confirm_password = forms.CharField(max_length=50, widget=forms.PasswordInput(
-        attrs={"class": "form-control", "placeholder": "Retype Password"}))
+    new_password = forms.CharField(
+        max_length=50,
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "placeholder": "New Password"}
+        ),
+    )
+    confirm_password = forms.CharField(
+        max_length=50,
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "placeholder": "Retype Password"}
+        ),
+    )
 
     def clean_confirm_password(self):
-        password = self.cleaned_data.get('new_password')
-        confirm = self.cleaned_data.get('confirm_password')
+        password = self.cleaned_data.get("new_password")
+        confirm = self.cleaned_data.get("confirm_password")
         if confirm != password:
-            raise forms.ValidationError("Password fields must match", code="confirm_password")
+            raise forms.ValidationError(
+                "Password fields must match", code="confirm_password"
+            )
         return confirm
