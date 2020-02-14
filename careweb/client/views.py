@@ -31,7 +31,7 @@ from client.utils import (
     get_client_details,
     get_quality_life_number,
     get_verification_code,
-)
+    get_email_for_auth)
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
@@ -127,17 +127,7 @@ def client_login(request):
             # import pdb;pdb.set_trace()
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
-            if not username.__contains__("@"):
-                # this is probably a phone number
-                if Client.objects.filter(phone_no=username).exists():
-                    client = Client.objects.get(phone_no=username)
-                    email = client.email
-                else:
-                    # User typed an invalid string
-                    email = ""
-            else:
-                email = username
-            print(email)
+            email = get_email_for_auth(username)  # Enables authentication with phone no
             user = authenticate(username=email, password=password)
             login(request, user)
 
@@ -495,8 +485,8 @@ def login_api(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             logger.info("form {}".format(form.cleaned_data))
-
-            usr = authenticate(username=username, password=password)
+            email = get_email_for_auth(username)  # Enables authentication with phone no
+            usr = authenticate(username=email, password=password)
             logger.info("authenticated")
             if usr is not None:
                 try:
@@ -516,7 +506,7 @@ def login_api(request):
                     logger.info("client details")
                     client_details = get_client_details(client, host)
                     logger.info(client_details)
-                    return JsonResponse({"success": True, "client": client_details,})
+                    return JsonResponse({"success": True, "client": client_details, })
         else:
             logger.info(form.errors)
             return HttpResponseBadRequest(

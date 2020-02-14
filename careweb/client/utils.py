@@ -81,6 +81,7 @@ def get_client_details(client, host):
         "paymentInstrument": client.payment_instrument,
         "dependents": dependants,  # I call it dependents instead of dependants everywhere
         "associations": associations,
+        "usesDefaultPassword": client.uses_default_password
     }
 
 
@@ -91,3 +92,18 @@ def get_verification_code():
     if Client.objects.filter(verification_code=code).exists():
         return get_verification_code()
     return code
+
+
+def get_email_for_auth(username):
+    # Clients may want to sign in with password
+    if not username.__contains__("@"):
+        # this is probably a phone number
+        if Client.objects.filter(phone_no=username).exists():
+            client = Client.objects.get(phone_no=username)
+            email = client.email
+        else:
+            # User typed an invalid string
+            email = ""
+    else:
+        email = username
+    return email
