@@ -12,7 +12,7 @@ from client.models import (
     ClientAssociation,
     MyClient,
 )
-from client.utils import get_verification_code
+from client.utils import get_verification_code, phone_no_valid
 from core.utils import send_email
 from constance import config
 from ranger.models import Ranger
@@ -296,6 +296,9 @@ class ClientAdmin(admin.ModelAdmin):
             )
 
     def save_model(self, request, obj, form, change):
+        if not phone_no_valid(obj.phone_no, str(obj.id)):
+            messages.error(request, "Phone no already in use")
+            return
         try:
             ranger = Ranger.objects.get(user=request.user)
         except Ranger.DoesNotExist:
@@ -317,8 +320,15 @@ class ClientAdmin(admin.ModelAdmin):
             obj.verification_code_verified = False
             obj.verification_code = code
             context = {"name": obj.first_name, "code": code}
-            # print(context)
             send_email(obj.email, "welcome_app", context)
+        elif obj.phone_no:
+            password = config.CLIENT_DEFAULT_PASSWORD
+            usr = User.objects.create_user(username=obj.phone_no, password=password)
+            code = get_verification_code()
+            obj.user = usr
+            obj.uses_default_password = True
+            obj.verification_code_verified = False
+            obj.verification_code = code
         else:
             obj.verified = True
         obj.save()

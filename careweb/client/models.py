@@ -152,6 +152,17 @@ class Client(models.Model):
 
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if self.phone_no:
+            if Client.objects.filter(phone_no=self.phone_no).exists():
+                # If the no is for this user, then it's an update
+                client = Client.objects.get(phone_no=self.phone_no)
+                if str(client.id) != str(self.id):
+                    # Another use is about to use the existing phone no
+                    raise ValueError("Phone is already in use")
+        super(Client, self).save(force_insert, force_update, using, update_fields)
+
     class Meta:
         verbose_name = "My Client"
 
