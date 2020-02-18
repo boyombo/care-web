@@ -31,7 +31,7 @@ from client.utils import (
     get_client_details,
     get_quality_life_number,
     get_verification_code,
-    get_email_for_auth)
+    get_username_for_auth)
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
@@ -127,8 +127,8 @@ def client_login(request):
             # import pdb;pdb.set_trace()
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
-            email = get_email_for_auth(username)  # Enables authentication with phone no
-            user = authenticate(username=email, password=password)
+            un = get_username_for_auth(username)  # Enables authentication with phone no
+            user = authenticate(username=un, password=password)
             login(request, user)
 
             # A client?
@@ -485,8 +485,8 @@ def login_api(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             logger.info("form {}".format(form.cleaned_data))
-            email = get_email_for_auth(username)  # Enables authentication with phone no
-            usr = authenticate(username=email, password=password)
+            un = get_username_for_auth(username)  # Enables authentication with phone no
+            usr = authenticate(username=un, password=password)
             logger.info("authenticated")
             if usr is not None:
                 try:
