@@ -206,3 +206,26 @@ class MyClient(Client):
         proxy = True
         # verbose_name = "Client"
         verbose_name_plural = "All Clients"
+
+
+class TempClientUpload(models.Model):
+    salutation = models.CharField(max_length=20, null=True)
+    first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50)
+    dob = models.CharField(max_length=50, null=True)
+    phone_no = models.CharField(max_length=30)
+    relationship = models.CharField(max_length=30, null=True)
+    gender = models.CharField(max_length=30)
+    premium = models.CharField(max_length=50, null=True)
+    state_id = models.CharField(max_length=150, null=True)
+    national_id = models.CharField(max_length=150, null=True)
+    passport = models.CharField(max_length=150, null=True)
+    staff_id = models.CharField(max_length=150, null=True)
+    voter_id = models.CharField(max_length=150, null=True)
+    secondary_phone_no = models.CharField(max_length=150, null=True)
+    lga = models.CharField(max_length=150, null=True)
+    provider = models.CharField(max_length=150, null=True)
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)

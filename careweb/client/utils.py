@@ -96,16 +96,16 @@ def get_verification_code():
 
 def get_username_for_auth(username_input):
     # Clients may want to sign in with phone no
+    username = username_input
     if not username_input.__contains__("@"):
         # this is probably a phone number
         if Client.objects.filter(phone_no=username_input).exists():
             client = Client.objects.get(phone_no=username_input)
             username = client.user.username
-        else:
-            # User typed an invalid string
-            username = ""
     else:
-        username = username_input
+        if Client.objects.filter(email=username_input).exists():
+            client = Client.objects.get(email=username_input)
+            username = client.user.username
     return username
 
 
@@ -116,3 +116,12 @@ def phone_no_valid(phone_no, client_id):
         return True
     client = Client.objects.get(phone_no=phone_no)
     return str(client.id) == client_id
+
+
+def is_registered_user(client_id):
+    if not client_id:
+        return False
+    if not Client.objects.get(id=str(client_id)).exists():
+        return False
+    client = Client.objects.get(id=str(client_id))
+    return client.user is not None
