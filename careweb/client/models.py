@@ -210,13 +210,13 @@ class MyClient(Client):
 
 class TempClientUpload(models.Model):
     salutation = models.CharField(max_length=20, null=True)
-    first_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50, null=True)
     middle_name = models.CharField(max_length=50, null=True)
-    last_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50, null=True)
     dob = models.CharField(max_length=50, null=True)
-    phone_no = models.CharField(max_length=30)
+    phone_no = models.CharField(max_length=30, null=True)
     relationship = models.CharField(max_length=30, null=True)
-    gender = models.CharField(max_length=30)
+    gender = models.CharField(max_length=30, null=True)
     premium = models.CharField(max_length=50, null=True)
     state_id = models.CharField(max_length=150, null=True)
     national_id = models.CharField(max_length=150, null=True)

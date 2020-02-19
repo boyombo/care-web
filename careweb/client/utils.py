@@ -121,7 +121,7 @@ def phone_no_valid(phone_no, client_id):
 def is_registered_user(client_id):
     if not client_id:
         return False
-    if not Client.objects.get(id=str(client_id)).exists():
+    if not Client.objects.filter(id=str(client_id)).exists():
         return False
     client = Client.objects.get(id=str(client_id))
     return client.user is not None

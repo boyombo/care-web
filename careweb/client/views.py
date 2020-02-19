@@ -268,6 +268,22 @@ class ContactView(ClientView):
     fields = ["phone_no", "whatsapp_no", "home_address"]
     template_name = "client/contact.html"
 
+    def form_valid(self, form):
+        phone = form.cleaned_data.get('phone_no')
+        if phone:
+            if Client.objects.filter(phone_no=phone).exists():
+                user = self.request.user
+                if not user or not Client.objects.filter(user=user).exists():
+                    form.add_error("phone_no", "Phone no has already been used")
+                    messages.error(self.request, "Phone no has already been used")
+                    return super(ContactView, self).form_invalid(form)
+                client = Client.objects.get(user=user)
+                if client.phone_no != phone:
+                    form.add_error("phone_no", "Supplied phone no has already been used")
+                    messages.error(self.request, "Supplied phone no has already been used")
+                    return super(ContactView, self).form_invalid(form)
+        return super(ContactView, self).form_valid(form)
+
 
 class WorkView(ClientView):
     fields = ["occupation", "company", "office_address"]
@@ -756,6 +772,8 @@ def upload_clients(request):
         valid = 0
         duplicate_no = 0
         for item in TempClientUpload.objects.all():
+            if not item.phone_no or not item.first_name or not item.last_name:
+                continue
             if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
                     username=item.phone_no.strip()):
                 duplicate_no += 1
@@ -775,12 +793,11 @@ def upload_clients(request):
                                                national_id_card_no=item.national_id,
                                                international_passport_no=item.passport, voters_card_no=item.voter_id,
                                                pcp=pcp, ranger=ranger)
-                if item.phone_no:
-                    user = User.objects.create_user(username=item.phone_no.strip(),
-                                                    password=config.CLIENT_DEFAULT_PASSWORD)
-                    client.user = user
-                    client.uses_default_password = True
-                    client.save()
+                user = User.objects.create_user(username=item.phone_no.strip(),
+                                                password=config.CLIENT_DEFAULT_PASSWORD)
+                client.user = user
+                client.uses_default_password = True
+                client.save()
                 valid += 1
         messages.success(request,
                          "Clients data successfully processed. {valid} clients were "
