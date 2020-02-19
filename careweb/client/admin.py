@@ -321,7 +321,7 @@ class ClientAdmin(admin.ModelAdmin):
             obj.verification_code = code
             context = {"name": obj.first_name, "code": code}
             send_email(obj.email, "welcome_app", context)
-        elif obj.phone_no:
+        elif obj.phone_no and not User.objects.filter(username=obj.phone_no).exists():
             password = config.CLIENT_DEFAULT_PASSWORD
             usr = User.objects.create_user(username=obj.phone_no, password=password)
             code = get_verification_code()
