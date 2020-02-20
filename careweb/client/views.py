@@ -1,4 +1,5 @@
 # from pprint import pprint
+from datetime import datetime
 from random import sample
 from decimal import Decimal
 import base64
@@ -18,7 +19,7 @@ from django.core.files.base import ContentFile
 
 # from django.urls import reverse_lazy
 
-from client.models import Client, Dependant, ClientAssociation, Association
+from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload
 from core.utils import send_welcome_email, send_email
 from subscription.models import SubscriptionPayment
 from subscription.utils import (
@@ -35,6 +36,7 @@ from client.utils import (
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
+from constance import config
 
 # from client.models import Plan
 from client.forms import (
@@ -265,6 +267,22 @@ class PhotoView(ClientView):
 class ContactView(ClientView):
     fields = ["phone_no", "whatsapp_no", "home_address"]
     template_name = "client/contact.html"
+
+    def form_valid(self, form):
+        phone = form.cleaned_data.get('phone_no')
+        if phone:
+            if Client.objects.filter(phone_no=phone).exists():
+                user = self.request.user
+                if not user or not Client.objects.filter(user=user).exists():
+                    form.add_error("phone_no", "Phone no has already been used")
+                    messages.error(self.request, "Phone no has already been used")
+                    return super(ContactView, self).form_invalid(form)
+                client = Client.objects.get(user=user)
+                if client.phone_no != phone:
+                    form.add_error("phone_no", "Supplied phone no has already been used")
+                    messages.error(self.request, "Supplied phone no has already been used")
+                    return super(ContactView, self).form_invalid(form)
+        return super(ContactView, self).form_valid(form)
 
 
 class WorkView(ClientView):
@@ -721,3 +739,73 @@ def get_pcp_lga(request):
         provider = CareProvider.objects.get(id=pcp)
         return JsonResponse({"id": str(provider.lga.id), "text": provider.lga.name})
     return JsonResponse({})
+
+
+def upload_clients(request):
+    if not request.FILES.get('file'):
+        messages.error(request, "Invalid file selected")
+        return JsonResponse({'status': 'error', 'info': 'Invalid file selected'})
+    try:
+        request.FILES.get('file').save_to_database(
+            model=TempClientUpload,
+            mapdict=[
+                "salutation",
+                "first_name",
+                "middle_name",
+                "last_name",
+                "dob",
+                "phone_no",
+                "relationship",
+                "gender",
+                "premium",
+                "state_id",
+                "national_id",
+                "passport",
+                "staff_id",
+                "voter_id",
+                "secondary_phone_no",
+                "lga",
+                "provider"
+            ]
+        )
+        total = TempClientUpload.objects.count()
+        valid = 0
+        duplicate_no = 0
+        for item in TempClientUpload.objects.all():
+            if not item.phone_no or not item.first_name or not item.last_name:
+                continue
+            if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
+                    username=item.phone_no.strip()):
+                duplicate_no += 1
+            else:
+                try:
+                    dob = datetime.strptime(item.dob, "%d/%m/%Y")
+                except ValueError:
+                    dob = None
+                try:
+                    pcp = CareProvider.objects.get(name__iexact=item.provider)
+                except:
+                    pcp = None
+                ranger = Ranger.objects.get(user=request.user)
+                client = Client.objects.create(first_name=item.first_name, surname=item.last_name,
+                                               middle_name=item.middle_name, sex=item.gender, dob=dob,
+                                               phone_no=item.phone_no, lagos_resident_no=item.state_id,
+                                               national_id_card_no=item.national_id,
+                                               international_passport_no=item.passport, voters_card_no=item.voter_id,
+                                               pcp=pcp, ranger=ranger)
+                user = User.objects.create_user(username=item.phone_no.strip(),
+                                                password=config.CLIENT_DEFAULT_PASSWORD)
+                client.user = user
+                client.uses_default_password = True
+                client.save()
+                valid += 1
+        messages.success(request,
+                         "Clients data successfully processed. {valid} clients were "
+                         "created out of a total of {total}. {duplicate} records uses duplicate phone no".format(
+                             valid=valid, total=total, duplicate=duplicate_no))
+        TempClientUpload.objects.all().delete()
+    except Exception as e:
+        print(e)
+        messages.error(request, "Error processing upload. Confirm that the document uses the correct format.")
+        return JsonResponse({'status': 'error', 'info': 'Error processing upload'})
+    return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})

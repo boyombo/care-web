@@ -53,6 +53,7 @@ urlpatterns = [
     ),
     path("info/<int:id>/", views.get_client_info),
     path("load_pcp_list/", views.load_pcp_list, name="load_pcp_list"),
+    path("upload_clients/", views.upload_clients, name="upload_clients"),
 
     # AJAX Request
     path("lga/pcps", views.get_lga_pcp),

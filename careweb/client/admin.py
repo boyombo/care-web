@@ -12,7 +12,7 @@ from client.models import (
     ClientAssociation,
     MyClient,
 )
-from client.utils import get_verification_code, phone_no_valid
+from client.utils import get_verification_code, phone_no_valid, is_registered_user
 from core.utils import send_email
 from constance import config
 from ranger.models import Ranger
@@ -311,7 +311,7 @@ class ClientAdmin(admin.ModelAdmin):
             sub_rate = get_subscription_rate(obj)
             obj.subscription_rate = "{}".format(sub_rate)
             messages.success(request, "The subscription rate for {} is {}".format(obj.full_name, sub_rate))
-        if obj.email and not User.objects.filter(username=obj.email).exists():
+        if obj.email and not is_registered_user(str(obj.id)):
             password = config.CLIENT_DEFAULT_PASSWORD
             usr = User.objects.create_user(username=obj.email, password=password, email=obj.email)
             code = get_verification_code()
@@ -321,7 +321,7 @@ class ClientAdmin(admin.ModelAdmin):
             obj.verification_code = code
             context = {"name": obj.first_name, "code": code}
             send_email(obj.email, "welcome_app", context)
-        elif obj.phone_no:
+        elif obj.phone_no and not is_registered_user(str(obj.id)):
             password = config.CLIENT_DEFAULT_PASSWORD
             usr = User.objects.create_user(username=obj.phone_no, password=password)
             code = get_verification_code()
