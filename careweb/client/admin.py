@@ -218,6 +218,11 @@ class ClientAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(ranger__user=request.user)
 
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        form = super(ClientAdmin, self).get_form(request, obj, change, **kwargs)
+        form.http_request = request
+        return form
+
     def has_delete_permission(self, request, obj=None):
         if not request.user.is_superuser:
             return False

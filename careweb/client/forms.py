@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.utils.functional import lazy
@@ -10,7 +11,7 @@ from client.models import Client, Association, Dependant
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
-from client.utils import get_username_for_auth
+from client.utils import get_username_for_auth, phone_no_valid
 from provider.models import CareProvider
 from location.models import LGA
 
@@ -252,6 +253,13 @@ class ClientAdminForm(forms.ModelForm):
                 pass
         elif self.instance.pk:
             self.fields["pcp"].queryset = CareProvider.objects.all()
+
+    def clean_phone_no(self):
+        phone_no = self.cleaned_data.get('phone_no')
+        if not phone_no_valid(phone_no, str(self.instance.id)):
+            messages.error(self.http_request, "Phone no already in use")
+            raise forms.ValidationError("Phone no already in use", code="phone_no")
+        return phone_no
 
 
 class ClientForm(forms.ModelForm):
