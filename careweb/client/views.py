@@ -409,6 +409,7 @@ def register_via_agent(request, id):
             cl = form.save()  # has to be committed to get QL number
             cl.verified = True
             ranger = ranger
+            cl.ranger = ranger
             cl.lashma_quqlity_life_no = get_quality_life_number(cl)
             cl.save()
             return JsonResponse(

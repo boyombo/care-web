@@ -118,6 +118,15 @@ def phone_no_valid(phone_no, client_id):
     return str(client.id) == client_id
 
 
+def email_valid(email, client_id):
+    if not email:
+        return True
+    if not Client.objects.filter(email__iexact=email).exists():
+        return True
+    client = Client.objects.get(email=email)
+    return str(client.id) == client_id
+
+
 def is_registered_user(client_id):
     if not client_id:
         return False
