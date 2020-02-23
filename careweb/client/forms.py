@@ -11,7 +11,7 @@ from client.models import Client, Association, Dependant
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
-from client.utils import get_username_for_auth, phone_no_valid
+from client.utils import get_username_for_auth, phone_no_valid, email_valid
 from provider.models import CareProvider
 from location.models import LGA
 
@@ -20,6 +20,18 @@ class BasicRegForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ["first_name", "surname", "phone_no", "email"]
+
+    def clean_phone_no(self):
+        phone_no = self.cleaned_data.get('phone_no')
+        if not phone_no_valid(phone_no, str(self.instance.id)):
+            raise forms.ValidationError("Phone no already in use", code="phone_no")
+        return phone_no
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email_valid(email, str(self.instance.id)):
+            raise forms.ValidationError("Email already in use", code="email")
+        return email
 
 
 class ApiRegForm(forms.ModelForm):
@@ -153,10 +165,10 @@ class DependantForm(forms.ModelForm):
     def clean_relationship(self):
         if "relationship" in self.cleaned_data:
             if (
-                Dependant.objects.filter(
-                    primary=self.primary, relationship=Dependant.SPOUSE
-                )
-                and self.cleaned_data["relationship"] == Dependant.SPOUSE
+                    Dependant.objects.filter(
+                        primary=self.primary, relationship=Dependant.SPOUSE
+                    )
+                    and self.cleaned_data["relationship"] == Dependant.SPOUSE
             ):
                 raise forms.ValidationError("You can have only one spouse on the plan")
         return self.cleaned_data["relationship"]
