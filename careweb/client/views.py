@@ -770,6 +770,7 @@ def upload_clients(request):
         messages.error(request, "Invalid file selected")
         return JsonResponse({'status': 'error', 'info': 'Invalid file selected'})
     try:
+        TempClientUpload.objects.all().delete()
         request.FILES.get('file').save_to_database(
             model=TempClientUpload,
             mapdict=[
