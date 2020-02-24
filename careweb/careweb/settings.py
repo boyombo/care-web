@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -41,7 +40,7 @@ ALLOWED_HOSTS = [
 EMAIL_BACKEND = "post_office.EmailBackend"
 DEFAULT_FROM_EMAIL = "noreply@futurecare.ng"
 
-POST_OFFICE = {"BACKENDS": {"default": "postmarker.django.EmailBackend",}}
+POST_OFFICE = {"BACKENDS": {"default": "postmarker.django.EmailBackend", }}
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 
@@ -104,7 +103,7 @@ ROOT_URLCONF = "careweb.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates"),],
+        "DIRS": [os.path.join(BASE_DIR, "templates"), ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -120,7 +119,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "careweb.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -131,7 +129,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -139,11 +136,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -158,13 +154,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Session
 SESSION_COOKIE_AGE = 3000
 
 # login
 LOGIN_URL = "/client/login/"
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -191,11 +185,10 @@ BATON = {
 
 HASHID_FIELD_ALLOW_INT_LOOKUP = True
 
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "formatters": {"simple": {"format": "%(levelname)s %(asctime)s %(message)s"},},
+    "formatters": {"simple": {"format": "%(levelname)s %(asctime)s %(message)s"}, },
     "handlers": {
         "client_logfile": {
             "formatter": "simple",
@@ -217,9 +210,9 @@ LOGGING = {
         },
     },
     "loggers": {
-        "client": {"handlers": ["client_logfile"], "level": "INFO", "propagate": True,},
-        "ranger": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True,},
-        "core": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True,},
+        "client": {"handlers": ["client_logfile"], "level": "INFO", "propagate": True, },
+        "ranger": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True, },
+        "core": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True, },
         "payment": {
             "handlers": ["payment_logfile"],
             "level": "INFO",
@@ -230,6 +223,14 @@ LOGGING = {
 
 FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
                         "django_excel.TemporaryExcelFileUploadHandler")
+
+IS_TEST_SERVER = True
+
+if IS_TEST_SERVER:
+    try:
+        from .test_settings import *
+    except ImportError:
+        pass
 
 try:
     from .local_settings import *
