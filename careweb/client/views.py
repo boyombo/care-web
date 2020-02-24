@@ -823,11 +823,11 @@ def upload_clients(request):
                         duplicate_no += 1
                         continue
                     try:
-                        pcp = CareProvider.objects.get(name__iexact=item.provider)
+                        pcp = CareProvider.objects.get(name__iexact=item.provider.strip())
                     except:
                         pcp = None
                     try:
-                        lga = LGA.objects.get(name__iexact=item.lga)
+                        lga = LGA.objects.get(name__iexact=item.lga.strip())
                     except:
                         lga = None
                     ranger = Ranger.objects.get(user=request.user)
