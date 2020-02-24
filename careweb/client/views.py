@@ -20,6 +20,7 @@ from django.core.files.base import ContentFile
 # from django.urls import reverse_lazy
 
 from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload
+from core.models import Plan
 from core.utils import send_welcome_email, send_email
 from subscription.models import SubscriptionPayment
 from subscription.utils import (
@@ -838,6 +839,10 @@ def upload_clients(request):
                         lga = LGA.objects.get(name__iexact=item.lga.strip())
                     except:
                         lga = None
+                    try:
+                        plan = Plan.objects.get(name__iexact=item.package)
+                    except:
+                        plan = None
                     ranger = Ranger.objects.get(user=request.user)
                     client = Client.objects.create(first_name=item.first_name, surname=item.last_name,
                                                    middle_name=item.middle_name, sex=sex, dob=dob,
@@ -846,7 +851,7 @@ def upload_clients(request):
                                                    international_passport_no=item.passport,
                                                    voters_card_no=item.voter_id,
                                                    pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium,
-                                                   package_option=item.package, payment_option=item.period,
+                                                   plan=plan, payment_option=item.period,
                                                    drivers_licence_no=item.drivers_license)
                     user = User.objects.create_user(username=item.phone_no.strip(),
                                                     password=config.CLIENT_DEFAULT_PASSWORD)
