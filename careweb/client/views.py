@@ -32,7 +32,7 @@ from client.utils import (
     get_client_details,
     get_quality_life_number,
     get_verification_code,
-    get_username_for_auth)
+    get_username_for_auth, is_registered_user)
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
@@ -407,10 +407,33 @@ def register_via_agent(request, id):
         form = BasicRegForm(request.POST)
         if form.is_valid():
             cl = form.save()  # has to be committed to get QL number
-            cl.verified = True
             ranger = ranger
             cl.ranger = ranger
             cl.lashma_quqlity_life_no = get_quality_life_number(cl)
+            cl.save()
+            email = form.cleaned_data.get('email')
+            phone_no = form.cleaned_data.get('phone_no')
+            first_name = form.cleaned_data.get('first_name')
+            if email and not is_registered_user(str(cl.id)):
+                password = config.CLIENT_DEFAULT_PASSWORD
+                usr = User.objects.create_user(username=email, password=password, email=email)
+                code = get_verification_code()
+                cl.user = usr
+                cl.uses_default_password = True
+                cl.verification_code_verified = False
+                cl.verification_code = code
+                context = {"name": first_name, "code": code}
+                send_email(email, "welcome_app", context)
+            elif phone_no and not is_registered_user(str(cl.id)):
+                password = config.CLIENT_DEFAULT_PASSWORD
+                usr = User.objects.create_user(username=phone_no, password=password)
+                code = get_verification_code()
+                cl.user = usr
+                cl.uses_default_password = True
+                cl.verification_code_verified = False
+                cl.verification_code = code
+            else:
+                cl.verified = True
             cl.save()
             return JsonResponse(
                 {
