@@ -803,7 +803,7 @@ def upload_clients(request):
                 duplicate_no += 1
             else:
                 try:
-                    dob = datetime.strptime(item.dob, "%d/%m/%Y")
+                    dob = datetime.strptime(item.dob, "%d-%m-%Y")
                 except ValueError:
                     dob = None
                 try:
