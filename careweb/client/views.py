@@ -842,6 +842,7 @@ def upload_clients(request):
                                                     password=config.CLIENT_DEFAULT_PASSWORD)
                     client.user = user
                     client.uses_default_password = True
+                    client.lashma_quality_life_no = get_quality_life_number(client)
                     client.save()
                     primary = client
                 elif primary:
