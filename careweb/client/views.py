@@ -774,6 +774,7 @@ def upload_clients(request):
         request.FILES.get('file').save_to_database(
             model=TempClientUpload,
             mapdict=[
+                "s_no",
                 "salutation",
                 "first_name",
                 "middle_name",
@@ -796,33 +797,57 @@ def upload_clients(request):
         total = TempClientUpload.objects.count()
         valid = 0
         duplicate_no = 0
+        relationship = {
+            "Spouse": 0,
+            "Daughter": 1,
+            "Son": 2,
+            "Others": 3
+        }
+        primary = None
         for item in TempClientUpload.objects.all():
-            if not item.phone_no or not item.first_name or not item.last_name:
+            if not item.first_name or not item.last_name:
                 continue
-            if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
-                    username=item.phone_no.strip()):
-                duplicate_no += 1
             else:
                 try:
-                    dob = datetime.strptime(item.dob.strip(), "%d-%m-%Y")
-                except Exception:
+                    dob = datetime.strptime(item.dob.strip(), "%Y-%m-%d")
+                except Exception as e:
                     dob = None
-                try:
-                    pcp = CareProvider.objects.get(name__iexact=item.provider)
-                except:
-                    pcp = None
-                ranger = Ranger.objects.get(user=request.user)
-                client = Client.objects.create(first_name=item.first_name, surname=item.last_name,
-                                               middle_name=item.middle_name, sex=item.gender, dob=dob,
-                                               phone_no=item.phone_no, lagos_resident_no=item.state_id,
-                                               national_id_card_no=item.national_id,
-                                               international_passport_no=item.passport, voters_card_no=item.voter_id,
-                                               pcp=pcp, ranger=ranger)
-                user = User.objects.create_user(username=item.phone_no.strip(),
-                                                password=config.CLIENT_DEFAULT_PASSWORD)
-                client.user = user
-                client.uses_default_password = True
-                client.save()
+                sex = item.gender.strip()[0].upper() if item.gender else ''
+                # print(item.first_name, item.last_name, item.relationship, item.dob.strip())
+                if item.relationship.title() == "Principal":
+                    if not item.phone_no:
+                        primary = None
+                        continue
+                    if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
+                            username=item.phone_no.strip()):
+                        duplicate_no += 1
+                        continue
+                    try:
+                        pcp = CareProvider.objects.get(name__iexact=item.provider)
+                    except:
+                        pcp = None
+                    try:
+                        lga = LGA.objects.get(name__iexact=item.lga)
+                    except:
+                        lga = None
+                    ranger = Ranger.objects.get(user=request.user)
+                    client = Client.objects.create(first_name=item.first_name, surname=item.last_name,
+                                                   middle_name=item.middle_name, sex=sex, dob=dob,
+                                                   phone_no=item.phone_no, lagos_resident_no=item.state_id,
+                                                   national_id_card_no=item.national_id,
+                                                   international_passport_no=item.passport,
+                                                   voters_card_no=item.voter_id,
+                                                   pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium)
+                    user = User.objects.create_user(username=item.phone_no.strip(),
+                                                    password=config.CLIENT_DEFAULT_PASSWORD)
+                    client.user = user
+                    client.uses_default_password = True
+                    client.save()
+                    primary = client
+                elif primary:
+                    Dependant.objects.create(primary=primary, first_name=item.first_name, surname=item.last_name,
+                                             middle_name=item.middle_name, dob=dob,
+                                             relationship=relationship.get(item.relationship.strip().title()))
                 valid += 1
         messages.success(request,
                          "Clients data successfully processed. {valid} clients were "
@@ -832,6 +857,6 @@ def upload_clients(request):
     except Exception as e:
         print(e)
         messages.error(request,
-                       "Error processing upload. Confirm that the document uses the correct format. %s" % str(e))
+                       "Error processing upload. Confirm that the document uses the correct format.")
         return JsonResponse({'status': 'error', 'info': 'Error processing upload'})
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
