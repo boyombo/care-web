@@ -224,7 +224,7 @@ LOGGING = {
 FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
                         "django_excel.TemporaryExcelFileUploadHandler")
 
-IS_TEST_SERVER = True
+IS_TEST_SERVER = False
 
 if IS_TEST_SERVER:
     try:
