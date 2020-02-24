@@ -830,6 +830,7 @@ def upload_clients(request):
         TempClientUpload.objects.all().delete()
     except Exception as e:
         print(e)
-        messages.error(request, "Error processing upload. Confirm that the document uses the correct format.")
+        messages.error(request,
+                       "Error processing upload. Confirm that the document uses the correct format. %s" % str(e))
         return JsonResponse({'status': 'error', 'info': 'Error processing upload'})
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
