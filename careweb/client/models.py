@@ -226,9 +226,14 @@ class TempClientUpload(models.Model):
     passport = models.CharField(max_length=150, null=True)
     staff_id = models.CharField(max_length=150, null=True)
     voter_id = models.CharField(max_length=150, null=True)
+    drivers_license = models.CharField(max_length=150, null=True)
     secondary_phone_no = models.CharField(max_length=150, null=True)
     lga = models.CharField(max_length=150, null=True)
     provider = models.CharField(max_length=150, null=True)
+    package = models.CharField(max_length=150, null=True)
+    period = models.CharField(max_length=150, null=True)
+    lshs_code = models.CharField(max_length=150, null=True)
+    ql_code = models.CharField(max_length=150, null=True)
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)

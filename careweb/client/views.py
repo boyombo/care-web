@@ -789,9 +789,14 @@ def upload_clients(request):
                 "passport",
                 "staff_id",
                 "voter_id",
+                "drivers_license",
                 "secondary_phone_no",
                 "lga",
-                "provider"
+                "provider",
+                "package",
+                "period",
+                "lshs_code",
+                "ql_code",
             ]
         )
         total = TempClientUpload.objects.count()
@@ -821,10 +826,13 @@ def upload_clients(request):
                     if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
                             username=item.phone_no.strip()):
                         duplicate_no += 1
+                        primary = None
                         continue
+                    print(item.provider)
                     try:
                         pcp = CareProvider.objects.get(name__iexact=item.provider.strip())
-                    except:
+                    except Exception as e:
+                        print(e)
                         pcp = None
                     try:
                         lga = LGA.objects.get(name__iexact=item.lga.strip())
@@ -837,7 +845,9 @@ def upload_clients(request):
                                                    national_id_card_no=item.national_id,
                                                    international_passport_no=item.passport,
                                                    voters_card_no=item.voter_id,
-                                                   pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium)
+                                                   pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium,
+                                                   package_option=item.package, payment_option=item.period,
+                                                   drivers_licence_no=item.drivers_license)
                     user = User.objects.create_user(username=item.phone_no.strip(),
                                                     password=config.CLIENT_DEFAULT_PASSWORD)
                     client.user = user
