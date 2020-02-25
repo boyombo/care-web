@@ -12,7 +12,7 @@ from client.models import (
     ClientAssociation,
     MyClient,
 )
-from client.utils import get_verification_code, phone_no_valid, is_registered_user
+from client.utils import get_verification_code, phone_no_valid, is_registered_user, get_export_row
 from core.utils import send_email
 from constance import config
 from ranger.models import Ranger
@@ -248,15 +248,18 @@ class ClientAdmin(admin.ModelAdmin):
 
     def export_clients(self, request, queryset):
         column_names = [
-            "Salutation", "First Name", "Middle Name", "Last Name", "Date of Birth", "Phone Number",
+            "S/N", "Salutation", "First Name", "Middle Name", "Last Name", "Date of Birth", "Phone Number",
             "Relationship", "Gender", "Premium for Principal", "State ID", "National ID", "Passport",
-            "Staff ID", "Voter ID", "Secondary Phone Number", "LGA", "Preferred Provider Name"
+            "Staff ID", "Voter ID", "Driver's License", "Secondary Phone Number", "LGA/LCDA", "Preferred Provider Name",
+            "Package", "Period", "LSHS Code", "QL Code"
         ]
         output = [column_names]
-        rows = [[client.salutation, client.first_name, client.middle_name, client.surname,
-                 client.dob, client.phone_no, "", client.sex, "", client.lagos_resident_no, client.national_id_card_no,
-                 client.international_passport_no, "", client.voters_card_no, "", "", client.provider_name] for client
-                in queryset]
+        rows = []
+        index = 1
+        for client in queryset:
+            for row in get_export_row(client, index):
+                index += 1
+                rows.append(row)
         output.extend(rows)
         sheet = excel.pe.Sheet(output)
         return excel.make_response(sheet, "xls", file_name="Clients")
