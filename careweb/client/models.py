@@ -48,9 +48,15 @@ class Dependant(models.Model):
     OTHERS = 3
     RELATIONSHIPS = enumerate(("Spouse", "Daughter", "Son", "Others"))
 
+    FEMALE = "F"
+    MALE = "M"
+    SEXES = (("F", "Female"), ("M", "Male"))
+
     id = HashidAutoField(primary_key=True)
     primary = models.ForeignKey("Client", null=True, on_delete=models.SET_NULL)
     surname = models.CharField(max_length=100)
+    salutation = models.CharField(max_length=100, null=True, blank=True)
+    sex = models.CharField(max_length=100, null=True, blank=True)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, null=True, blank=True)
     dob = models.DateField(null=True, blank=True)
@@ -63,6 +69,20 @@ class Dependant(models.Model):
 
     def __str__(self):
         return self.surname
+
+    @property
+    def get_salutation(self):
+        if self.salutation:
+            return self.salutation
+        if self.relationship == 1:
+            return "Mrs"
+        if self.relationship == 2:
+            return "Mr"
+        if self.relationship == 0:
+            if self.primary.sex.startswith("M"):
+                return "Mrs"
+            return "Mr"
+        return "Ms"
 
 
 class Client(models.Model):
@@ -109,6 +129,7 @@ class Client(models.Model):
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, null=True, blank=True)
+    salutation = models.CharField(max_length=100, null=True, blank=True)
     dob = models.DateField("Date of Birth", null=True, blank=True)
     sex = models.CharField("Gender", max_length=10, choices=SEXES, null=True)
     # sex = models.PositiveIntegerField(choices=SEXES)
@@ -185,7 +206,9 @@ class Client(models.Model):
         return self.user.is_active
 
     @property
-    def salutation(self):
+    def get_salutation(self):
+        if self.salutation:
+            return self.salutation
         if self.sex == self.MALE:
             return "Mr"
         if self.marital_status == self.MARRIED:

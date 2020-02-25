@@ -850,7 +850,8 @@ def upload_clients(request):
                                                        voters_card_no=item.voter_id,
                                                        pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium,
                                                        plan=plan, payment_option=item.period,
-                                                       drivers_licence_no=item.drivers_license)
+                                                       drivers_licence_no=item.drivers_license,
+                                                       salutation=item.salutation)
                         user = User.objects.create_user(username=item.phone_no.strip(),
                                                         password=config.CLIENT_DEFAULT_PASSWORD)
                         client.user = user
@@ -860,7 +861,7 @@ def upload_clients(request):
                         primary = client
                     elif primary:
                         Dependant.objects.create(primary=primary, first_name=item.first_name, surname=item.last_name,
-                                                 middle_name=item.middle_name, dob=dob,
+                                                 middle_name=item.middle_name, dob=dob, salutation=item.salutation,
                                                  relationship=relationship.get(item.relationship.strip().title()))
                     valid += 1
                 except Exception as e:
