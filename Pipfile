@@ -30,5 +30,6 @@ django-ratelimit = "*"
 django-excel = "*"
 pyexcel-xls = "*"
 pyexcel-xlsx = "*"
+gunicorn = "*"
 
 [dev-packages]

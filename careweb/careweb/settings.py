@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
     "192.168.8.100",
     "192.168.1.4",
     "127.0.0.1",
+    "167.172.156.45"
 ]
 
 # Email settings
@@ -224,7 +225,7 @@ LOGGING = {
 FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
                         "django_excel.TemporaryExcelFileUploadHandler")
 
-IS_TEST_SERVER = False
+IS_TEST_SERVER = True
 
 if IS_TEST_SERVER:
     try:

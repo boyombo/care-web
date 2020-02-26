@@ -826,7 +826,7 @@ def upload_clients(request):
                             primary = None
                             continue
                         if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
-                                username=item.phone_no.strip()):
+                                username=item.phone_no.strip()).exists():
                             duplicate_no += 1
                             primary = None
                             continue
