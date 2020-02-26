@@ -6,6 +6,7 @@ from django.urls import reverse
 from hashid_field import HashidAutoField
 
 # from location.models import LGA
+from location.models import LGA
 from provider.models import CareProvider
 from ranger.models import Ranger
 from core.models import Plan
@@ -47,11 +48,17 @@ class Dependant(models.Model):
     OTHERS = 3
     RELATIONSHIPS = enumerate(("Spouse", "Daughter", "Son", "Others"))
 
+    FEMALE = "F"
+    MALE = "M"
+    SEXES = (("F", "Female"), ("M", "Male"))
+
     id = HashidAutoField(primary_key=True)
     primary = models.ForeignKey("Client", null=True, on_delete=models.SET_NULL)
     surname = models.CharField(max_length=100)
+    salutation = models.CharField(max_length=100, null=True, blank=True)
+    sex = models.CharField(max_length=100, null=True, blank=True)
     first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100, blank=True)
+    middle_name = models.CharField(max_length=100, null=True, blank=True)
     dob = models.DateField(null=True, blank=True)
     relationship = models.PositiveIntegerField(choices=RELATIONSHIPS)
     photo = models.ImageField(upload_to="dependantphoto", null=True, blank=True)
@@ -62,6 +69,20 @@ class Dependant(models.Model):
 
     def __str__(self):
         return self.surname
+
+    @property
+    def get_salutation(self):
+        if self.salutation:
+            return self.salutation
+        if self.relationship == 1:
+            return "Mrs"
+        if self.relationship == 2:
+            return "Mr"
+        if self.relationship == 0:
+            if self.primary.sex.startswith("M"):
+                return "Mrs"
+            return "Mr"
+        return "Ms"
 
 
 class Client(models.Model):
@@ -107,23 +128,24 @@ class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     surname = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100, blank=True)
+    middle_name = models.CharField(max_length=100, null=True, blank=True)
+    salutation = models.CharField(max_length=100, null=True, blank=True)
     dob = models.DateField("Date of Birth", null=True, blank=True)
     sex = models.CharField("Gender", max_length=10, choices=SEXES, null=True)
     # sex = models.PositiveIntegerField(choices=SEXES)
     marital_status = models.CharField(
         max_length=10, choices=MARITAL_STATUSES, null=True
     )
-    national_id_card_no = models.CharField(max_length=50, blank=True)
-    drivers_licence_no = models.CharField(max_length=50, blank=True)
+    national_id_card_no = models.CharField(max_length=50, null=True, blank=True)
+    drivers_licence_no = models.CharField(max_length=50, null=True, blank=True)
     voters_card_no = models.CharField(max_length=50, blank=True, null=True)
     international_passport_no = models.CharField(max_length=50, blank=True, null=True)
-    lashma_no = models.CharField(max_length=50, blank=True)
-    lashma_quality_life_no = models.CharField(max_length=50, blank=True)
-    lagos_resident_no = models.CharField(max_length=50, blank=True)
-    phone_no = models.CharField(max_length=50, blank=True)
-    whatsapp_no = models.CharField(max_length=50, blank=True)
-    email = models.CharField(max_length=50, blank=True)
+    lashma_no = models.CharField(max_length=50, null=True, blank=True)
+    lashma_quality_life_no = models.CharField(max_length=50, null=True, blank=True)
+    lagos_resident_no = models.CharField(max_length=50, null=True, blank=True)
+    phone_no = models.CharField(max_length=50, null=True, blank=True)
+    whatsapp_no = models.CharField(max_length=50, null=True, blank=True)
+    email = models.CharField(max_length=50, null=True, blank=True)
     pcp = models.ForeignKey(
         CareProvider, null=True, blank=True, on_delete=models.SET_NULL
     )
@@ -133,6 +155,7 @@ class Client(models.Model):
     company = models.CharField(max_length=200, blank=True)
     office_address = models.TextField(blank=True)
     hmo = models.ForeignKey(HMO, null=True, blank=True, on_delete=models.SET_NULL)
+    lga = models.ForeignKey(LGA, null=True, blank=True, on_delete=models.SET_NULL)
     # informal_sector_group = models.CharField(
     #    max_length=200, blank=True, null=True)
     # associations = models.ManyToManyField('Association', related_name='client_associations')
@@ -159,7 +182,7 @@ class Client(models.Model):
                 # If the no is for this user, then it's an update
                 client = Client.objects.get(phone_no=self.phone_no)
                 if str(client.id) != str(self.id):
-                    # Another use is about to use the existing phone no
+                    # Another user is about to use the existing phone no
                     raise ValueError("Phone is already in use")
         super(Client, self).save(force_insert, force_update, using, update_fields)
 
@@ -183,7 +206,9 @@ class Client(models.Model):
         return self.user.is_active
 
     @property
-    def salutation(self):
+    def get_salutation(self):
+        if self.salutation:
+            return self.salutation
         if self.sex == self.MALE:
             return "Mr"
         if self.marital_status == self.MARRIED:
@@ -209,6 +234,7 @@ class MyClient(Client):
 
 
 class TempClientUpload(models.Model):
+    s_no = models.CharField(max_length=20, null=True)
     salutation = models.CharField(max_length=20, null=True)
     first_name = models.CharField(max_length=50, null=True)
     middle_name = models.CharField(max_length=50, null=True)
@@ -223,9 +249,17 @@ class TempClientUpload(models.Model):
     passport = models.CharField(max_length=150, null=True)
     staff_id = models.CharField(max_length=150, null=True)
     voter_id = models.CharField(max_length=150, null=True)
+    drivers_license = models.CharField(max_length=150, null=True)
     secondary_phone_no = models.CharField(max_length=150, null=True)
     lga = models.CharField(max_length=150, null=True)
     provider = models.CharField(max_length=150, null=True)
+    package = models.CharField(max_length=150, null=True)
+    period = models.CharField(max_length=150, null=True)
+    lshs_code = models.CharField(max_length=150, null=True)
+    ql_code = models.CharField(max_length=150, null=True)
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+    class Meta:
+        ordering = ('id',)

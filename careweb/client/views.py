@@ -20,6 +20,7 @@ from django.core.files.base import ContentFile
 # from django.urls import reverse_lazy
 
 from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload
+from core.models import Plan
 from core.utils import send_welcome_email, send_email
 from subscription.models import SubscriptionPayment
 from subscription.utils import (
@@ -770,9 +771,11 @@ def upload_clients(request):
         messages.error(request, "Invalid file selected")
         return JsonResponse({'status': 'error', 'info': 'Invalid file selected'})
     try:
+        TempClientUpload.objects.all().delete()
         request.FILES.get('file').save_to_database(
             model=TempClientUpload,
             mapdict=[
+                "s_no",
                 "salutation",
                 "first_name",
                 "middle_name",
@@ -787,42 +790,83 @@ def upload_clients(request):
                 "passport",
                 "staff_id",
                 "voter_id",
+                "drivers_license",
                 "secondary_phone_no",
                 "lga",
-                "provider"
+                "provider",
+                "package",
+                "period",
+                "lshs_code",
+                "ql_code",
             ]
         )
         total = TempClientUpload.objects.count()
         valid = 0
         duplicate_no = 0
+        relationship = {
+            "Spouse": 0,
+            "Daughter": 1,
+            "Son": 2,
+            "Others": 3
+        }
+        primary = None
         for item in TempClientUpload.objects.all():
-            if not item.phone_no or not item.first_name or not item.last_name:
+            if not item.first_name or not item.last_name:
                 continue
-            if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
-                    username=item.phone_no.strip()):
-                duplicate_no += 1
             else:
+                ranger = Ranger.objects.get(user=request.user)
                 try:
-                    dob = datetime.strptime(item.dob, "%d/%m/%Y")
-                except ValueError:
+                    dob = datetime.strptime(item.dob.strip(), "%Y-%m-%d")
+                except Exception as e:
                     dob = None
                 try:
-                    pcp = CareProvider.objects.get(name__iexact=item.provider)
-                except:
-                    pcp = None
-                ranger = Ranger.objects.get(user=request.user)
-                client = Client.objects.create(first_name=item.first_name, surname=item.last_name,
-                                               middle_name=item.middle_name, sex=item.gender, dob=dob,
-                                               phone_no=item.phone_no, lagos_resident_no=item.state_id,
-                                               national_id_card_no=item.national_id,
-                                               international_passport_no=item.passport, voters_card_no=item.voter_id,
-                                               pcp=pcp, ranger=ranger)
-                user = User.objects.create_user(username=item.phone_no.strip(),
-                                                password=config.CLIENT_DEFAULT_PASSWORD)
-                client.user = user
-                client.uses_default_password = True
-                client.save()
-                valid += 1
+                    sex = item.gender.strip()[0].upper() if item.gender else ''
+                    if item.relationship.title() == "Principal":
+                        if not item.phone_no:
+                            primary = None
+                            continue
+                        if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
+                                username=item.phone_no.strip()):
+                            duplicate_no += 1
+                            primary = None
+                            continue
+                        try:
+                            pcp = CareProvider.objects.get(name__iexact=item.provider.strip())
+                        except Exception as e:
+                            pcp = None
+                        try:
+                            lga = LGA.objects.get(name__iexact=item.lga.strip())
+                        except:
+                            lga = None
+                        try:
+                            plan = Plan.objects.get(name__iexact=item.package.strip())
+                        except:
+                            plan = None
+                        client = Client.objects.create(first_name=item.first_name, surname=item.last_name,
+                                                       middle_name=item.middle_name, sex=sex, dob=dob,
+                                                       phone_no=item.phone_no, lagos_resident_no=item.state_id,
+                                                       national_id_card_no=item.national_id,
+                                                       international_passport_no=item.passport,
+                                                       voters_card_no=item.voter_id,
+                                                       pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium,
+                                                       plan=plan, payment_option=item.period,
+                                                       drivers_licence_no=item.drivers_license,
+                                                       salutation=item.salutation)
+                        user = User.objects.create_user(username=item.phone_no.strip(),
+                                                        password=config.CLIENT_DEFAULT_PASSWORD)
+                        client.user = user
+                        client.uses_default_password = True
+                        client.lashma_quality_life_no = get_quality_life_number(client)
+                        client.save()
+                        primary = client
+                    elif primary:
+                        Dependant.objects.create(primary=primary, first_name=item.first_name, surname=item.last_name,
+                                                 middle_name=item.middle_name, dob=dob, salutation=item.salutation,
+                                                 relationship=relationship.get(item.relationship.strip().title()))
+                    valid += 1
+                except Exception as e:
+                    print(e)
+                    pass
         messages.success(request,
                          "Clients data successfully processed. {valid} clients were "
                          "created out of a total of {total}. {duplicate} records uses duplicate phone no".format(
@@ -830,6 +874,7 @@ def upload_clients(request):
         TempClientUpload.objects.all().delete()
     except Exception as e:
         print(e)
-        messages.error(request, "Error processing upload. Confirm that the document uses the correct format.")
+        messages.error(request,
+                       "Error processing upload. Confirm that the document uses the correct format.")
         return JsonResponse({'status': 'error', 'info': 'Error processing upload'})
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
