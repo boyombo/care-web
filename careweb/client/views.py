@@ -1,4 +1,5 @@
 # from pprint import pprint
+import json
 from datetime import datetime
 from random import sample
 from decimal import Decimal
@@ -19,7 +20,7 @@ from django.core.files.base import ContentFile
 
 # from django.urls import reverse_lazy
 
-from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload
+from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload, TempRequestStore
 from core.models import Plan
 from core.utils import send_welcome_email, send_email
 from subscription.models import SubscriptionPayment
@@ -878,3 +879,39 @@ def upload_clients(request):
                        "Error processing upload. Confirm that the document uses the correct format.")
         return JsonResponse({'status': 'error', 'info': 'Error processing upload'})
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
+
+
+def test_add_client(request):
+    if request.method == 'POST':
+        trs = TempRequestStore.objects.create(endpoint="/client/add", post_data=request.POST)
+        try:
+            js = json.loads(request.POST)
+            trs.json_data = js
+            trs.save()
+        except:
+            pass
+        return JsonResponse({"success": True})
+
+
+def test_update_client(request):
+    if request.method == 'POST':
+        trs = TempRequestStore.objects.create(endpoint="/client/update", post_data=request.POST)
+        try:
+            js = json.loads(request.POST)
+            trs.json_data = js
+            trs.save()
+        except:
+            pass
+        return JsonResponse({"success": True})
+
+
+def test_subscription_payment(request):
+    if request.method == 'POST':
+        trs = TempRequestStore.objects.create(endpoint="/subscription/payment", post_data=request.POST)
+        try:
+            js = json.loads(request.POST)
+            trs.json_data = js
+            trs.save()
+        except:
+            pass
+        return JsonResponse({"success": True})

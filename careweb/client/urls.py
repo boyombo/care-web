@@ -54,6 +54,9 @@ urlpatterns = [
     path("info/<int:id>/", views.get_client_info),
     path("load_pcp_list/", views.load_pcp_list, name="load_pcp_list"),
     path("upload_clients/", views.upload_clients, name="upload_clients"),
+    path("add/", views.test_add_client, name="test_add_client"),
+    path("update/", views.test_update_client, name="test_update_client"),
+    path("subscription/payment/", views.test_subscription_payment, name="test_subscription_payment"),
 
     # AJAX Request
     path("lga/pcps", views.get_lga_pcp),

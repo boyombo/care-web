@@ -263,3 +263,13 @@ class TempClientUpload(models.Model):
 
     class Meta:
         ordering = ('id',)
+
+
+class TempRequestStore(models.Model):
+    endpoint = models.CharField(max_length=300)
+    post_data = models.TextField(null=True, blank=True)
+    json_data = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.endpoint
