@@ -881,6 +881,7 @@ def upload_clients(request):
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
 
 
+@csrf_exempt
 def test_add_client(request):
     if request.method == 'POST':
         trs = TempRequestStore.objects.create(endpoint="/client/add", post_data=request.POST)
@@ -893,6 +894,7 @@ def test_add_client(request):
         return JsonResponse({"success": True})
 
 
+@csrf_exempt
 def test_update_client(request):
     if request.method == 'POST':
         trs = TempRequestStore.objects.create(endpoint="/client/update", post_data=request.POST)
@@ -905,6 +907,7 @@ def test_update_client(request):
         return JsonResponse({"success": True})
 
 
+@csrf_exempt
 def test_subscription_payment(request):
     if request.method == 'POST':
         trs = TempRequestStore.objects.create(endpoint="/subscription/payment", post_data=request.POST)
