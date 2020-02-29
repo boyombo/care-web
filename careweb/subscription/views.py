@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic.base import TemplateView
+from rest_framework import permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from client.models import Client
+from ranger.models import Ranger
 from subscription.forms import SubscriptionForm
 from subscription.models import SubscriptionPayment
 from payment.models import Payment
@@ -10,6 +14,8 @@ from payment.utils import get_reference
 from subscription import utils
 from core.crypto import Encryptor, get_hash
 from django.conf import settings
+
+from subscription.serializers import CreateSubscriptionSerializer, SubscriptionPaymentSerializer
 
 
 class SubscriptionView(TemplateView):
@@ -91,3 +97,23 @@ def bank(request):
     return render(
         request, "subscription/subscribe.html", {"object": client, "form": form}
     )
+
+
+class CreateSubscriptionPayment(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = CreateSubscriptionSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            ranger = None
+            if data.get('ranger_id'):
+                ranger = Ranger.objects.get(id=data.get('ranger_id'))
+            client = Client.objects.get(id=data.get('client_id'))
+            sp = SubscriptionPayment.objects.create(client=client, amount=data.get('amount'), bank=data.get('bank'),
+                                                    name=data.get('name'), payment_type=data.get('payment_type'),
+                                                    ranger=ranger)
+            serialized = SubscriptionPaymentSerializer(sp)
+            return Response({"success": True, "subscription": serialized.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_200_OK)

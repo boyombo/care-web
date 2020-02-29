@@ -53,7 +53,7 @@ class Dependant(models.Model):
     SEXES = (("F", "Female"), ("M", "Male"))
 
     id = HashidAutoField(primary_key=True)
-    primary = models.ForeignKey("Client", null=True, on_delete=models.SET_NULL)
+    primary = models.ForeignKey("Client", null=True, on_delete=models.CASCADE)
     surname = models.CharField(max_length=100)
     salutation = models.CharField(max_length=100, null=True, blank=True)
     sex = models.CharField(max_length=100, null=True, blank=True)
@@ -150,10 +150,10 @@ class Client(models.Model):
         CareProvider, null=True, blank=True, on_delete=models.SET_NULL
     )
     ranger = models.ForeignKey(Ranger, null=True, on_delete=models.SET_NULL)
-    home_address = models.TextField(blank=True)
-    occupation = models.CharField(max_length=200, blank=True)
-    company = models.CharField(max_length=200, blank=True)
-    office_address = models.TextField(blank=True)
+    home_address = models.TextField(blank=True, null=True)
+    occupation = models.CharField(max_length=200, blank=True, null=True)
+    company = models.CharField(max_length=200, blank=True, null=True)
+    office_address = models.TextField(blank=True, null=True)
     hmo = models.ForeignKey(HMO, null=True, blank=True, on_delete=models.SET_NULL)
     lga = models.ForeignKey(LGA, null=True, blank=True, on_delete=models.SET_NULL)
     # informal_sector_group = models.CharField(
@@ -223,6 +223,16 @@ class Client(models.Model):
     def provider_name(self):
         if self.pcp:
             return str(self.pcp)
+        return ""
+
+    @property
+    def username(self):
+        return self.user.username
+
+    @property
+    def photo_url(self):
+        if self.photo:
+            return self.photo.url
         return ""
 
 
