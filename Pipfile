@@ -31,5 +31,6 @@ django-excel = "*"
 pyexcel-xls = "*"
 pyexcel-xlsx = "*"
 gunicorn = "*"
+djangorestframework = "*"
 
 [dev-packages]
