@@ -117,3 +117,17 @@ class CreateSubscriptionPayment(APIView):
             return Response({"success": True, "subscription": serialized.data}, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_200_OK)
+
+
+class GetSubscriptionPaymentsView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, ranger_id, format=None):
+        if Ranger.objects.filter(id=ranger_id).exists():
+            payments = SubscriptionPayment.objects.filter(ranger=Ranger.objects.get(id=ranger_id))
+            serialized = SubscriptionPaymentSerializer(payments, many=True)
+            return Response({"success": True, "payments": serialized.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'success': False,
+                             'message': 'No such ranger'},
+                            status=status.HTTP_200_OK)

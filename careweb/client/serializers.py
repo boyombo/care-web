@@ -37,9 +37,9 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'salutation', 'first_name', 'middle_name', 'surname', 'dob', 'sex',
                   'marital_status', 'national_id_card_no', 'drivers_licence_no', 'voters_card_no', 'whatsapp_no',
                   'international_passport_no', 'lashma_no', 'lashma_quality_life_no', 'lagos_resident_no', 'phone_no',
-                  'email', 'pcp', 'ranger', 'lga', 'plan', 'payment_option', 'payment_instrument', 'hmo',
+                  'email', 'pcp', 'ranger', 'lga', 'plan', 'payment_option', 'payment_instrument', 'hmo', 'formatted_dob',
                   'registration_date', 'photo_url', 'verification_code', 'balance', 'verified', 'subscription_rate',
-                  'uses_default_password', 'company', 'home_address', 'occupation', 'office_address']
+                  'uses_default_password', 'company', 'home_address', 'occupation', 'office_address', 'imageUri']
 
 
 class DependantSerializer(serializers.ModelSerializer):

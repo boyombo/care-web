@@ -26,7 +26,7 @@ from rest_framework.views import APIView
 
 from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload, TempRequestStore, HMO
 from client.serializers import CreateClientSerializer, ClientSerializer, UpdateClientSerializer, LGASerializer, \
-    ProviderSerializer, AssociationSerializer, PlanSerializer
+    ProviderSerializer, AssociationSerializer, PlanSerializer, DependantSerializer
 from core.models import Plan, PlanRate
 from core.serializers import PlanRateSerializer
 from core.utils import send_welcome_email, send_email
@@ -888,44 +888,6 @@ def upload_clients(request):
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
 
 
-@csrf_exempt
-def test_add_client(request):
-    if request.method == 'POST':
-        trs = TempRequestStore.objects.create(endpoint="/client/add", post_data=request.POST)
-        try:
-            js = json.loads(request.POST)
-            trs.json_data = js
-            trs.save()
-        except:
-            pass
-        return JsonResponse({"success": True})
-
-
-@csrf_exempt
-def test_update_client(request):
-    if request.method == 'POST':
-        trs = TempRequestStore.objects.create(endpoint="/client/update", post_data=request.POST)
-        try:
-            js = json.loads(request.POST)
-            trs.json_data = js
-            trs.save()
-        except:
-            pass
-        return JsonResponse({"success": True})
-
-
-@csrf_exempt
-def test_subscription_payment(request):
-    if request.method == 'POST':
-        trs = TempRequestStore.objects.create(endpoint="/subscription/payment", post_data=request.POST)
-        try:
-            js = json.loads(request.POST)
-            trs.json_data = js
-            trs.save()
-        except:
-            pass
-        return JsonResponse({"success": True})
-
 
 class CreateClientView(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -1066,3 +1028,39 @@ class GetInitialDataView(APIView):
             "plan_rates": PlanRateSerializer(PlanRate.objects.all(), many=True).data
         }
         return Response(data, status=status.HTTP_200_OK)
+
+
+class SearchClientView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, format=None):
+        phone = request.GET.get('phone')
+        if Client.objects.filter(phone_no=phone).exists():
+            client = Client.objects.get(phone_no=phone)
+            serialized = ClientSerializer(client)
+            data = serialized.data
+            data['dependents'] = DependantSerializer(client.dependant_set.all(), many=True).data
+            data['associations'] = []
+            return Response({"success": True, "client": data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'success': False,
+                             'message': 'Could not find any client with that number'},
+                            status=status.HTTP_200_OK)
+
+
+class GetClientDetail(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, client_id, format=None):
+        if Client.objects.filter(id=client_id).exists():
+            client = Client.objects.get(id=client_id)
+            serialized = ClientSerializer(client)
+            data = serialized.data
+            data['dependents'] = DependantSerializer(client.dependant_set.all(), many=True).data
+            data['associations'] = []
+            return Response({"success": True, "client": data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'success': False,
+                             'message': 'Could not find any client with that number'},
+                            status=status.HTTP_200_OK)
+

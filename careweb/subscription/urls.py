@@ -9,4 +9,5 @@ urlpatterns = [
 
     # APIs
     path("payment/", views.CreateSubscriptionPayment.as_view(), name="subscription_payment"),
+    path("payments/<str:ranger_id>/", views.GetSubscriptionPaymentsView.as_view(), name="subscription_payments"),
 ]

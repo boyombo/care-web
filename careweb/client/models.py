@@ -235,6 +235,16 @@ class Client(models.Model):
             return self.photo.url
         return ""
 
+    @property
+    def imageUri(self):
+        return self.photo_url
+
+    @property
+    def formatted_dob(self):
+        if self.dob:
+            return self.dob.strftime("%Y-%m-%d")
+        return ""
+
 
 class MyClient(Client):
     class Meta:

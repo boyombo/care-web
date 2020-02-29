@@ -14,6 +14,7 @@ from core import views as core_views
 
 urlpatterns = [
     path("client/", include("client.urls")),
+    path("ranger/", include("ranger.urls")),
     path("payment/", include("payment.urls")),
     path("subscription/", include("subscription.urls")),
     path("baton/", include("baton.urls")),
