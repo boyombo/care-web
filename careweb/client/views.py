@@ -455,6 +455,7 @@ def register_via_agent(request, id):
                         "email": cl.email,
                         "phone": cl.phone_no,
                         "photo": "",
+                        "lashma_quality_life_no": cl.lashma_quqlity_life_no
                     },
                 }
             )
@@ -513,6 +514,7 @@ def register_api(request):
                         "email": obj.email,
                         "phone": obj.phone_no,
                         "photo": "",
+                        "lashma_quality_life_no": obj.lashma_quqlity_life_no
                     },
                 }
             )
