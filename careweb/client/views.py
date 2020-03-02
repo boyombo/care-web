@@ -19,6 +19,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 
 # from django.urls import reverse_lazy
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions, status
 from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
@@ -892,7 +893,6 @@ def upload_clients(request):
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
 
 
-
 class CreateClientView(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -1022,6 +1022,7 @@ class UpdateClientView(UpdateAPIView):
 class GetInitialDataView(APIView):
     permission_classes = (permissions.AllowAny,)
 
+    @swagger_auto_schema(operation_description="Get initial data", responses={200: ''})
     def get(self, request, format=None):
         data = {
             "succes": True,
@@ -1067,4 +1068,3 @@ class GetClientDetail(APIView):
             return Response({'success': False,
                              'message': 'Could not find any client with that number'},
                             status=status.HTTP_200_OK)
-

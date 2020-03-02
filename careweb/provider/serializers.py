@@ -11,4 +11,4 @@ class ProviderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CareProvider
-        fields = ['id', 'code_no', 'name', 'address', 'phone1', 'phone2', 'lga']
+        fields = ['id', 'code_no', 'name', 'address', 'phone1', 'phone2', 'lga_id', 'lga']

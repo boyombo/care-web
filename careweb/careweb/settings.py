@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "constance.backends.database",
     "rest_framework",
+    "drf_yasg",
     # "easy_select2"
     # "easyaudit",
 ]
