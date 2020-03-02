@@ -69,6 +69,7 @@ def get_client_details(client, host):
         "internationalPassportNo": client.international_passport_no,
         "lashmaNo": client.lashma_no,
         "lashmaQualityLifeNo": client.lashma_quality_life_no,
+        "verification_code": client.verification_code,
         "pcp": client_pcp,
         "ranger": client.ranger.id.id if client.ranger else None,
         "homeAddress": client.home_address,
