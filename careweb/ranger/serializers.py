@@ -1,4 +1,4 @@
-from hashid_field.rest import HashidSerializerCharField
+from hashid_field.rest import HashidSerializerCharField, HashidSerializerIntegerField
 from rest_framework import serializers
 
 from location.serializers import LGASerializer
@@ -7,16 +7,17 @@ from ranger.models import Ranger, WalletFunding
 
 
 class RangerSerializer(serializers.ModelSerializer):
-    id = HashidSerializerCharField(source_field="ranger.Ranger.id", read_only=True)
+    id = HashidSerializerIntegerField(source_field="ranger.Ranger.id", read_only=True)
+    pk = HashidSerializerCharField(source_field="ranger.Ranger.id", read_only=True)
     lga = LGASerializer()
 
     class Meta:
         model = Ranger
-        fields = ['id', 'username', 'phone', 'first_name', 'last_name', 'lga', 'balance']
+        fields = ['id', 'username', 'phone', 'first_name', 'last_name', 'lga', 'balance', 'pk']
 
 
 class WalletFundingSerializer(serializers.ModelSerializer):
-    id = HashidSerializerCharField(source_field="ranger.WalletFunding.id", read_only=True)
+    id = HashidSerializerIntegerField(source_field="ranger.WalletFunding.id", read_only=True)
     ranger = RangerSerializer()
     payment = PaymentSerializer()
 

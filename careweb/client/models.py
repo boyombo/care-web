@@ -32,6 +32,10 @@ class ClientAssociation(models.Model):
     def __str__(self):
         return str(self.association)
 
+    @property
+    def association_name(self):
+        return self.association.name
+
 
 class HMO(models.Model):
     id = HashidAutoField(primary_key=True)
@@ -244,6 +248,14 @@ class Client(models.Model):
         if self.dob:
             return self.dob.strftime("%Y-%m-%d")
         return ""
+
+    @property
+    def associations(self):
+        return self.clientassociation_set.all()
+
+    @property
+    def dependants(self):
+        return self.dependant_set.all()
 
 
 class MyClient(Client):

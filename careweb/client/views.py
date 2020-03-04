@@ -31,6 +31,7 @@ from client.serializers import CreateClientSerializer, ClientSerializer, UpdateC
 from core.models import Plan, PlanRate
 from core.serializers import PlanRateSerializer
 from core.utils import send_welcome_email, send_email
+from ranger.serializers import RangerSerializer
 from subscription.models import SubscriptionPayment
 from subscription.utils import (
     get_subscription_rate,
@@ -946,6 +947,12 @@ class CreateClientView(APIView):
                                              surname=dependent.get('surname'),
                                              relationship=dependent.get('relationship'),
                                              primary=client, sex=dependent.get('sex'), dob=dependent.get('dob'))
+            if data.get('associations'):
+                associations = data.get('associations')
+                for aid in associations:
+                    association = Association.objects.get(id=aid)
+                    if not ClientAssociation.objects.filter(association=association, client=client).exists():
+                        ClientAssociation.objects.create(association=association, client=client)
             serialized = ClientSerializer(Client.objects.filter(ranger=ranger), many=True)
             return Response({"success": True, "clients": serialized.data}, status=status.HTTP_200_OK)
         else:
@@ -1005,6 +1012,7 @@ class UpdateClientView(UpdateAPIView):
                 instance.uses_default_password = True
             instance.save()
             if data.get('dependents'):
+                Dependant.objects.filter(primary=instance).delete()
                 dependents = data.get('dependents')
                 for dependent in dependents:
                     Dependant.objects.create(salutation=dependent.get('salutation'),
@@ -1013,6 +1021,12 @@ class UpdateClientView(UpdateAPIView):
                                              surname=dependent.get('surname'),
                                              relationship=dependent.get('relationship'),
                                              primary=instance, sex=dependent.get('sex'), dob=dependent.get('dob'))
+            if data.get('associations'):
+                associations = data.get('associations')
+                ClientAssociation.objects.filter(client=instance).delete()
+                for aid in associations:
+                    association = Association.objects.get(id=aid)
+                    ClientAssociation.objects.create(association=association, client=instance)
             serialized = ClientSerializer(Client.objects.filter(ranger=instance.ranger), many=True)
             return Response({"success": True, "clients": serialized.data}, status=status.HTTP_200_OK)
         else:
@@ -1030,7 +1044,7 @@ class GetInitialDataView(APIView):
             "providers": ProviderSerializer(CareProvider.objects.all(), many=True).data,
             "associations": AssociationSerializer(Association.objects.all(), many=True).data,
             "plans": PlanSerializer(Plan.objects.all(), many=True).data,
-            "plan_rates": PlanRateSerializer(PlanRate.objects.all(), many=True).data
+            "plan_rates": PlanRateSerializer(PlanRate.objects.all(), many=True).data,
         }
         return Response(data, status=status.HTTP_200_OK)
 

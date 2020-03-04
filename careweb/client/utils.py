@@ -26,7 +26,7 @@ def get_client_details(client, host):
     next_subscription_date = get_next_subscription_date(client).strftime("%d %b %Y")
     dependants = [
         {
-            "dob": dependant.dob.strftime("%Y-%m-%d"),
+            "dob": dependant.dob.strftime("%Y-%m-%d") if dependant.dob else "",
             "first_name": dependant.first_name,
             "surname": dependant.surname,
             "middle_name": dependant.middle_name,
