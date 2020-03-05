@@ -158,5 +158,5 @@ def get_export_row(client, index):
         rel = relationships[dependent.relationship] if dependent.relationship else ''
         rows.append([i, dependent.get_salutation, dependent.first_name, dependent.middle_name, dependent.surname,
                      date, "", rel, dependent.sex, "", "", "", "", "", "", "", "", "", "",
-                     "", "", "", ""])
+                     "", "", "", client.lashma_quality_life_no])
     return rows
