@@ -100,13 +100,15 @@ class UpdateClientSerializer(serializers.ModelSerializer):
     id = HashidSerializerIntegerField(source_field="client.Client.id", read_only=True)
     dependents = CreateDependantSerializer(many=True, allow_null=True, required=False)
     hmo_id = serializers.CharField(max_length=120, allow_blank=True, required=False)
-    pcp_id = serializers.CharField(max_length=120, required=False, allow_blank=True)
+    pcp_id = serializers.IntegerField(required=False, allow_null=True)
     plan_id = serializers.IntegerField(required=False, allow_null=True)
+    associations = serializers.ListField(child=serializers.IntegerField(min_value=1), allow_empty=True, allow_null=True,
+                                         required=False)
 
     class Meta:
         model = Client
         fields = ['salutation', 'first_name', 'middle_name', 'surname', 'dob', 'sex', 'marital_status',
-                  'national_id_card_no', 'drivers_licence_no', 'lashma_no',
+                  'national_id_card_no', 'drivers_licence_no', 'lashma_no', 'associations',
                   'lagos_resident_no', 'phone_no', 'whatsapp_no', 'email', 'company', 'home_address', 'occupation',
                   'office_address', 'international_passport_no', 'voters_card_no', 'payment_instrument',
                   'payment_option', 'hmo_id', 'pcp_id', 'plan_id', 'dependents', 'id']

@@ -27,7 +27,7 @@ from rest_framework.views import APIView
 
 from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload, TempRequestStore, HMO
 from client.serializers import CreateClientSerializer, ClientSerializer, UpdateClientSerializer, LGASerializer, \
-    ProviderSerializer, AssociationSerializer, PlanSerializer, DependantSerializer
+    ProviderSerializer, AssociationSerializer, PlanSerializer, DependantSerializer, ClientAssociationSerializer
 from core.models import Plan, PlanRate
 from core.serializers import PlanRateSerializer
 from core.utils import send_welcome_email, send_email
@@ -1075,8 +1075,8 @@ class GetClientDetail(APIView):
             client = Client.objects.get(id=client_id)
             serialized = ClientSerializer(client)
             data = serialized.data
-            data['dependents'] = DependantSerializer(client.dependant_set.all(), many=True).data
-            data['associations'] = []
+            data['dependents'] = DependantSerializer(client.dependants, many=True).data
+            data['associations'] = ClientAssociationSerializer(client.associations, many=True).data
             return Response({"success": True, "client": data}, status=status.HTTP_200_OK)
         else:
             return Response({'success': False,
