@@ -1075,8 +1075,6 @@ class GetClientDetail(APIView):
             client = Client.objects.get(id=client_id)
             serialized = ClientSerializer(client)
             data = serialized.data
-            data['dependents'] = DependantSerializer(client.dependants, many=True).data
-            data['associations'] = ClientAssociationSerializer(client.associations, many=True).data
             return Response({"success": True, "client": data}, status=status.HTTP_200_OK)
         else:
             return Response({'success': False,
