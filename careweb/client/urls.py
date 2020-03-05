@@ -58,7 +58,7 @@ urlpatterns = [
     path("api_update/<str:pk>/", views.UpdateClientView.as_view(), name="api_update_client"),
     path("init/", views.GetInitialDataView.as_view(), name="init"),
     path("search/", views.SearchClientView.as_view(), name="search"),
-    path("details/", views.GetClientDetail.as_view(), name="detail"),
+    path("details/<int:client_id>/", views.GetClientDetail.as_view(), name="detail"),
 
     # AJAX Request
     path("lga/pcps", views.get_lga_pcp),
