@@ -12,7 +12,8 @@ from client.models import (
     ClientAssociation,
     MyClient,
     TempRequestStore)
-from client.utils import get_verification_code, phone_no_valid, is_registered_user, get_export_row
+from client.utils import get_verification_code, phone_no_valid, is_registered_user, get_export_row, \
+    get_quality_life_number
 from core.utils import send_email
 from constance import config
 from ranger.models import Ranger
@@ -339,6 +340,8 @@ class ClientAdmin(admin.ModelAdmin):
             obj.verification_code = code
         else:
             obj.verified = True
+        if not obj.lashma_quality_life_no:
+            obj.lashma_quality_life_no = get_quality_life_number(obj)
         obj.save()
         super().save_model(request, obj, form, change)
 
