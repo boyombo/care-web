@@ -341,7 +341,10 @@ class ClientAdmin(admin.ModelAdmin):
         else:
             obj.verified = True
         if not obj.lashma_quality_life_no:
-            obj.lashma_quality_life_no = get_quality_life_number(obj)
+            try:
+                obj.lashma_quality_life_no = get_quality_life_number(obj)
+            except:
+                pass
         obj.save()
         super().save_model(request, obj, form, change)
 

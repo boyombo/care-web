@@ -5,7 +5,6 @@ from django.urls import reverse
 
 from hashid_field import HashidAutoField
 
-# from location.models import LGA
 from location.models import LGA
 from provider.models import CareProvider
 from ranger.models import Ranger
