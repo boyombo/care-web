@@ -32,6 +32,10 @@ class ClientAssociation(models.Model):
     def __str__(self):
         return str(self.association)
 
+    @property
+    def association_name(self):
+        return self.association.name
+
 
 class HMO(models.Model):
     id = HashidAutoField(primary_key=True)
@@ -53,7 +57,7 @@ class Dependant(models.Model):
     SEXES = (("F", "Female"), ("M", "Male"))
 
     id = HashidAutoField(primary_key=True)
-    primary = models.ForeignKey("Client", null=True, on_delete=models.SET_NULL)
+    primary = models.ForeignKey("Client", null=True, on_delete=models.CASCADE)
     surname = models.CharField(max_length=100)
     salutation = models.CharField(max_length=100, null=True, blank=True)
     sex = models.CharField(max_length=100, null=True, blank=True)
@@ -150,10 +154,10 @@ class Client(models.Model):
         CareProvider, null=True, blank=True, on_delete=models.SET_NULL
     )
     ranger = models.ForeignKey(Ranger, null=True, on_delete=models.SET_NULL)
-    home_address = models.TextField(blank=True)
-    occupation = models.CharField(max_length=200, blank=True)
-    company = models.CharField(max_length=200, blank=True)
-    office_address = models.TextField(blank=True)
+    home_address = models.TextField(blank=True, null=True)
+    occupation = models.CharField(max_length=200, blank=True, null=True)
+    company = models.CharField(max_length=200, blank=True, null=True)
+    office_address = models.TextField(blank=True, null=True)
     hmo = models.ForeignKey(HMO, null=True, blank=True, on_delete=models.SET_NULL)
     lga = models.ForeignKey(LGA, null=True, blank=True, on_delete=models.SET_NULL)
     # informal_sector_group = models.CharField(
@@ -225,6 +229,34 @@ class Client(models.Model):
             return str(self.pcp)
         return ""
 
+    @property
+    def username(self):
+        return self.user.username
+
+    @property
+    def photo_url(self):
+        if self.photo:
+            return self.photo.url
+        return ""
+
+    @property
+    def imageUri(self):
+        return self.photo_url
+
+    @property
+    def formatted_dob(self):
+        if self.dob:
+            return self.dob.strftime("%Y-%m-%d")
+        return ""
+
+    @property
+    def associations(self):
+        return self.clientassociation_set.all()
+
+    @property
+    def dependants(self):
+        return self.dependant_set.all()
+
 
 class MyClient(Client):
     class Meta:
@@ -263,3 +295,13 @@ class TempClientUpload(models.Model):
 
     class Meta:
         ordering = ('id',)
+
+
+class TempRequestStore(models.Model):
+    endpoint = models.CharField(max_length=300)
+    post_data = models.TextField(null=True, blank=True)
+    json_data = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.endpoint

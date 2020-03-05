@@ -26,7 +26,7 @@ def get_client_details(client, host):
     next_subscription_date = get_next_subscription_date(client).strftime("%d %b %Y")
     dependants = [
         {
-            "dob": dependant.dob.strftime("%Y-%m-%d"),
+            "dob": dependant.dob.strftime("%Y-%m-%d") if dependant.dob else "",
             "first_name": dependant.first_name,
             "surname": dependant.surname,
             "middle_name": dependant.middle_name,
@@ -69,6 +69,7 @@ def get_client_details(client, host):
         "internationalPassportNo": client.international_passport_no,
         "lashmaNo": client.lashma_no,
         "lashmaQualityLifeNo": client.lashma_quality_life_no,
+        "verification_code": client.verification_code,
         "pcp": client_pcp,
         "ranger": client.ranger.id.id if client.ranger else None,
         "homeAddress": client.home_address,

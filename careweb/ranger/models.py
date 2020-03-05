@@ -20,6 +20,10 @@ class Ranger(models.Model):
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 
+    @property
+    def username(self):
+        return self.user.username
+
 
 class WalletFunding(models.Model):
     PENDING = 0

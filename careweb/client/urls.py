@@ -54,6 +54,11 @@ urlpatterns = [
     path("info/<int:id>/", views.get_client_info),
     path("load_pcp_list/", views.load_pcp_list, name="load_pcp_list"),
     path("upload_clients/", views.upload_clients, name="upload_clients"),
+    path("api_add/", views.CreateClientView.as_view(), name="api_add_client"),
+    path("api_update/<str:pk>/", views.UpdateClientView.as_view(), name="api_update_client"),
+    path("init/", views.GetInitialDataView.as_view(), name="init"),
+    path("search/", views.SearchClientView.as_view(), name="search"),
+    path("details/<int:client_id>/", views.GetClientDetail.as_view(), name="detail"),
 
     # AJAX Request
     path("lga/pcps", views.get_lga_pcp),
