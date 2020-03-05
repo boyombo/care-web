@@ -149,7 +149,7 @@ def get_export_row(client, index):
                  date, client.phone_no, "Principal", client.sex, sub,
                  client.lagos_resident_no, client.national_id_card_no, client.international_passport_no, "",
                  client.voters_card_no, client.drivers_licence_no, "", lga, client.provider_name,
-                 plan, client.payment_option, "", ""])
+                 plan, client.payment_option, "", client.lashma_quality_life_no])
     relationships = ["Spouse", "Daughter", "Son", "Others"]
     for dependent in Dependant.objects.filter(primary=client):
         ind += 1
