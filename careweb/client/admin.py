@@ -146,7 +146,7 @@ class ClientAdmin(admin.ModelAdmin):
         (
             "Basic",
             {
-                "fields": ["surname", "first_name", "middle_name", "photo"],
+                "fields": ["salutation", "surname", "first_name", "middle_name", "photo"],
                 "classes": [
                     "baton-tabs-init",
                     "baton-tab-fs-personal",
