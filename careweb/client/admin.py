@@ -11,7 +11,7 @@ from client.models import (
     Association,
     ClientAssociation,
     MyClient,
-)
+    TempRequestStore)
 from client.utils import get_verification_code, phone_no_valid, is_registered_user, get_export_row
 from core.utils import send_email
 from constance import config
@@ -146,7 +146,7 @@ class ClientAdmin(admin.ModelAdmin):
         (
             "Basic",
             {
-                "fields": ["surname", "first_name", "middle_name", "photo"],
+                "fields": ["salutation", "surname", "first_name", "middle_name", "photo"],
                 "classes": [
                     "baton-tabs-init",
                     "baton-tab-fs-personal",
@@ -341,3 +341,10 @@ class ClientAdmin(admin.ModelAdmin):
             obj.verified = True
         obj.save()
         super().save_model(request, obj, form, change)
+
+
+class TempRequestAdmin(admin.ModelAdmin):
+    list_display = ['endpoint', 'created']
+
+
+admin.site.register(TempRequestStore, TempRequestAdmin)

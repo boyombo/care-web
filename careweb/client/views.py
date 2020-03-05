@@ -1,4 +1,5 @@
 # from pprint import pprint
+import json
 from datetime import datetime
 from random import sample
 from decimal import Decimal
@@ -18,10 +19,19 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 
 # from django.urls import reverse_lazy
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import permissions, status
+from rest_framework.generics import UpdateAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload
-from core.models import Plan
+from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload, TempRequestStore, HMO
+from client.serializers import CreateClientSerializer, ClientSerializer, UpdateClientSerializer, LGASerializer, \
+    ProviderSerializer, AssociationSerializer, PlanSerializer, DependantSerializer, ClientAssociationSerializer
+from core.models import Plan, PlanRate
+from core.serializers import PlanRateSerializer
 from core.utils import send_welcome_email, send_email
+from ranger.serializers import RangerSerializer
 from subscription.models import SubscriptionPayment
 from subscription.utils import (
     get_subscription_rate,
@@ -447,6 +457,8 @@ def register_via_agent(request, id):
                         "email": cl.email,
                         "phone": cl.phone_no,
                         "photo": "",
+                        "verification_code": cl.verification_code,
+                        "lashma_quality_life_no": cl.lashma_quqlity_life_no
                     },
                 }
             )
@@ -505,6 +517,8 @@ def register_api(request):
                         "email": obj.email,
                         "phone": obj.phone_no,
                         "photo": "",
+                        "verification_code": obj.verification_code,
+                        "lashma_quality_life_no": obj.lashma_quqlity_life_no
                     },
                 }
             )
@@ -878,3 +892,191 @@ def upload_clients(request):
                        "Error processing upload. Confirm that the document uses the correct format.")
         return JsonResponse({'status': 'error', 'info': 'Error processing upload'})
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
+
+
+class CreateClientView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = CreateClientSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            hmo = None
+            plan = None
+            pcp = None
+            ranger = Ranger.objects.get(id=data.get('ranger_id'))
+            if data.get('hmo_id'):
+                hmo = HMO.objects.get(id=data.get('hmo_id'))
+            if data.get('pcp_id'):
+                pcp = CareProvider.objects.get(id=data.get('pcp_id'))
+            if data.get('plan_id'):
+                plan = Plan.objects.get(id=data.get('plan_id'))
+            client = Client.objects.create(salutation=data.get('salutation'), first_name=data.get('first_name'),
+                                           middle_name=data.get('middle_name'), surname=data.get('surname'),
+                                           dob=data.get('dob'), sex=data.get('sex'),
+                                           marital_status=data.get('marital_status'),
+                                           national_id_card_no=data.get('national_id_card_no'),
+                                           drivers_licence_no=data.get('drivers_licence_no'),
+                                           lashma_no=data.get('lashma_no'),
+                                           lashma_quality_life_no=data.get('lashma_quality_life_no'),
+                                           lagos_resident_no=data.get('lagos_resident_no'),
+                                           phone_no=data.get('phone_no'), whatsapp_no=data.get('phone_no'),
+                                           email=data.get('email'), company=data.get('company'),
+                                           home_address=data.get('home_address'), occupation=data.get('occupation'),
+                                           office_address=data.get('office_address'),
+                                           international_passport_no=data.get('international_passport_no'),
+                                           voters_card_no=data.get('voters_card_no'),
+                                           payment_instrument=data.get('payment_instrument'),
+                                           payment_option=data.get('payment_option'), hmo=hmo, pcp=pcp, plan=plan,
+                                           ranger=ranger)
+            if not data.get('lashma_quality_life_no'):
+                client.lashma_quality_life_no = get_quality_life_number(client)
+            username = data.get('email') if data.get('email') else data.get('phone_no')
+            if username:
+                user = User.objects.create_user(username=username,
+                                                password=config.CLIENT_DEFAULT_PASSWORD)
+                client.user = user
+                client.uses_default_password = True
+            client.save()
+            if data.get('dependents'):
+                dependents = data.get('dependents')
+                for dependent in dependents:
+                    Dependant.objects.create(salutation=dependent.get('salutation'),
+                                             first_name=dependent.get('first_name'),
+                                             middle_name=dependent.get('middle_name'),
+                                             surname=dependent.get('surname'),
+                                             relationship=dependent.get('relationship'),
+                                             primary=client, sex=dependent.get('sex'), dob=dependent.get('dob'))
+            if data.get('associations'):
+                associations = data.get('associations')
+                for aid in associations:
+                    association = Association.objects.get(id=aid)
+                    if not ClientAssociation.objects.filter(association=association, client=client).exists():
+                        ClientAssociation.objects.create(association=association, client=client)
+            serialized = ClientSerializer(Client.objects.filter(ranger=ranger), many=True)
+            return Response({"success": True, "clients": serialized.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_200_OK)
+
+
+class UpdateClientView(UpdateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = UpdateClientSerializer
+    queryset = Client.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        serializer = UpdateClientSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            hmo = None
+            plan = None
+            pcp = None
+            if data.get('hmo_id'):
+                hmo = HMO.objects.get(id=data.get('hmo_id'))
+            if data.get('pcp_id'):
+                pcp = CareProvider.objects.get(id=data.get('pcp_id'))
+            if data.get('plan_id'):
+                plan = Plan.objects.get(id=data.get('plan_id'))
+            instance = self.get_object()
+            instance.salutation = data.get('salutation')
+            instance.first_name = data.get('first_name')
+            instance.middle_name = data.get('middle_name')
+            instance.surname = data.get('surname')
+            instance.dob = data.get('dob')
+            instance.sex = data.get('sex')
+            instance.marital_status = data.get('marital_status')
+            instance.national_id_card_no = data.get('national_id_card_no')
+            instance.drivers_licence_no = data.get('drivers_licence_no')
+            instance.lashma_no = data.get('lashma_no')
+            instance.lagos_resident_no = data.get('lagos_resident_no')
+            instance.phone_no = data.get('phone_no')
+            instance.whatsapp_no = data.get('phone_no')
+            instance.email = data.get('email')
+            instance.company = data.get('company')
+            instance.home_address = data.get('home_address')
+            instance.occupation = data.get('occupation')
+            instance.office_address = data.get('office_address')
+            instance.international_passport_no = data.get('international_passport_no')
+            instance.voters_card_no = data.get('voters_card_no')
+            instance.payment_instrument = data.get('payment_instrument')
+            instance.payment_option = data.get('payment_option')
+            instance.hmo = hmo
+            instance.pcp = pcp
+            instance.plan = plan
+            if not User.objects.filter(username=instance.email).exists() and not User.objects.filter(
+                    username=instance.phone_no):
+                username = instance.email if instance.email else instance.phone_no
+                user = User.objects.create_user(username=username,
+                                                password=config.CLIENT_DEFAULT_PASSWORD)
+                instance.user = user
+                instance.uses_default_password = True
+            instance.save()
+            if data.get('dependents'):
+                Dependant.objects.filter(primary=instance).delete()
+                dependents = data.get('dependents')
+                for dependent in dependents:
+                    Dependant.objects.create(salutation=dependent.get('salutation'),
+                                             first_name=dependent.get('first_name'),
+                                             middle_name=dependent.get('middle_name'),
+                                             surname=dependent.get('surname'),
+                                             relationship=dependent.get('relationship'),
+                                             primary=instance, sex=dependent.get('sex'), dob=dependent.get('dob'))
+            if data.get('associations'):
+                associations = data.get('associations')
+                ClientAssociation.objects.filter(client=instance).delete()
+                for aid in associations:
+                    association = Association.objects.get(id=aid)
+                    ClientAssociation.objects.create(association=association, client=instance)
+            serialized = ClientSerializer(Client.objects.filter(ranger=instance.ranger), many=True)
+            return Response({"success": True, "clients": serialized.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_200_OK)
+
+
+class GetInitialDataView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    @swagger_auto_schema(operation_description="Get initial data", responses={200: ''})
+    def get(self, request, format=None):
+        data = {
+            "succes": True,
+            "lgas": LGASerializer(LGA.objects.all(), many=True).data,
+            "providers": ProviderSerializer(CareProvider.objects.all(), many=True).data,
+            "associations": AssociationSerializer(Association.objects.all(), many=True).data,
+            "plans": PlanSerializer(Plan.objects.all(), many=True).data,
+            "plan_rates": PlanRateSerializer(PlanRate.objects.all(), many=True).data,
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class SearchClientView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, format=None):
+        phone = request.GET.get('phone')
+        if Client.objects.filter(phone_no=phone).exists():
+            client = Client.objects.get(phone_no=phone)
+            serialized = ClientSerializer(client)
+            data = serialized.data
+            data['dependents'] = DependantSerializer(client.dependant_set.all(), many=True).data
+            data['associations'] = []
+            return Response({"success": True, "client": data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'success': False,
+                             'message': 'Could not find any client with that number'},
+                            status=status.HTTP_200_OK)
+
+
+class GetClientDetail(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, client_id, format=None):
+        if Client.objects.filter(id=client_id).exists():
+            client = Client.objects.get(id=client_id)
+            serialized = ClientSerializer(client)
+            data = serialized.data
+            return Response({"success": True, "client": data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'success': False,
+                             'message': 'Could not find any client with that number'},
+                            status=status.HTTP_200_OK)

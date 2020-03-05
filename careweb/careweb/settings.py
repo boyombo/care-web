@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.core.management.utils import get_random_secret_key
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -71,6 +73,8 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "crispy_forms",
     "constance.backends.database",
+    "rest_framework",
+    "drf_yasg",
     # "easy_select2"
     # "easyaudit",
 ]
@@ -225,7 +229,18 @@ LOGGING = {
 FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
                         "django_excel.TemporaryExcelFileUploadHandler")
 
-IS_TEST_SERVER = True
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated',
+    ),
+    # 'EXCEPTION_HANDLER': 'log_manager.views.exception_handler'
+}
+HASHID_FIELD_SALT = 'v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^'
+
+IS_TEST_SERVER = False
 
 if IS_TEST_SERVER:
     try:
