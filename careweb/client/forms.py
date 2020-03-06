@@ -273,6 +273,13 @@ class ClientAdminForm(forms.ModelForm):
             raise forms.ValidationError("Phone no already in use", code="phone_no")
         return phone_no
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email_valid(email, str(self.instance.id)):
+            messages.error(self.http_request, "Email already in use")
+            raise forms.ValidationError("Email already in use", code="email")
+        return email
+
 
 class ClientForm(forms.ModelForm):
     class Meta:
