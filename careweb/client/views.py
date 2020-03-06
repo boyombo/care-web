@@ -27,7 +27,8 @@ from rest_framework.views import APIView
 
 from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload, TempRequestStore, HMO
 from client.serializers import CreateClientSerializer, ClientSerializer, UpdateClientSerializer, LGASerializer, \
-    ProviderSerializer, AssociationSerializer, PlanSerializer, DependantSerializer, ClientAssociationSerializer
+    ProviderSerializer, AssociationSerializer, PlanSerializer, DependantSerializer, ClientAssociationSerializer, \
+    CreateRangerClientSerializer
 from core.models import Plan, PlanRate
 from core.serializers import PlanRateSerializer
 from core.utils import send_welcome_email, send_email
@@ -1079,4 +1080,47 @@ class GetClientDetail(APIView):
         else:
             return Response({'success': False,
                              'message': 'Could not find any client with that number'},
+                            status=status.HTTP_200_OK)
+
+
+class CreateRangerClientView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = CreateRangerClientSerializer(data=request.data)
+        if serializer.is_valid():
+            v_data = serializer.validated_data
+            ranger = Ranger.objects.get(id=v_data.get('ranger_id'))
+            cl = Client.objects.create(surname=v_data.get('surname'), first_name=v_data.get('first_name'), ranger=ranger)
+            email = v_data.get('email')
+            phone_no = v_data.get('phone')
+            cl.email = email
+            cl.phone_no = phone_no
+            if email and not User.objects.filter(username=email).exists():
+                password = config.CLIENT_DEFAULT_PASSWORD
+                usr = User.objects.create_user(username=email, password=password, email=email)
+                code = get_verification_code()
+                cl.user = usr
+                cl.uses_default_password = True
+                cl.verification_code_verified = False
+                cl.verification_code = code
+                context = {"name": v_data.get('first_name'), "code": code}
+                send_email(email, "welcome_app", context)
+            elif phone_no and User.objects.filter(username=phone_no).exists():
+                password = config.CLIENT_DEFAULT_PASSWORD
+                usr = User.objects.create_user(username=phone_no, password=password)
+                code = get_verification_code()
+                cl.user = usr
+                cl.uses_default_password = True
+                cl.verification_code_verified = False
+                cl.verification_code = code
+            else:
+                cl.verified = True
+            cl.lashma_quality_life_no = get_quality_life_number(cl)
+            cl.save()
+            serialized = ClientSerializer(cl)
+            return Response({"success": True, "client": serialized.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'success': False,
+                             'error': serializer.errors},
                             status=status.HTTP_200_OK)
