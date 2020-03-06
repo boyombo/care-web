@@ -65,7 +65,7 @@ class ClientSerializer(serializers.ModelSerializer):
                   'marital_status', 'national_id_card_no', 'drivers_licence_no', 'voters_card_no', 'whatsapp_no',
                   'international_passport_no', 'lashma_no', 'lashma_quality_life_no', 'lagos_resident_no', 'phone_no',
                   'email', 'pcp', 'ranger', 'lga', 'plan', 'payment_option', 'payment_instrument', 'hmo',
-                  'formatted_dob',
+                  'formatted_dob', 'plan_id',
                   'registration_date', 'photo_url', 'verification_code', 'balance', 'verified', 'subscription_rate',
                   'uses_default_password', 'company', 'home_address', 'occupation', 'office_address', 'imageUri',
                   'associations', 'pk', 'dependants']
