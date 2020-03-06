@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from hashid_field.rest import HashidSerializerCharField, HashidSerializerIntegerField
 from rest_framework.relations import PrimaryKeyRelatedField
@@ -124,9 +125,13 @@ class CreateRangerClientSerializer(serializers.Serializer):
     def validate_phone_no(self, value):
         if value and Client.objects.filter(phone_no=value).exists():
             raise serializers.ValidationError("Phone no already exist", "phone_no")
+        if value and User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("Phone no already exist", "phone_no")
         return value
 
     def validate_email(self, value):
         if value and Client.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already exist", "email")
+        if value and User.objects.filter(username__iexact=value).exists():
             raise serializers.ValidationError("Email already exist", "email")
         return value
