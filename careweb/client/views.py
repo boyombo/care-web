@@ -560,7 +560,7 @@ def login_api(request):
                     #    }
                     # )
                 else:
-                    host = "https://{}".format(request.get_host())
+                    host = "{}://{}".format("https" if request.is_secure() else "http", request.get_host())
                     logger.info("client details")
                     client_details = get_client_details(client, host)
                     logger.info(client_details)
@@ -597,7 +597,7 @@ def upload_photo(request, id):
         if form.is_valid():
             logger.info("photo-form is valid")
             form.save()
-            host = "https://{}".format(request.get_host())
+            host = "{}://{}".format("https" if request.is_secure() else "http", request.get_host())
             if cl.photo:
                 photo_url = "{}{}".format(host, cl.photo.url)
             else:
@@ -608,7 +608,7 @@ def upload_photo(request, id):
             logger.info(errors)
             return JsonResponse({"success": False})
 
-        host = "https://{}".format(request.get_host())
+        host = "{}://{}".format("https" if request.is_secure() else "http", request.get_host())
         details = get_client_details(cl, host)
         return JsonResponse({"success": True, "client": details})
 
@@ -634,13 +634,15 @@ def upload_photo_b64(request, id):
         data = ContentFile(base64.b64decode(imgstr))
         cl.photo.save(file_name, data, save=True)
         logging.info(cl.photo.url)
-        photo_url = "https://" + request.get_host() + cl.photo.url
+        photo_url = "{}://".format("https" if request.is_secure() else "http") + request.get_host() + cl.photo.url
+    else:
+        photo_url = ""
     return JsonResponse({"success": True, "image": photo_url})
 
 
 def get_client_photo(request, id):
     cl = get_object_or_404(Client, pk=id)
-    host = "https://{}".format(request.get_host())
+    host = "{}://{}".format("https" if request.is_secure() else "http", request.get_host())
     if cl.photo:
         photo_url = "{}{}".format(host, cl.photo.url)
     else:
@@ -679,13 +681,13 @@ def verify_code(request):
 
 def get_client_info(request, id):
     client = get_object_or_404(Client, pk=id)
-    host = "https://{}".format(request.get_host())
+    host = "{}://{}".format("https" if request.is_secure() else "http", request.get_host())
     details = get_client_details(client, host)
     return JsonResponse({"success": True, "client": details})
 
 
 def get_clients(request, id):
-    host = "https://{}".format(request.get_host())
+    host = "{}://{}".format("https" if request.is_secure() else "http", request.get_host())
     ranger = get_object_or_404(Ranger, pk=id)
     clients = [
         get_client_details(cl, host) for cl in Client.objects.filter(ranger=ranger)
@@ -731,7 +733,7 @@ def add_client(request):
         form = ClientForm(request.POST)
         if form.is_valid():
             form.save()
-            host = "https://{}".format(request.get_host())
+            host = "{}://{}".format("https" if request.is_secure() else "http", request.get_host())
             ranger = get_object_or_404(Ranger, pk=id)
             clients = [
                 get_client_details(cl, host)
