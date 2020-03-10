@@ -11,7 +11,7 @@ from client.models import (
     Association,
     ClientAssociation,
     MyClient,
-    TempRequestStore)
+    TempRequestStore, AdhocClient)
 from client.utils import get_verification_code, phone_no_valid, is_registered_user, get_export_row, \
     get_quality_life_number
 from core.utils import send_email
@@ -354,3 +354,4 @@ class TempRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(TempRequestStore, TempRequestAdmin)
+admin.site.register(AdhocClient)
