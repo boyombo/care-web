@@ -308,3 +308,19 @@ class TempRequestStore(models.Model):
 
     def __str__(self):
         return self.endpoint
+
+
+class AdhocClient(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    created_by = models.ForeignKey('ranger.Ranger', on_delete=models.SET_NULL, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
+
+    class Meta:
+        permissions = (
+            ('is_adhoc', 'Adhoc Client'),
+        )

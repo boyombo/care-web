@@ -10,7 +10,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import UpdateView
@@ -44,11 +44,13 @@ from client.utils import (
     get_client_details,
     get_quality_life_number,
     get_verification_code,
-    get_username_for_auth, is_registered_user)
+    get_username_for_auth, is_registered_user, get_export_row)
 from ranger.models import Ranger
 from location.models import LGA
 from provider.models import CareProvider
 from constance import config
+
+import django_excel as excel
 
 # from client.models import Plan
 from client.forms import (
@@ -144,6 +146,14 @@ def client_login(request):
             un = get_username_for_auth(username)  # Enables authentication with phone no
             user = authenticate(username=un, password=password)
             login(request, user)
+
+            # Is Adhoc user?
+            try:
+                u = User.objects.get(username=un)
+                if u.has_perm('client.is_adhoc'):
+                    return HttpResponseRedirect(reverse('adhoc_export_clients'))
+            except User.DoesNotExist:
+                pass
 
             # A client?
             try:
@@ -1093,7 +1103,8 @@ class CreateRangerClientView(APIView):
         if serializer.is_valid():
             v_data = serializer.validated_data
             ranger = Ranger.objects.get(id=v_data.get('ranger_id'))
-            cl = Client.objects.create(surname=v_data.get('surname'), first_name=v_data.get('first_name'), ranger=ranger)
+            cl = Client.objects.create(surname=v_data.get('surname'), first_name=v_data.get('first_name'),
+                                       ranger=ranger)
             email = v_data.get('email')
             phone_no = v_data.get('phone')
             cl.email = email
@@ -1127,3 +1138,57 @@ class CreateRangerClientView(APIView):
             return Response({'success': False,
                              'error': serializer.errors},
                             status=status.HTTP_200_OK)
+
+
+@login_required
+@permission_required('client.is_adhoc')
+def adhoc_export_clients(request):
+    clients = Client.objects.all()
+    return render(request, "client/export_clients.html", {"clients": clients})
+
+
+@login_required
+@permission_required('client.is_adhoc')
+def export_selected_clients(request):
+    client_ids = request.POST.get('client_ids')
+    clients = []
+    for cid in str(client_ids).split(','):
+        client = Client.objects.get(id=cid)
+        clients.append(client)
+    column_names = [
+        "S/N", "Salutation", "First Name", "Middle Name", "Last Name", "Date of Birth", "Phone Number",
+        "Relationship", "Gender", "Premium for Principal", "State ID", "National ID", "Passport",
+        "Staff ID", "Voter ID", "Driver's License", "Secondary Phone Number", "LGA/LCDA", "Preferred Provider Name",
+        "Package", "Period", "LSHS Code", "QL Code"
+    ]
+    output = [column_names]
+    rows = []
+    index = 1
+    for client in clients:
+        for row in get_export_row(client, index):
+            index += 1
+            rows.append(row)
+    output.extend(rows)
+    sheet = excel.pe.Sheet(output)
+    return excel.make_response(sheet, "xls", file_name="Clients")
+
+
+@login_required
+@permission_required('client.is_adhoc')
+def export_all_clients(request):
+    column_names = [
+        "S/N", "Salutation", "First Name", "Middle Name", "Last Name", "Date of Birth", "Phone Number",
+        "Relationship", "Gender", "Premium for Principal", "State ID", "National ID", "Passport",
+        "Staff ID", "Voter ID", "Driver's License", "Secondary Phone Number", "LGA/LCDA", "Preferred Provider Name",
+        "Package", "Period", "LSHS Code", "QL Code"
+    ]
+    output = [column_names]
+    rows = []
+    index = 1
+    for client in Client.objects.all():
+        for row in get_export_row(client, index):
+            index += 1
+            rows.append(row)
+    output.extend(rows)
+    sheet = excel.pe.Sheet(output)
+    return excel.make_response(sheet, "xls", file_name="Clients")
