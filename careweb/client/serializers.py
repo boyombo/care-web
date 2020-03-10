@@ -57,7 +57,7 @@ class ClientSerializer(serializers.ModelSerializer):
     plan = PlanSerializer()
     hmo = HMOSerializer()
     associations = ClientAssociationSerializer(many=True)
-    dependants = DependantSerializer(many=True)
+    dependents = DependantSerializer(many=True)
 
     class Meta:
         model = Client
@@ -68,7 +68,7 @@ class ClientSerializer(serializers.ModelSerializer):
                   'formatted_dob', 'plan_id',
                   'registration_date', 'photo_url', 'verification_code', 'balance', 'verified', 'subscription_rate',
                   'uses_default_password', 'company', 'home_address', 'occupation', 'office_address', 'imageUri',
-                  'associations', 'pk', 'dependants']
+                  'associations', 'pk', 'dependents']
 
 
 class CreateDependantSerializer(serializers.ModelSerializer):

@@ -256,6 +256,10 @@ class Client(models.Model):
     def dependants(self):
         return self.dependant_set.all()
 
+    @property
+    def dependents(self):
+        return self.dependant_set.all()
+
 
 class MyClient(Client):
     class Meta:
