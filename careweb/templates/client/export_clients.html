@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+    Export Clients
+{% endblock title %}
+
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block extra-css %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <style>
+        input[type=checkbox] {
+            /* Double-sized Checkboxes */
+            -ms-transform: scale(1.2); /* IE */
+            -moz-transform: scale(1.2); /* FF */
+            -webkit-transform: scale(1.2); /* Safari and Chrome */
+            -o-transform: scale(1.2); /* Opera */
+            transform: scale(1.2);
+            padding: 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
+        <div class="bcoverlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Content">
+                        <h2>
+                            Export Clients
+                        </h2>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  BreadCrumb Area Start  -->
+
+    <!-- SignUP Area Start -->
+    <section class="logRegForm">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="contact_form_wrappre2">
+                        <h2>
+                            Clients
+                        </h2>
+                        <div style="margin-bottom: 10px;">
+                            <button onclick="exportSelected();" class="btn btn-success"> Export Selected Clients
+                            </button>
+                            <a href="{% url 'export_all_clients' %}" class="btn btn-success"> Export All Clients</a>
+                        </div>
+                        <p id="page-error" class="bg-danger text-white text-center p-2" style="border-radius: 5px">
+                            Select one or more client to proceed
+                        </p>
+                        <table class="table" id="export-tbl">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>S/N</th>
+                                <th>First Name</th>
+                                <th>Middle Name</th>
+                                <th>Surname</th>
+                                <th>QL Code</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for client in clients %}
+                                <tr>
+                                    <td><input type="checkbox" class="row-check" id="{{ client.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ client.first_name }}</td>
+                                    <td>{{ client.middle_name }}</td>
+                                    <td>{{ client.surname }}</td>
+                                    <td>{{ client.lashma_quality_life_no }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SignUp Area End -->
+
+    <form action="{% url 'export_selected_clients' %}" method="post" id="export-selected-form">
+        {% csrf_token %}
+        <input type="hidden" id="selected-ids" name="client_ids">
+    </form>
+{% endblock content %}
+
+{% block extra-js %}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $('#page-error').hide();
+        $(document).ready(function () {
+            $('#export-tbl').DataTable();
+        });
+
+        function exportSelected() {
+            const checkboxes = $('.row-check');
+            let selected_ids = "";
+            checkboxes.each(function () {
+                if ($(this).is(":checked")) {
+                    const id = $(this).attr('id');
+                    if (selected_ids !== "") {
+                        selected_ids += ",";
+                    }
+                    selected_ids += id;
+                }
+            });
+            console.log(selected_ids);
+            if (selected_ids === "") {
+                $('#page-error').show();
+            } else {
+                $('#page-error').hide();
+                $('#selected-ids').val(selected_ids);
+                $('#export-selected-form').submit();
+            }
+        }
+    </script>
+{% endblock extra-js %}

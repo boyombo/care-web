@@ -48,6 +48,9 @@ urlpatterns = [
     path("verify/", views.verify_code),
     path("payment/", views.payment, name="client_payment"),
     path("get_ranger_clients/<int:id>/", views.get_clients),
+    path("adhoc/export-clients/", views.adhoc_export_clients, name="adhoc_export_clients"),
+    path("adhoc/export-selected-clients/", views.export_selected_clients, name="export_selected_clients"),
+    path("adhoc/export-all-clients/", views.export_all_clients, name="export_all_clients"),
     path(
         "ranger_subscription/<int:client_id>/<int:ranger_id>/",
         views.create_client_subscription,
