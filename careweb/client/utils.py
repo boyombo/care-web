@@ -82,7 +82,7 @@ def get_client_details(client, host):
         "paymentInstrument": client.payment_instrument,
         "dependents": dependants,  # I call it dependents instead of dependants everywhere
         "associations": associations,
-        "usesDefaultPassword": client.uses_default_password
+        "usesDefaultPassword": client.uses_default_password,
     }
 
 
@@ -141,22 +141,72 @@ def get_export_row(client, index):
     rows = []
     ind = index
     i = str(ind)
-    sub = client.subscription_rate if client.subscription_rate and client.subscription_rate != "None" else ""
+    sub = (
+        client.subscription_rate
+        if client.subscription_rate and client.subscription_rate != "None"
+        else ""
+    )
     lga = str(client.lga) if client.lga else ""
     plan = str(client.plan) if client.plan else ""
     date = client.dob.strftime("%B %d, %Y") if client.dob else ""
-    rows.append([i, client.get_salutation, client.first_name, client.middle_name, client.surname,
-                 date, client.phone_no, "Principal", client.sex, sub,
-                 client.lagos_resident_no, client.national_id_card_no, client.international_passport_no, "",
-                 client.voters_card_no, client.drivers_licence_no, "", lga, client.provider_name,
-                 plan, client.payment_option, "", client.lashma_quality_life_no])
+    rows.append(
+        [
+            i,
+            client.get_salutation,
+            client.first_name,
+            client.middle_name,
+            client.surname,
+            date,
+            client.phone_no,
+            "Principal",
+            client.get_sex_display(),
+            sub,
+            client.lagos_resident_no,
+            client.national_id_card_no,
+            client.international_passport_no,
+            "",
+            client.voters_card_no,
+            client.drivers_licence_no,
+            "",
+            lga,
+            client.provider_name,
+            plan,
+            client.get_payment_option_display(),
+            "",
+            client.lashma_quality_life_no,
+        ]
+    )
     relationships = ["Spouse", "Daughter", "Son", "Others"]
     for dependent in Dependant.objects.filter(primary=client):
         ind += 1
         i = str(ind)
         date = dependent.dob.strftime("%B %d, %Y") if dependent.dob else ""
-        rel = relationships[dependent.relationship] if dependent.relationship else ''
-        rows.append([i, dependent.get_salutation, dependent.first_name, dependent.middle_name, dependent.surname,
-                     date, "", rel, dependent.sex, "", "", "", "", "", "", "", "", "", "",
-                     "", "", "", client.lashma_quality_life_no])
+        rel = relationships[dependent.relationship] if dependent.relationship else ""
+        rows.append(
+            [
+                i,
+                dependent.get_salutation,
+                dependent.first_name,
+                dependent.middle_name,
+                dependent.surname,
+                date,
+                "",
+                rel,
+                dependent.sex,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                client.lashma_quality_life_no,
+            ]
+        )
     return rows
