@@ -122,8 +122,13 @@ def register(request):
             # client.lashma_quality_life_no = get_quality_life_number()
             client.save()
             client.lashma_quality_life_no = get_quality_life_number(client)
+            # send_welcome_email(username, client.first_name)
+            code = get_verification_code()
+            client.verification_code_verified = False
+            client.verification_code = code
             client.save()
-            send_welcome_email(username, client.first_name)
+            context = {"name": client.first_name, "code": code}
+            send_email(client.email, "welcome_app", context)
             return redirect("post_register")
             # _user = authenticate(username=username, password=pwd)
             # if _user:
