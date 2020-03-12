@@ -25,7 +25,8 @@ from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload, TempRequestStore, HMO
+from client.models import Client, Dependant, ClientAssociation, Association, TempClientUpload, TempRequestStore, HMO, \
+    AdhocClient
 from client.serializers import CreateClientSerializer, ClientSerializer, UpdateClientSerializer, LGASerializer, \
     ProviderSerializer, AssociationSerializer, PlanSerializer, DependantSerializer, ClientAssociationSerializer, \
     CreateRangerClientSerializer
@@ -155,7 +156,8 @@ def client_login(request):
             # Is Adhoc user?
             try:
                 u = User.objects.get(username=un)
-                if u.has_perm('client.is_adhoc'):
+                # if u.has_perm('client.is_adhoc'):
+                if AdhocClient.objects.filter(user=u).exists():
                     return HttpResponseRedirect(reverse('adhoc_export_clients'))
             except User.DoesNotExist:
                 pass
