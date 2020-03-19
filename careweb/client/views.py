@@ -5,6 +5,7 @@ from random import sample
 from decimal import Decimal
 import base64
 
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
@@ -844,6 +845,8 @@ def upload_clients(request):
             "Others": 3
         }
         primary = None
+        dependant_count = 0
+        principal_count = 0
         for item in TempClientUpload.objects.all():
             if not item.first_name or not item.last_name:
                 continue
@@ -856,14 +859,14 @@ def upload_clients(request):
                 try:
                     sex = item.gender.strip()[0].upper() if item.gender else ''
                     if item.relationship.title() == "Principal":
+                        principal_count += 1
+                        is_update = False
                         if not item.phone_no:
                             primary = None
                             continue
-                        if Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
-                                username=item.phone_no.strip()).exists():
+                        if client_already_created(item.pk):
                             duplicate_no += 1
-                            primary = None
-                            continue
+                            is_update = True
                         try:
                             pcp = CareProvider.objects.get(name__iexact=item.provider.strip())
                         except Exception as e:
@@ -876,42 +879,61 @@ def upload_clients(request):
                             plan = Plan.objects.get(name__iexact=item.package.strip())
                         except:
                             plan = None
-                        client = Client.objects.create(first_name=item.first_name, surname=item.last_name,
-                                                       middle_name=item.middle_name, sex=sex, dob=dob,
-                                                       phone_no=item.phone_no, lagos_resident_no=item.state_id,
-                                                       national_id_card_no=item.national_id,
-                                                       international_passport_no=item.passport,
-                                                       voters_card_no=item.voter_id,
-                                                       pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium,
-                                                       plan=plan, payment_option=item.period,
-                                                       drivers_licence_no=item.drivers_license,
-                                                       salutation=item.salutation)
-                        user = User.objects.create_user(username=item.phone_no.strip(),
-                                                        password=config.CLIENT_DEFAULT_PASSWORD)
-                        client.user = user
-                        client.uses_default_password = True
-                        client.lashma_quality_life_no = get_quality_life_number(client)
+                        client = Client(first_name=item.first_name, surname=item.last_name,
+                                        middle_name=item.middle_name, sex=sex, dob=dob,
+                                        phone_no=item.phone_no, lagos_resident_no=item.state_id,
+                                        national_id_card_no=item.national_id,
+                                        international_passport_no=item.passport,
+                                        voters_card_no=item.voter_id,
+                                        pcp=pcp, ranger=ranger, lga=lga, subscription_rate=item.premium,
+                                        plan=plan, payment_option=item.period,
+                                        drivers_licence_no=item.drivers_license,
+                                        salutation=item.salutation,
+                                        lashma_quality_life_no=item.ql_code)
+                        if is_update:
+                            cl = Client.objects.get(phone_no=item.phone_no)
+                            client.pk = cl.pk
+                        else:
+                            user = User.objects.create_user(username=item.phone_no.strip(),
+                                                            password=config.CLIENT_DEFAULT_PASSWORD)
+                            client.user = user
+                            client.uses_default_password = True
+                            valid += 1
                         client.save()
+                        if not client.lashma_quality_life_no:
+                            client.lashma_quality_life_no = get_quality_life_number(client)
+                            client.save()
                         primary = client
+                        dependant_count = 0
                     elif primary:
+                        if dependant_count == 0:
+                            # We are adding dependants for a new principal. Delete all existing dependants
+                            Dependant.objects.filter(primary=primary).delete()
                         Dependant.objects.create(primary=primary, first_name=item.first_name, surname=item.last_name,
                                                  middle_name=item.middle_name, dob=dob, salutation=item.salutation,
                                                  relationship=relationship.get(item.relationship.strip().title()))
-                    valid += 1
+                        dependant_count += 1
                 except Exception as e:
                     print(e)
                     pass
         messages.success(request,
                          "Clients data successfully processed. {valid} clients were "
-                         "created out of a total of {total}. {duplicate} records uses duplicate phone no".format(
-                             valid=valid, total=total, duplicate=duplicate_no))
+                         "created out of a total of {total}. {duplicate} client records was updated".format(
+                             valid=valid, total=principal_count, duplicate=duplicate_no))
         TempClientUpload.objects.all().delete()
     except Exception as e:
         print(e)
         messages.error(request,
-                       "Error processing upload. Confirm that the document uses the correct format.")
+                       "Error processing upload. Confirm that the document uses the correct format. Only rangers "
+                       "can upload clients")
         return JsonResponse({'status': 'error', 'info': 'Error processing upload'})
     return JsonResponse({"status": "success", 'info': 'File uploaded successfully'})
+
+
+def client_already_created(upload_id):
+    item = TempClientUpload.objects.get(pk=upload_id)
+    return Client.objects.filter(phone_no=item.phone_no.strip()).exists() or User.objects.filter(
+        username=item.phone_no.strip()).exists()
 
 
 class CreateClientView(APIView):
@@ -1150,8 +1172,20 @@ class CreateRangerClientView(APIView):
 @login_required
 @permission_required('client.is_adhoc')
 def adhoc_export_clients(request):
-    clients = Client.objects.all()
-    return render(request, "client/export_clients.html", {"clients": clients})
+    clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
+    filters = ["No LASHMA Code", "Has LASHMA Code", "All Registered Clients"]
+    key = None
+    if request.GET.get('key'):
+        key = int(request.GET.get('key'))
+        if key == 0:
+            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
+        elif key == 1:
+            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=False) | ~Q(lashma_quality_life_no=""))
+        elif key == 2:
+            clients = Client.objects.all()
+        else:
+            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
+    return render(request, "client/export_clients.html", {"clients": clients, "filters": filters, "key": key})
 
 
 @login_required
@@ -1192,7 +1226,18 @@ def export_all_clients(request):
     output = [column_names]
     rows = []
     index = 1
-    for client in Client.objects.all():
+    clients = Client.objects.all()
+    if request.GET.get('key'):
+        key = int(request.GET.get('key'))
+        if key == 0:
+            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
+        elif key == 1:
+            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=False) | ~Q(lashma_quality_life_no=""))
+        elif key == 2:
+            clients = Client.objects.all()
+        else:
+            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
+    for client in clients:
         for row in get_export_row(client, index):
             index += 1
             rows.append(row)
