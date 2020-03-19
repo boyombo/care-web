@@ -713,6 +713,17 @@ def get_clients(request, id):
     return JsonResponse({"success": True, "clients": clients})
 
 
+class GetRangerClients(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, id, format=None):
+        if not Ranger.objects.filter(pk=id).exists():
+            return JsonResponse({'success': False, 'info': 'Unknown ranger'}, status=status.HTTP_200_OK)
+        ranger = Ranger.objects.get(pk=id)
+        serialized = ClientSerializer(ranger.client_set.all(), many=True)
+        return JsonResponse({'success': True, 'clients': serialized.data})
+
+
 @csrf_exempt
 def create_client_subscription(request, client_id, ranger_id):
     logger.info("creating client subscription")
