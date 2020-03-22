@@ -1146,7 +1146,7 @@ class CreateRangerClientView(APIView):
             cl = Client.objects.create(surname=v_data.get('surname'), first_name=v_data.get('first_name'),
                                        ranger=ranger)
             email = v_data.get('email')
-            phone_no = v_data.get('phone')
+            phone_no = v_data.get('phone_no')
             cl.email = email
             cl.phone_no = phone_no
             cl.lashma_quality_life_no = get_quality_life_number(cl)
