@@ -1161,7 +1161,7 @@ class CreateRangerClientView(APIView):
                 cl.verification_code = code
                 context = {"name": v_data.get('first_name'), "code": code}
                 send_email(email, "welcome_app", context)
-            elif phone_no and User.objects.filter(username=phone_no).exists():
+            elif phone_no and not User.objects.filter(username=phone_no).exists():
                 password = config.CLIENT_DEFAULT_PASSWORD
                 usr = User.objects.create_user(username=phone_no, password=password)
                 code = get_verification_code()
