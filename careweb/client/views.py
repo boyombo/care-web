@@ -1152,6 +1152,7 @@ class CreateRangerClientView(APIView):
             cl.lashma_quality_life_no = get_quality_life_number(cl)
             cl.save()
             if email and not User.objects.filter(username__iexact=email).exists():
+                email = str(email).lower()
                 password = config.CLIENT_DEFAULT_PASSWORD
                 usr = User.objects.create_user(username=email, password=password, email=email)
                 code = get_verification_code()
