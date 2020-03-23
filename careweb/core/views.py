@@ -1,5 +1,9 @@
+from datetime import datetime
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -16,11 +20,14 @@ from core.forms import (
     ChangePwdForm2,
     ResetPasswordForm,
 )
+from core.models import Plan
 from core.utils import send_reset_mail
 from ranger.models import Ranger
 from client.models import Client
 from provider.models import CareProvider
 from location.models import LGA
+
+import django_excel as excel
 
 import logging
 
@@ -208,7 +215,12 @@ def change_pwd(request):
             pwd = form.cleaned_data["new_password"]
             usr = User.objects.get(username=username)
             usr.set_password(pwd)
+            usr.is_active = True
             usr.save()
+            client = Client.objects.get(user=usr)
+            client.uses_default_password = False
+            client.verified = True
+            client.save()
             return JsonResponse({"success": True})
     return JsonResponse({"success": False})
 
@@ -227,3 +239,91 @@ def change_pwd_web(request):
     else:
         form = ChangePwdForm2(usr=usr)
     return render(request, "client/change_password.html", {"form": form, "object": clt})
+
+
+@login_required
+def admin_reports(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('login'))
+    date_range = request.GET.get('range')
+    start_date = None
+    end_date = None
+    start = ""
+    end = ""
+    if date_range:
+        try:
+            date_range = str(date_range).split('-')
+            start = date_range[0].strip()
+            end = date_range[1].strip()
+            start_date = datetime.strptime(start, "%m/%d/%Y").date()
+            end_date = datetime.strptime(end, "%m/%d/%Y").date()
+        except Exception as e:
+            messages.error(request, "Invalid date range")
+            print(e)
+            return HttpResponseRedirect(reverse('admin_reports'))
+    rangers = Ranger.objects.count()
+    clients = Client.objects.all()
+    if start_date and end_date:
+        rangers = Ranger.objects.filter(created__date__gte=start_date, created__date__lte=end_date).count()
+        clients = clients.filter(registration_date__date__gte=start_date, registration_date__date__lte=end_date)
+    plans = Plan.objects.all()
+    output = [
+        {
+            "title": "Rangers",
+            "count": rangers
+        }
+    ]
+    for plan in plans:
+        title = "Enrollees on %s package" % plan.name
+        output.append({
+            "title": title,
+            "count": clients.filter(plan=plan).count()
+        })
+    return render(request, "core/admin_report.html", {"reports": output, "start": start, "end": end})
+
+
+@login_required
+def export_admin_report(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('login'))
+    if not request.method == 'POST':
+        messages.error(request, "Invalid request")
+        return HttpResponseRedirect(reverse('admin_reports'))
+    start = request.POST.get('start')
+    end = request.POST.get('end')
+    start_date = None
+    end_date = None
+    if start and end:
+        try:
+            start_date = datetime.strptime(start, "%m/%d/%Y").date()
+            end_date = datetime.strptime(end, "%m/%d/%Y").date()
+        except:
+            messages.error(request, "Invalid date range")
+            return HttpResponseRedirect(reverse('admin_reports'))
+    rangers = Ranger.objects.count()
+    clients = Client.objects.all()
+    if start_date and end_date:
+        rangers = Ranger.objects.filter(created__date__gte=start_date, created__date__lte=end_date).count()
+        clients = clients.filter(registration_date__date__gte=start_date, registration_date__date__lte=end_date)
+    plans = Plan.objects.all()
+    column_names = [
+        "S/N", "Title", "Total %s" % ("({0} - {1})".format(start, end) if start and end else "")
+    ]
+    output = [
+        column_names,
+        [1, "Rangers", rangers]
+    ]
+    count = 2
+    for plan in plans:
+        title = "Enrollees on %s package" % plan.name
+        output.append([count, title, clients.filter(plan=plan).count()])
+        count += 1
+    sheet = excel.pe.Sheet(output)
+    return excel.make_response(sheet, "xls", file_name="Futurecare monthly report")
+
+
+@login_required
+def admin_landing_page(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('login'))
+    return render(request, 'core/admin_landing.html')

@@ -22,15 +22,15 @@ class ForgotPwdForm(forms.Form):
 
 
 class ChangePwdForm(forms.Form):
-    email = forms.CharField(max_length=100)
+    username = forms.CharField(max_length=100)
     old_password = forms.CharField(max_length=100)
     new_password = forms.CharField(max_length=100)
 
     def clean(self):
-        if "email" in self.cleaned_data and "old_password" in self.cleaned_data:
-            email = self.cleaned_data["email"]
+        if "username" in self.cleaned_data and "old_password" in self.cleaned_data:
+            username = self.cleaned_data["username"]
             pwd = self.cleaned_data["old_password"]
-            usr = authenticate(username=email, password=pwd)
+            usr = authenticate(username=username, password=pwd)
             if not usr:
                 raise forms.ValidationError("Username or password invalid")
             return self.cleaned_data

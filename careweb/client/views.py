@@ -174,7 +174,8 @@ def client_login(request):
                     )
                     return HttpResponseRedirect(reverse("change_default_password"))
             except Client.DoesNotExist:
-                return redirect("/admin/")
+                return HttpResponseRedirect(reverse('admin_landing_page'))
+                # return redirect("/admin/")
             else:
                 return redirect("profile", pk=cl.id)
     else:

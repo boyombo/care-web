@@ -35,6 +35,7 @@ urlpatterns = [
     path("baton/", include("baton.urls")),
     path("agent_app_login/", core_views.login_agent),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path("", include("core.urls")),
     path("forgot-pwd/", core_views.forgot),
     path("change-pwd/", core_views.change_pwd),
     path("post-register/", core_views.PostRegisterView.as_view(), name="post_register"),
