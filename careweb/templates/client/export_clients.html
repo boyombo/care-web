@@ -59,10 +59,22 @@
                         <h2>
                             Clients
                         </h2>
-                        <div style="margin-bottom: 10px;">
-                            <button onclick="exportSelected();" class="btn btn-success"> Export Selected Clients
+                        <div class="row">
+
+                        </div>
+                        <div class="row" style="margin-bottom: 10px;">
+                            <select class="form-control col-sm-3" style="margin-right: 15px" id="filter-select"
+                                    onchange="filterClients();">
+                                {% for filter in filters %}
+                                    <option {% if key == forloop.counter0 %}selected{% endif %} value="{{ forloop.counter0 }}">{{ filter }}</option>
+                                {% endfor %}
+                            </select>
+                            <button onclick="exportSelected();" class="btn btn-success" style="margin-right: 5px">
+                                Export Selected Clients
                             </button>
-                            <a href="{% url 'export_all_clients' %}" class="btn btn-success"> Export All Clients</a>
+                            <a href="{% url 'export_all_clients' %}?key={{ key }}" class="btn btn-success"> Export Filtered
+                                Clients</a>
+
                         </div>
                         <p id="page-error" class="bg-danger text-white text-center p-2" style="border-radius: 5px">
                             Select one or more client to proceed
@@ -103,6 +115,9 @@
         {% csrf_token %}
         <input type="hidden" id="selected-ids" name="client_ids">
     </form>
+    <form action="" id="filter-form">
+        <input type="hidden" name="key" id="filter-key">
+    </form>
 {% endblock content %}
 
 {% block extra-js %}
@@ -113,6 +128,12 @@
         $(document).ready(function () {
             $('#export-tbl').DataTable();
         });
+
+        function filterClients() {
+            const key = $('#filter-select').val();
+            $('#filter-key').val(key);
+            $('#filter-form').submit();
+        }
 
         function exportSelected() {
             const checkboxes = $('.row-check');
