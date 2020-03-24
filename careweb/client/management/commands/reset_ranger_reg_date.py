@@ -19,7 +19,7 @@ class Command(BaseCommand):
         else:
             default = datetime.strptime("03/02/2020", "%m/%d/%Y")
         for ranger in Ranger.objects.all():
-            if ranger.created.date() == current:
+            if ranger.created.date() == current.date():
                 ranger.created = default
                 ranger.save()
                 updated += 1
