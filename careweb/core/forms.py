@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+from client.utils import get_username_for_auth
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
@@ -22,15 +24,16 @@ class ForgotPwdForm(forms.Form):
 
 
 class ChangePwdForm(forms.Form):
-    email = forms.CharField(max_length=100)
+    username = forms.CharField(max_length=100)
     old_password = forms.CharField(max_length=100)
     new_password = forms.CharField(max_length=100)
 
     def clean(self):
-        if "email" in self.cleaned_data and "old_password" in self.cleaned_data:
-            email = self.cleaned_data["email"]
+        if "username" in self.cleaned_data and "old_password" in self.cleaned_data:
+            username = self.cleaned_data["username"]
             pwd = self.cleaned_data["old_password"]
-            usr = authenticate(username=email, password=pwd)
+            un = get_username_for_auth(username)  # Enables authentication with phone no
+            usr = authenticate(username=un, password=pwd)
             if not usr:
                 raise forms.ValidationError("Username or password invalid")
             return self.cleaned_data

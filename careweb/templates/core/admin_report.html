@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+    Reports
+{% endblock title %}
+
+{% comment %}
+{% block header %}
+{% endblock header %}
+{% endcomment %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block extra-css %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+    <style>
+        .main-head {
+            display: block;
+            margin-bottom: -18px;
+        }
+
+        .sub-head {
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
+        <div class="bcoverlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Content">
+                        <h2>
+                            Reports
+                        </h2>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  BreadCrumb Area Start  -->
+
+    <!-- SignUP Area Start -->
+    <section class="logRegForm">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <a href="{% url 'admin_landing_page' %}" class='btn options-btn'
+                       style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold; margin-bottom: 5px"><i
+                            class="pe-7s-left-arrow"> </i> Back to landing page</a>
+                    <div class="contact_form_wrappre2">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                    <div class="alert alert-danger">{{ message }}</div>
+                                {% else %}
+                                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <h2>
+                            <span class="main-head">Reports</span>
+                            {% if start and end %}
+                                <small class="text-primary sub-head">Showing reports between <b>{{ start }}</b>
+                                    and <b>{{ end }}</b></small>
+                            {% else %}
+                                <small class="text-primary sub-head">Showing all reports</small>
+                            {% endif %}
+                        </h2>
+
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="form-group" style="width: 100%">
+                                <label for="date-range" class="control-label">Select date range</label>
+                                <div>
+                                    <form action="">
+                                        <input type="text" class="form-control daterange col-sm-4" id="date-range"
+                                               name="range" style="display: inline">
+                                        <button class="btn btn-primary" style="display: inline">Generate Report</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table" id="export-tbl">
+                            <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Title</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for report in reports %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ report.title }}</td>
+                                    <td>{{ report.count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <form action="{% url 'export_admin_reports' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="start" value="{{ start }}">
+                            <input type="hidden" name="end" value="{{ end }}">
+                            <button class="btn btn-success">Export Report</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SignUp Area End -->
+
+{% endblock content %}
+
+{% block extra-js %}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script type="text/javascript">
+        const start = '{{ start }}' !== '' ? new Date('{{ start }}') : new Date();
+        const end = '{{ end }}' !== '' ? new Date('{{ end }}') : new Date();
+        $('#date-range').daterangepicker({
+            startDate: start,
+            endDate: end
+        });
+        $(document).ready(function () {
+            $('#export-tbl').DataTable();
+        });
+
+        function generateReport() {
+
+        }
+    </script>
+{% endblock extra-js %}

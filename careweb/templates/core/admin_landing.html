@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Profile
+{% endblock title %}
+
+{% block extra-css %}
+    <style>
+        .options-btn{
+            min-width: 170px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- banner Area Start -->
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
+        <div class="bcoverlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Content">
+                        <h2>
+                            Profile
+                        </h2>
+                        <div class="links">
+                            <ul>
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li>
+                                    <span>/</span>
+                                </li>
+                                <li>
+                                    <a class="active" href="">Profile</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Welcome Area End -->
+
+    <!-- Services Area Start -->
+    <section id="serviceDetails" class="serviceDetails">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-7 col-xs-12">
+                    <div class="content">
+                        <h2>Welcome, {{ request.user.username }}</h2>
+                    </div>
+                    <div class="counter" style="padding: 10px;">
+                        <div class="row">
+                            <div class=" col-md-12">
+                                <a href="/admin/" class='btn btn-lg options-btn'
+                                   style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i
+                                        class="pe-7s-note2"> </i> Admin Portal</a>
+                                <a href="{% url 'admin_reports' %}" class='btn btn-lg options-btn'
+                                   style="padding: 12px; background-color: #9fde50; color: #fff; border-radius: 50px; font-size: 20px; font-weight: bold;"><i
+                                        class="pe-7s-note2"> </i> Reports</a>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock content %}
+
+{% block extra-js %}
+    <script type="text/javascript">
+        $('.nav-link').removeClass('active')
+        $('#profile-nav-link').addClass('active')
+    </script>
+{% endblock extra-js %}
