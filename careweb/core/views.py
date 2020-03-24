@@ -13,6 +13,7 @@ from django.views.generic import TemplateView
 
 from ratelimit.decorators import ratelimit
 
+from client.utils import get_username_for_auth
 from core.forms import (
     LoginForm,
     ForgotPwdForm,
@@ -211,9 +212,10 @@ def change_pwd(request):
         form = ChangePwdForm(request.POST)
         if form.is_valid():
             # import pdb;pdb.set_trace()
-            username = form.cleaned_data["email"]
+            username = form.cleaned_data["username"]
             pwd = form.cleaned_data["new_password"]
-            usr = User.objects.get(username=username)
+            un = get_username_for_auth(username)  # Enables authentication with phone no
+            usr = User.objects.get(username=un)
             usr.set_password(pwd)
             usr.is_active = True
             usr.save()

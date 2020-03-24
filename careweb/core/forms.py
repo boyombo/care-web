@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+from client.utils import get_username_for_auth
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
@@ -30,7 +32,8 @@ class ChangePwdForm(forms.Form):
         if "username" in self.cleaned_data and "old_password" in self.cleaned_data:
             username = self.cleaned_data["username"]
             pwd = self.cleaned_data["old_password"]
-            usr = authenticate(username=username, password=pwd)
+            un = get_username_for_auth(username)  # Enables authentication with phone no
+            usr = authenticate(username=un, password=pwd)
             if not usr:
                 raise forms.ValidationError("Username or password invalid")
             return self.cleaned_data

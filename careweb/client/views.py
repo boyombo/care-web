@@ -538,7 +538,7 @@ def register_api(request):
                         "phone": obj.phone_no,
                         "photo": "",
                         "verification_code": obj.verification_code,
-                        "lashma_quality_life_no": obj.lashma_quqlity_life_no
+                        "lashma_quality_life_no": obj.lashma_quality_life_no
                     },
                 }
             )

@@ -1,0 +1,21 @@
+INFO 2020-03-24 06:38:58,962 signing up...
+INFO 2020-03-24 06:38:58,964 <QueryDict: {'email': ['akinx2@akinx.com'], 'password': ['vsdhufsgdjhfsf'], 'first_name': ['ndshjfgbns'], 'surname': ['uyggkjj']}>
+INFO 2020-03-24 06:38:58,993  The email has already been used
+INFO 2020-03-24 06:39:30,536 signing up...
+INFO 2020-03-24 06:39:30,536 <QueryDict: {'email': ['akinx3@akinx.com'], 'password': ['vsdhufsgdjhfsf'], 'first_name': ['ndshjfgbns'], 'surname': ['uyggkjj']}>
+INFO 2020-03-24 06:39:30,541 {'email': 'akinx3@akinx.com', 'first_name': 'ndshjfgbns', 'surname': 'uyggkjj', 'password': 'vsdhufsgdjhfsf'}
+INFO 2020-03-24 06:39:30,757 created user
+INFO 2020-03-24 06:39:30,764 code is 32347
+INFO 2020-03-24 06:39:30,806 context {'name': 'ndshjfgbns', 'code': '32347'}
+INFO 2020-03-24 06:40:19,501 signing up...
+INFO 2020-03-24 06:40:19,506 <QueryDict: {'email': ['akinx4@akinx.com'], 'password': ['vsdhufsgdjhfsf'], 'first_name': ['ndshjfgbns'], 'surname': ['uyggkjj']}>
+INFO 2020-03-24 06:40:19,523 {'email': 'akinx4@akinx.com', 'first_name': 'ndshjfgbns', 'surname': 'uyggkjj', 'password': 'vsdhufsgdjhfsf'}
+INFO 2020-03-24 06:40:19,767 created user
+INFO 2020-03-24 06:40:19,773 code is 74887
+INFO 2020-03-24 06:40:19,816 context {'name': 'ndshjfgbns', 'code': '74887'}
+INFO 2020-03-24 06:41:32,747 signing up...
+INFO 2020-03-24 06:41:32,750 <QueryDict: {'email': ['akinx5@akinx.com'], 'password': ['vsdhufsgdjhfsf'], 'first_name': ['ndshjfgbns'], 'surname': ['uyggkjj']}>
+INFO 2020-03-24 06:41:32,772 {'email': 'akinx5@akinx.com', 'first_name': 'ndshjfgbns', 'surname': 'uyggkjj', 'password': 'vsdhufsgdjhfsf'}
+INFO 2020-03-24 06:41:33,050 created user
+INFO 2020-03-24 06:41:33,056 code is 12317
+INFO 2020-03-24 06:41:33,097 context {'name': 'ndshjfgbns', 'code': '12317'}
