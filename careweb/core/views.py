@@ -74,7 +74,7 @@ def login_agent(request):
                             "address": prov.address,
                             "phone1": prov.phone1,
                             "phone2": prov.phone2,
-                            "lga_name": prov.lga.name,
+                            "lga_name": prov.lga_name,
                             "lga_id": prov.lga.id.hashid,
                         }
                         for prov in CareProvider.objects.all()
