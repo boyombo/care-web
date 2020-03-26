@@ -16,3 +16,9 @@ class CareProvider(models.Model):
 
     def __str__(self):
         return "{} -- {}".format(self.name, self.address)
+
+
+    def lga_name(self):
+        if self.lga:
+            return self.lga.name
+        return ""
