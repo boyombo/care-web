@@ -172,7 +172,7 @@ def get_export_row(client, index):
             client.provider_name,
             plan,
             client.get_payment_option_display(),
-            "",
+            client.lashma_no,
             client.lashma_quality_life_no,
         ]
     )

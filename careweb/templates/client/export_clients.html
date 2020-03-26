@@ -17,6 +17,7 @@
 
 {% block extra-css %}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
     <style>
         input[type=checkbox] {
             /* Double-sized Checkboxes */
@@ -26,6 +27,10 @@
             -o-transform: scale(1.2); /* Opera */
             transform: scale(1.2);
             padding: 4px;
+        }
+
+        .control-wrapper .form-control {
+            display: inline-block !important;
         }
     </style>
 {% endblock %}
@@ -60,25 +65,28 @@
                             Clients
                         </h2>
                         <div class="row">
+                            <div style="width: 100%" class="control-wrapper">
+                                <label for="date-range" class="control-label col-sm-3">Date Range:</label>
+                                <label class="control-label col-sm-3" style="padding-left: 0">Client Type:</label>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 30px; width: 100%">
+                            <div style="width: 100%" class="col-sm-12 control-wrapper">
+                                <input type="text" class="form-control daterange col-sm-3" id="date-range"
+                                       name="range" style="display: inline">
+                                <select class="form-control col-sm-3" style="margin-right: 15px" id="filter-select"
+                                        onchange="filterClients();">
+                                    {% for filter in filters %}
+                                        <option {% if key == forloop.counter %}selected{% endif %}
+                                                value="{{ forloop.counter }}">{{ filter }}</option>
+                                    {% endfor %}
+                                </select>
+                                {#                                <button class="btn btn-primary" style="display: inline">Generate Report</button>#}
+                            </div>
+
 
                         </div>
-                        <div class="row" style="margin-bottom: 10px;">
-                            <select class="form-control col-sm-3" style="margin-right: 15px" id="filter-select"
-                                    onchange="filterClients();">
-                                {% for filter in filters %}
-                                    <option {% if key == forloop.counter0 %}selected{% endif %} value="{{ forloop.counter0 }}">{{ filter }}</option>
-                                {% endfor %}
-                            </select>
-                            <button onclick="exportSelected();" class="btn btn-success" style="margin-right: 5px">
-                                Export Selected Clients
-                            </button>
-                            <a href="{% url 'export_all_clients' %}?key={{ key }}" class="btn btn-success"> Export Filtered
-                                Clients</a>
 
-                        </div>
-                        <p id="page-error" class="bg-danger text-white text-center p-2" style="border-radius: 5px">
-                            Select one or more client to proceed
-                        </p>
                         <table class="table" id="export-tbl">
                             <thead>
                             <tr>
@@ -87,6 +95,7 @@
                                 <th>First Name</th>
                                 <th>Middle Name</th>
                                 <th>Surname</th>
+                                <th>LASHMA Code</th>
                                 <th>QL Code</th>
                             </tr>
                             </thead>
@@ -98,11 +107,22 @@
                                     <td>{{ client.first_name }}</td>
                                     <td>{{ client.middle_name }}</td>
                                     <td>{{ client.surname }}</td>
+                                    <td>{{ client.lashma_no }}</td>
                                     <td>{{ client.lashma_quality_life_no }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
+                        <p id="page-error" class="bg-danger text-white text-center p-2" style="border-radius: 5px">
+                            Select one or more client to proceed
+                        </p>
+                        <button onclick="exportSelected();" class="btn btn-success" style="margin-right: 5px">
+                            Export Selected Clients
+                        </button>
+                        <a href="{% url 'export_all_clients' %}?{% if key %}key={{ key }}&{% endif %}{% if start and end %}date={{ start }}-{{ end }}{% endif %}"
+                           class="btn btn-success"> Export
+                            Filtered
+                            Clients</a>
                     </div>
 
                 </div>
@@ -116,15 +136,32 @@
         <input type="hidden" id="selected-ids" name="client_ids">
     </form>
     <form action="" id="filter-form">
-        <input type="hidden" name="key" id="filter-key">
+        <input type="hidden" name="key" id="filter-key" {% if key %}value="{{ key }}"{% endif %}>
+        <input type="hidden" name="date" id="date-range-val"
+               {% if start and end %}value="{{ start }} - {{ end }}"{% endif %}>
     </form>
 {% endblock content %}
 
 {% block extra-js %}
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script type="text/javascript">
         $('#page-error').hide();
+        const start = '{{ start }}' !== '' ? new Date('{{ start }}') : new Date();
+        const end = '{{ end }}' !== '' ? new Date('{{ end }}') : new Date();
+        $('#date-range').daterangepicker({
+            startDate: start,
+            endDate: end,
+        }, function (start, end) {
+            const start_date = start.format("MM/DD/YYYY");
+            const end_date = end.format("MM/DD/YYYY");
+            const val = start_date + " - " + end_date;
+            console.log(val);
+            $('#date-range-val').val(val);
+            $('#filter-form').submit();
+        });
         $(document).ready(function () {
             $('#export-tbl').DataTable();
         });
