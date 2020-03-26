@@ -869,6 +869,9 @@ def upload_clients(request):
                 except Exception as e:
                     dob = None
                 try:
+                    if item.lshs_code.strip() == "None" or not item.lshs_code:
+                        item.lshs_code = ""
+                        item.save()
                     sex = item.gender.strip()[0].upper() if item.gender else ''
                     if item.relationship.title() == "Principal":
                         principal_count += 1
@@ -901,7 +904,8 @@ def upload_clients(request):
                                         plan=plan, payment_option=item.period,
                                         drivers_licence_no=item.drivers_license,
                                         salutation=item.salutation,
-                                        lashma_quality_life_no=item.ql_code)
+                                        lashma_quality_life_no=item.ql_code,
+                                        lashma_no=item.lshs_code)
                         if is_update:
                             cl = Client.objects.get(phone_no=item.phone_no)
                             client.pk = cl.pk
@@ -1185,20 +1189,35 @@ class CreateRangerClientView(APIView):
 @login_required
 @permission_required('client.is_adhoc')
 def adhoc_export_clients(request):
-    clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
+    clients = Client.objects.filter(lashma_no="")
     filters = ["No LASHMA Code", "Has LASHMA Code", "All Registered Clients"]
     key = None
+    start = ""
+    end = ""
     if request.GET.get('key'):
         key = int(request.GET.get('key'))
-        if key == 0:
-            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
-        elif key == 1:
-            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=False) | ~Q(lashma_quality_life_no=""))
+        if key == 1:
+            clients = Client.objects.filter(lashma_no="")
         elif key == 2:
+            clients = Client.objects.filter(~Q(lashma_no=""))
+        elif key == 3:
             clients = Client.objects.all()
         else:
-            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
-    return render(request, "client/export_clients.html", {"clients": clients, "filters": filters, "key": key})
+            clients = Client.objects.filter(lashma_no="")
+    if request.GET.get('date'):
+        date_range = request.GET.get('date')
+        try:
+            date_range = str(date_range).split('-')
+            start = date_range[0].strip()
+            end = date_range[1].strip()
+            start_date = datetime.strptime(start, "%m/%d/%Y").date()
+            end_date = datetime.strptime(end, "%m/%d/%Y").date()
+            clients = clients.filter(registration_date__gte=start_date, registration_date__lte=end_date)
+        except Exception as e:
+            messages.error(request, "Invalid date range")
+            print(e)
+    return render(request, "client/export_clients.html",
+                  {"clients": clients, "filters": filters, "key": key, "start": start, "end": end})
 
 
 @login_required
@@ -1242,14 +1261,26 @@ def export_all_clients(request):
     clients = Client.objects.all()
     if request.GET.get('key'):
         key = int(request.GET.get('key'))
-        if key == 0:
-            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
-        elif key == 1:
-            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=False) | ~Q(lashma_quality_life_no=""))
+        if key == 1:
+            clients = Client.objects.filter(lashma_no="")
         elif key == 2:
+            clients = Client.objects.filter(~Q(lashma_no=""))
+        elif key == 3:
             clients = Client.objects.all()
         else:
-            clients = Client.objects.filter(Q(lashma_quality_life_no__isnull=True) | Q(lashma_quality_life_no=""))
+            clients = Client.objects.filter(lashma_no="")
+    if request.GET.get('date'):
+        date_range = request.GET.get('date')
+        try:
+            date_range = str(date_range).split('-')
+            start = date_range[0].strip()
+            end = date_range[1].strip()
+            start_date = datetime.strptime(start, "%m/%d/%Y").date()
+            end_date = datetime.strptime(end, "%m/%d/%Y").date()
+            clients = clients.filter(registration_date__gte=start_date, registration_date__lte=end_date)
+        except Exception as e:
+            messages.error(request, "Invalid date range")
+            print(e)
     for client in clients:
         for row in get_export_row(client, index):
             index += 1
