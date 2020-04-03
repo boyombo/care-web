@@ -3,6 +3,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render
+from simple_history.admin import SimpleHistoryAdmin
 
 from client.models import Client
 from subscription.models import Subscription, SubscriptionPayment, Commission
@@ -10,7 +11,7 @@ from subscription.utils import get_subscription_rate, create_subscription
 
 
 @admin.register(Commission)
-class CommissionAdmin(admin.ModelAdmin):
+class CommissionAdmin(SimpleHistoryAdmin):
     list_display = ["subscription", "amount", "subscription_amount", "ranger", "when"]
 
     def get_queryset(self, request):
@@ -21,7 +22,7 @@ class CommissionAdmin(admin.ModelAdmin):
 
 
 @admin.register(Subscription)
-class SubscriptionAdmin(admin.ModelAdmin):
+class SubscriptionAdmin(SimpleHistoryAdmin):
     list_display = [
         "client",
         "subscribed_on",
@@ -52,7 +53,7 @@ class PaymentForm(forms.ModelForm):
 
 
 @admin.register(SubscriptionPayment)
-class SubscriptionPaymentAdmin(admin.ModelAdmin):
+class SubscriptionPaymentAdmin(SimpleHistoryAdmin):
     list_display = [
         "client",
         "payment_date",

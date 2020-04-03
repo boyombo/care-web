@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 from hashid_field import HashidAutoField
+from simple_history.models import HistoricalRecords
 
 from location.models import LGA
 from payment.models import Payment
@@ -17,6 +18,8 @@ class Ranger(models.Model):
     lga = models.ForeignKey(LGA, null=True, on_delete=models.SET_NULL)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created = models.DateTimeField(auto_now_add=True)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
@@ -50,6 +53,8 @@ class WalletFunding(models.Model):
     payment = models.ForeignKey(Payment, null=True, on_delete=models.SET_NULL)
     status = models.PositiveIntegerField(choices=STATUSES, default=PENDING)
     rejection_reason = models.TextField(null=True, blank=True)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.ranger)

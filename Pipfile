@@ -34,5 +34,6 @@ gunicorn = "*"
 djangorestframework = "*"
 drf-yasg = "*"
 django-rest-framework-docs = "*"
+django-simple-history = "*"
 
 [dev-packages]

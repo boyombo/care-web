@@ -1,6 +1,7 @@
 from django.db import models
 
 from hashid_field import HashidAutoField
+from simple_history.models import HistoricalRecords
 
 from location.models import LGA
 
@@ -13,6 +14,8 @@ class CareProvider(models.Model):
     phone1 = models.CharField(max_length=100, null=True, blank=True)
     phone2 = models.CharField(max_length=100, null=True, blank=True)
     lga = models.ForeignKey(LGA, null=True, on_delete=models.SET_NULL)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return "{} -- {}".format(self.name, self.address)

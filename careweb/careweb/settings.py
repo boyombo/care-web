@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "constance.backends.database",
     "rest_framework",
     "drf_yasg",
+    "simple_history",
     # "easy_select2"
     # "easyaudit",
 ]
@@ -100,6 +101,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware"
     # "easyaudit.middleware.easyaudit.EasyAuditMiddleware",
 ]
 
@@ -240,7 +242,7 @@ REST_FRAMEWORK = {
 }
 HASHID_FIELD_SALT = 'v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^'
 
-IS_TEST_SERVER = True
+IS_TEST_SERVER = False
 
 if IS_TEST_SERVER:
     try:

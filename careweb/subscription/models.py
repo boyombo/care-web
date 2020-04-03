@@ -3,6 +3,8 @@ from django.utils import timezone
 from constance import config
 from decimal import Decimal
 
+from simple_history.models import HistoricalRecords
+
 from client.models import Client, Dependant
 from ranger.models import Ranger
 from payment.models import Payment
@@ -19,6 +21,8 @@ class Subscription(models.Model):
     active = models.BooleanField(default=True)
     next_subscription = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
     dependants = models.ManyToManyField(Dependant)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.client)
@@ -63,6 +67,8 @@ class SubscriptionPayment(models.Model):
     rejection_reason = models.TextField(null=True, blank=True)
     ranger = models.ForeignKey(Ranger, null=True, blank=True, on_delete=models.SET_NULL)
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return str(self.client)
 
@@ -73,6 +79,8 @@ class Commission(models.Model):
     subscription_amount = models.DecimalField(max_digits=10, decimal_places=2)
     ranger = models.ForeignKey(Ranger, on_delete=models.CASCADE)
     when = models.DateTimeField(default=timezone.now)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.subscription)

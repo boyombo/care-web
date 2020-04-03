@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from hashid_field import HashidAutoField
+from simple_history.models import HistoricalRecords
 
 
 class Payment(models.Model):
@@ -24,6 +25,8 @@ class Payment(models.Model):
     payment_mode = models.PositiveIntegerField(choices=MODES, null=True)
     narration = models.TextField(blank=True, null=True)
     paid_by = models.CharField(max_length=200, blank=True)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return "{}".format(self.amount)
