@@ -1,0 +1,158 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<div class="row">
+    <div class="col-xl-8 mb-5 mb-xl-0">
+        <div class="card bg-gradient-default shadow">
+            <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-uppercase text-muted ls-1 mb-1">Subscribers this week</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Chart -->
+                <div class="chart">
+                    <!-- Chart wrapper -->
+                    <canvas id="chart-subscribers" class="chart-canvas" height="155"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card shadow">
+            <div class="card-header bg-transparent">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-uppercase text-muted ls-1 mb-1">Clients per plan</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Chart -->
+                <div class="chart">
+                    <canvas id="chart-plans" class="chart-canvas" height="350"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function create_subscribers_chart() {
+        const ctx = document.getElementById("chart-subscribers").getContext("2d");
+        const subscriberChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: [
+                    {% for item in weekly_subscribers %}
+                        '{{ item.date }}',
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: "Subscribers",
+                    data: [
+                        {% for item in weekly_subscribers %}
+                            parseInt('{{ item.count }}'),
+                        {% endfor %}
+                    ],
+                    backgroundColor: getWeeklySubscribersBackground()
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function create_plan_charts() {
+        const ctx = document.getElementById("chart-plans").getContext("2d");
+        const customColors = getPlansBackground();
+        const subscriberChart = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: [
+                    {% for item in plans %}
+                        '{{ item.plan }}',
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: "Plans",
+                    data: [
+                        {% for item in plans %}
+                            parseInt('{{ item.count }}'),
+                        {% endfor %}
+                    ],
+                    backgroundColor: customColors
+                }],
+                planCodes: [
+                    {% for item in plans %}
+                        '{{ item.code }}',
+                    {% endfor %}
+                ],
+                customColors: customColors
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                legend: {
+                    display: true,
+                    labels: {
+                        generateLabels: function (chart) {
+                            const data = chart.data;
+                            if (data.planCodes.length && data.datasets.length) {
+                                return data.planCodes.map(function (label, i) {
+                                    return {
+                                        text: label,
+                                        fillStyle: data.customColors[i],
+                                        strokeStyle: data.customColors[i],
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function getWeeklySubscribersBackground() {
+        const colors = [getRandomColor()];
+        for (let i = 0; i < parseInt('{{ weekly_length }}'); i++) {
+            colors.push(getRandomColor());
+        }
+        return colors;
+    }
+
+    function getPlansBackground() {
+        const colors = [];
+        for (let i = 0; i < parseInt('{{ plans_length }}'); i++) {
+            colors.push(getRandomColor());
+        }
+        return colors;
+    }
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    create_subscribers_chart();
+    create_plan_charts();
+</script>
