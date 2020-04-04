@@ -83,6 +83,8 @@ CONSTANCE_CONFIG = {
     "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription"),
     "CLIENT_DEFAULT_PASSWORD": ("Qwerty123", "Default password for clients registered by rangers."),
     "LEN_VERIFICATION_CODE": (5, "Length of verification code for new users"),
+    "CLIENT_LIMIT": (2000, "Limit to notify users"),
+    "CLIENT_LIMIT_RECEIVERS": ("", "List of emails to be notified of client limit"),
 }
 
 # DJANGO_EASY_AUDIT_UNREGISTERED_URLS_EXTRA = [
@@ -240,7 +242,7 @@ REST_FRAMEWORK = {
 }
 HASHID_FIELD_SALT = 'v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^'
 
-IS_TEST_SERVER = True
+IS_TEST_SERVER = False
 
 if IS_TEST_SERVER:
     try:
