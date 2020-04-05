@@ -2,7 +2,10 @@ from django.contrib import admin
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from hashid_field import Hashid
+from simple_history.admin import SimpleHistoryAdmin
 
+from careweb.utils import HashIdFieldAdminMixin
 from client.forms import ClientAdminForm
 from client.models import (
     HMO,
@@ -24,12 +27,12 @@ import django_excel as excel
 
 
 @admin.register(HMO)
-class HMOAdmin(admin.ModelAdmin):
+class HMOAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
     list_display = ["name"]
 
 
 @admin.register(Association)
-class AssociationAdmin(admin.ModelAdmin):
+class AssociationAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
     list_display = ["name"]
 
 
@@ -39,7 +42,7 @@ class AssociationInline(admin.TabularInline):
 
 
 @admin.register(Dependant)
-class DependantAdmin(admin.ModelAdmin):
+class DependantAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
     list_display = ["surname", "first_name", "dob", "relationship"]
 
     def get_queryset(self, request):
@@ -54,7 +57,7 @@ class DependantInline(admin.TabularInline):
 
 
 @admin.register(MyClient)
-class MyClientAdmin(admin.ModelAdmin):
+class MyClientAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
     list_display = [
         "surname",
         "first_name",
@@ -118,7 +121,7 @@ class MyClientAdmin(admin.ModelAdmin):
 
 
 @admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
+class ClientAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
     class Media:
         js = (
             'js/client_admin2.js',
@@ -354,4 +357,4 @@ class TempRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(TempRequestStore, TempRequestAdmin)
-admin.site.register(AdhocClient)
+admin.site.register(AdhocClient, SimpleHistoryAdmin)

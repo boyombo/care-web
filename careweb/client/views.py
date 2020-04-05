@@ -848,6 +848,7 @@ def upload_clients(request):
             ]
         )
         total = TempClientUpload.objects.count()
+        print("Total uploaded: %s" % total)
         valid = 0
         duplicate_no = 0
         relationship = {
@@ -869,7 +870,7 @@ def upload_clients(request):
                 except Exception as e:
                     dob = None
                 try:
-                    if item.lshs_code.strip() == "None" or not item.lshs_code:
+                    if not item.lshs_code or item.lshs_code.strip() == "None":
                         item.lshs_code = ""
                         item.save()
                     sex = item.gender.strip()[0].upper() if item.gender else ''
