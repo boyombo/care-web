@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "constance.backends.database",
     "rest_framework",
     "drf_yasg",
+    "simple_history",
     # "easy_select2"
     # "easyaudit",
 ]
@@ -83,6 +84,8 @@ CONSTANCE_CONFIG = {
     "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription"),
     "CLIENT_DEFAULT_PASSWORD": ("Qwerty123", "Default password for clients registered by rangers."),
     "LEN_VERIFICATION_CODE": (5, "Length of verification code for new users"),
+    "CLIENT_LIMIT": (2000, "Limit to notify users"),
+    "CLIENT_LIMIT_RECEIVERS": ("", "List of emails to be notified of client limit"),
 }
 
 # DJANGO_EASY_AUDIT_UNREGISTERED_URLS_EXTRA = [
@@ -100,6 +103,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware"
     # "easyaudit.middleware.easyaudit.EasyAuditMiddleware",
 ]
 

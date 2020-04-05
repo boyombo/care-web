@@ -2,7 +2,9 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from simple_history.admin import SimpleHistoryAdmin
 
+from careweb.utils import HashIdFieldAdminMixin
 from ranger.models import Ranger, WalletFunding
 from payment.models import Payment
 from payment.utils import approve_funding, get_reference
@@ -11,14 +13,14 @@ from ranger.forms import RejectForm
 
 
 @admin.register(Ranger)
-class RangerAdmin(admin.ModelAdmin):
+class RangerAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
     list_display = ["first_name", "last_name", "phone", "lga", "balance", "user"]
     list_filter = ["lga"]
     search_fields = ["first_name", "last_name"]
 
 
 @admin.register(WalletFunding)
-class WalletFundingAdmin(admin.ModelAdmin):
+class WalletFundingAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
     list_display = [
         "ranger",
         "amount",

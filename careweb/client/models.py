@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.urls import reverse
 
 from hashid_field import HashidAutoField
+from simple_history.models import HistoricalRecords
 
 from location.models import LGA
 from provider.models import CareProvider
@@ -16,6 +17,8 @@ class Association(models.Model):
     id = HashidAutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return self.name
 
@@ -24,6 +27,8 @@ class ClientAssociation(models.Model):
     id = HashidAutoField(primary_key=True)
     client = models.ForeignKey("Client", on_delete=models.CASCADE)
     association = models.ForeignKey("Association", on_delete=models.CASCADE)
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Association"
@@ -39,6 +44,8 @@ class ClientAssociation(models.Model):
 class HMO(models.Model):
     id = HashidAutoField(primary_key=True)
     name = models.CharField(max_length=100)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -65,6 +72,8 @@ class Dependant(models.Model):
     dob = models.DateField(null=True, blank=True)
     relationship = models.PositiveIntegerField(choices=RELATIONSHIPS)
     photo = models.ImageField(upload_to="dependantphoto", null=True, blank=True)
+
+    history = HistoricalRecords()
 
     # pcp = models.ForeignKey(
     #    CareProvider, null=True, blank=True, on_delete=models.SET_NULL
@@ -175,6 +184,8 @@ class Client(models.Model):
     verified = models.BooleanField(default=False)
     subscription_rate = models.CharField(max_length=100, blank=True, null=True)
     uses_default_password = models.BooleanField(default=False)
+
+    history = HistoricalRecords()
 
     # dependants = models.ManyToManyField(Dependant, blank=True)
 
@@ -316,6 +327,8 @@ class AdhocClient(models.Model):
     last_name = models.CharField(max_length=100)
     created_by = models.ForeignKey('ranger.Ranger', on_delete=models.SET_NULL, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)

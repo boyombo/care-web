@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 class Plan(models.Model):
@@ -7,6 +8,8 @@ class Plan(models.Model):
     has_extra = models.BooleanField(default=False)
     family_inclusive = models.BooleanField(default=True)
     size = models.PositiveIntegerField(null=True)
+
+    history = HistoricalRecords()
     # client_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # spouse_dependant_rate = models.DecimalField(
     #    max_digits=10, decimal_places=2, default=0
@@ -39,6 +42,8 @@ class PlanRate(models.Model):
     payment_cycle = models.CharField(choices=PAYMENT_CYCLES, max_length=2)
     rate = models.PositiveIntegerField()
     extra_rate = models.PositiveIntegerField(null=True, blank=True)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.plan)
