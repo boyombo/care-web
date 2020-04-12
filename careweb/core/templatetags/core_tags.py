@@ -21,11 +21,15 @@ def header_stat(context):
     month_payment = Payment.objects.filter(payment_date__gte=current.date()).aggregate(Sum('amount'))['amount__sum']
     payment = "{0:,.2f}".format(payment) if payment else "0.00"
     month_payment = "{0:,.2f}".format(month_payment) if month_payment else "0.00"
+    active_clients = Client.objects.filter(user__is_active=True).count()
+    all_clients = Client.objects.count()
     return {
         "clients": clients,
         "rangers": rangers,
         "payment": payment,
-        "month_payment": month_payment
+        "month_payment": month_payment,
+        "active_clients": active_clients,
+        "all_clients": all_clients
     }
 
 
