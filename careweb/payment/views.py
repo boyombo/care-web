@@ -23,6 +23,8 @@ logger = logging.getLogger(__name__)
 
 
 def verify_user(request):
+    if request.method != "GET":
+        return HttpResponseBadRequest("{} not allowed".format(request.method))
     _usr, error_message = basic_auth(request)
     if not _usr:
         return basic_error_response(error_message)
