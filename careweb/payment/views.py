@@ -22,6 +22,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+@csrf_exempt
 def verify_user(request):
     if request.method != "GET":
         return HttpResponseBadRequest("{} not allowed".format(request.method))
@@ -293,8 +294,8 @@ def verify_paystack_subscription(request):
     resp = verify(pymt)
     logger.info(resp)
     if (
-        pymt.status == Payment.PENDING
-        and subscription_payment.status == SubscriptionPayment.PENDING
+            pymt.status == Payment.PENDING
+            and subscription_payment.status == SubscriptionPayment.PENDING
     ):
         pymt.status = Payment.SUCCESSFUL
         pymt.save()
