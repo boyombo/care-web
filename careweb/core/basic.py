@@ -22,7 +22,7 @@ def basic_auth(request):
                     username = b_username.decode("utf-8")
                     password = b_pwd.decode("utf-8")
                     usr = authenticate(username=username, password=password)
-                    return usr, ""
+                    return usr, "Invalid credentials"
                 except Exception as e:
                     print(e)
                     return None, "Malformed authorization header"
