@@ -22,10 +22,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+@csrf_exempt
 def verify_user(request):
-    _usr = basic_auth(request)
+    if request.method != "GET":
+        return HttpResponseBadRequest("{} not allowed".format(request.method))
+    _usr, error_message = basic_auth(request)
     if not _usr:
-        return basic_error_response()
+        return basic_error_response(error_message)
 
     username = request.GET.get("username", None)
     if not username:
@@ -57,14 +60,14 @@ def verify_user(request):
     # else:
     #    return JsonResponse({"success": True})
 
-    return HttpResponseBadRequest("Illegal request")
+    # return HttpResponseBadRequest("Illegal request")
 
 
 @csrf_exempt
 def walkin_payment(request):
-    _usr = basic_auth(request)
+    _usr, error_message = basic_auth(request)
     if not _usr:
-        return basic_error_response()
+        return basic_error_response(error_message)
 
     if request.method == "POST":
         form = WalkinPaymentForm(request.POST)
@@ -291,8 +294,8 @@ def verify_paystack_subscription(request):
     resp = verify(pymt)
     logger.info(resp)
     if (
-        pymt.status == Payment.PENDING
-        and subscription_payment.status == SubscriptionPayment.PENDING
+            pymt.status == Payment.PENDING
+            and subscription_payment.status == SubscriptionPayment.PENDING
     ):
         pymt.status = Payment.SUCCESSFUL
         pymt.save()
