@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
@@ -122,7 +123,7 @@ def walkin_payment(request):
 
 ## Paystack
 
-
+@login_required
 def paystack_initiate_subscription(request):
     email = request.user.username
     try:
