@@ -337,3 +337,54 @@ class AdhocClient(models.Model):
         permissions = (
             ('is_adhoc', 'Adhoc Client'),
         )
+
+
+class UploadedClient(models.Model):
+    """
+    first_name	middle_name	last_name	salutation	gender	phone_number	date_of_birth	age_today
+        marital_status	sub_region	participant_status	date_created	policy_status	policy_activation_date
+        policy_expiry_date	relationship	membership_number	policy_number	insurance_package	premium_amount
+        participant_policy_status	provider_code	provider_name	provider_ownership	state_id	national_id	passport
+        staff_id	driving_licence	voter_id	military_id	secondary_phone_number	employer	agent
+        agent_phone_number	registration_agency	administration_agency
+    """
+    first_name = models.CharField(max_length=200, default="", blank=True)
+    middle_name = models.CharField(max_length=200, default="", blank=True)
+    last_name = models.CharField(max_length=200, default="", blank=True)
+    salutation = models.CharField(max_length=200, default="", blank=True)
+    gender = models.CharField(max_length=200, default="", blank=True)
+    phone_number = models.CharField(max_length=200, default="", blank=True)
+    date_of_birth = models.CharField(max_length=200, default="", blank=True)
+    age_today = models.CharField(max_length=200, default="", blank=True)
+    marital_status = models.CharField(max_length=200, default="", blank=True)
+    sub_region = models.CharField(max_length=200, default="", blank=True)
+    participant_status = models.CharField(max_length=200, default="", blank=True)
+    date_created = models.CharField(max_length=200, default="", blank=True)
+    policy_status = models.CharField(max_length=200, default="", blank=True)
+    policy_activation_date = models.CharField(max_length=200, default="", blank=True)
+    policy_expiry_date = models.CharField(max_length=200, default="", blank=True)
+    relationship = models.CharField(max_length=200, default="", blank=True)
+    membership_number = models.CharField(max_length=200, default="", blank=True)
+    policy_number = models.CharField(max_length=200, default="", blank=True)
+    insurance_package = models.CharField(max_length=200, default="", blank=True)
+    premium_amount = models.CharField(max_length=200, default="", blank=True)
+    participant_policy_status = models.CharField(max_length=200, default="", blank=True)
+    provider_code = models.CharField(max_length=200, default="", blank=True)
+    provider_name = models.CharField(max_length=200, default="", blank=True)
+    provider_ownership = models.CharField(max_length=200, default="", blank=True)
+    state_id = models.CharField(max_length=200, default="", blank=True)
+    national_id = models.CharField(max_length=200, default="", blank=True)
+    passport = models.CharField(max_length=200, default="", blank=True)
+    staff_id = models.CharField(max_length=200, default="", blank=True)
+    driving_licence = models.CharField(max_length=200, default="", blank=True)
+    voter_id = models.CharField(max_length=200, default="", blank=True)
+    military_id = models.CharField(max_length=200, default="", blank=True)
+    secondary_phone_number = models.CharField(max_length=200, default="", blank=True)
+    employer = models.CharField(max_length=200, default="", blank=True)
+    agent = models.CharField(max_length=200, default="", blank=True)
+    agent_phone_number = models.CharField(max_length=200, default="", blank=True)
+    registration_agency = models.CharField(max_length=200, default="", blank=True)
+    administration_agency = models.CharField(max_length=200, default="", blank=True)
+
+    def __str__(self):
+        return "{} {} - {}".format(self.first_name, self.last_name, self.phone_number)
