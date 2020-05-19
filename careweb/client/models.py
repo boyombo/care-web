@@ -388,3 +388,7 @@ class UploadedClient(models.Model):
 
     def __str__(self):
         return "{} {} - {}".format(self.first_name, self.last_name, self.phone_number)
+
+    @property
+    def full_name(self):
+        return "{} {}".format(self.first_name, self.last_name)
