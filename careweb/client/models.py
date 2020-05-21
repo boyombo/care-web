@@ -184,6 +184,7 @@ class Client(models.Model):
     verified = models.BooleanField(default=False)
     subscription_rate = models.CharField(max_length=100, blank=True, null=True)
     uses_default_password = models.BooleanField(default=False)
+    membership_number = models.CharField(max_length=100, default="", blank=True)
 
     history = HistoricalRecords()
 
