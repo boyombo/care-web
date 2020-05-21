@@ -51,3 +51,9 @@ class PlanRate(models.Model):
     @property
     def has_extra(self):
         return self.plan.has_extra
+
+
+class SmsLog(models.Model):
+    recipient = models.TextField(default="", blank=True)
+    message = models.TextField()
+    status = models.CharField(max_length=200, default="", blank=True)
