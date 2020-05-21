@@ -244,7 +244,7 @@ REST_FRAMEWORK = {
 }
 HASHID_FIELD_SALT = 'v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^'
 
-IS_TEST_SERVER = True
+IS_TEST_SERVER = False
 
 if IS_TEST_SERVER:
     try:
