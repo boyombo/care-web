@@ -249,6 +249,7 @@ REST_FRAMEWORK = {
     # 'EXCEPTION_HANDLER': 'log_manager.views.exception_handler'
 }
 HASHID_FIELD_SALT = "v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^"
+INFOBIP_KEY = "a5da698b60430bc68b80e5a3977740bc-e41a65f3-53ee-49eb-988b-49a867c6db37"
 
 IS_TEST_SERVER = False
 
