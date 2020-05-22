@@ -13,7 +13,7 @@ class Command(BaseCommand):
             if not phone:
                 continue
             phone_number = phone.replace("0", "234", 1) if str(phone).startswith("0") else phone
-            if len(phone) < 13:
+            if len(phone_number) < 13:
                 continue
             phones.append(phone_number)
 
