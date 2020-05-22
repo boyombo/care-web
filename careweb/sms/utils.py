@@ -33,8 +33,7 @@ def send_sms(msisdn="7061543553", msg="Test"):
             }
         ]
     }
-    payload = "{\"messages\":[{\"from\":\"InfoSMS\",\"destinations\":[{\"to\":\"2347061543553\",\"messageId\":\"MESSAGE-ID-123-xyz\"}],\"text\":\"Testing sms.\",\"flash\":false,\"intermediateReport\":true}}"
-    # payload = json.dumps(data)
+    payload = json.dumps(data)
     response = requests.post(url, headers=headers, data=payload)
     print(response.json())
     return response
