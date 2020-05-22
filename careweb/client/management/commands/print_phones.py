@@ -10,7 +10,7 @@ class Command(BaseCommand):
         phones = []
         for client in Client.objects.all():
             phone = client.phone_no
-            if not phone:
+            if not phone or len(phone) < 13:
                 continue
             phone_number = phone.replace("0", "234", 1) if str(phone).startswith("0") else phone
             phones.append(phone_number)
