@@ -35,7 +35,7 @@ ALLOWED_HOSTS = [
     "192.168.8.100",
     "192.168.1.4",
     "127.0.0.1",
-    "167.172.156.45"
+    "167.172.156.45",
 ]
 
 # Email settings
@@ -43,7 +43,7 @@ ALLOWED_HOSTS = [
 EMAIL_BACKEND = "post_office.EmailBackend"
 DEFAULT_FROM_EMAIL = "noreply@futurecare.ng"
 
-POST_OFFICE = {"BACKENDS": {"default": "postmarker.django.EmailBackend", }}
+POST_OFFICE = {"BACKENDS": {"default": "postmarker.django.EmailBackend",}}
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "provider.apps.ProviderConfig",
     "payment.apps.PaymentConfig",
     "subscription.apps.SubscriptionConfig",
+    "sms.apps.SmsConfig",
     # 3rd party
     "post_office",
     "baton.autodiscover",
@@ -82,7 +83,10 @@ INSTALLED_APPS = [
 
 CONSTANCE_CONFIG = {
     "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription"),
-    "CLIENT_DEFAULT_PASSWORD": ("Qwerty123", "Default password for clients registered by rangers."),
+    "CLIENT_DEFAULT_PASSWORD": (
+        "Qwerty123",
+        "Default password for clients registered by rangers.",
+    ),
     "LEN_VERIFICATION_CODE": (5, "Length of verification code for new users"),
     "CLIENT_LIMIT": (2000, "Limit to notify users"),
     "CLIENT_LIMIT_RECEIVERS": ("", "List of emails to be notified of client limit"),
@@ -112,7 +116,7 @@ ROOT_URLCONF = "careweb.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates"), ],
+        "DIRS": [os.path.join(BASE_DIR, "templates"),],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -145,9 +149,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
 # Internationalization
@@ -197,7 +201,7 @@ HASHID_FIELD_ALLOW_INT_LOOKUP = True
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "formatters": {"simple": {"format": "%(levelname)s %(asctime)s %(message)s"}, },
+    "formatters": {"simple": {"format": "%(levelname)s %(asctime)s %(message)s"},},
     "handlers": {
         "client_logfile": {
             "formatter": "simple",
@@ -219,9 +223,9 @@ LOGGING = {
         },
     },
     "loggers": {
-        "client": {"handlers": ["client_logfile"], "level": "INFO", "propagate": True, },
-        "ranger": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True, },
-        "core": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True, },
+        "client": {"handlers": ["client_logfile"], "level": "INFO", "propagate": True,},
+        "ranger": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True,},
+        "core": {"handlers": ["ranger_logfile"], "level": "INFO", "propagate": True,},
         "payment": {
             "handlers": ["payment_logfile"],
             "level": "INFO",
@@ -230,21 +234,24 @@ LOGGING = {
     },
 }
 
-FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
-                        "django_excel.TemporaryExcelFileUploadHandler")
+FILE_UPLOAD_HANDLERS = (
+    "django_excel.ExcelMemoryFileUploadHandler",
+    "django_excel.TemporaryExcelFileUploadHandler",
+)
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    "DEFAULT_AUTHENTICATION_CLASSES": (
         # 'rest_framework.authentication.TokenAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
+    "DEFAULT_PERMISSION_CLASSES": (
         # 'rest_framework.permissions.IsAuthenticated',
     ),
     # 'EXCEPTION_HANDLER': 'log_manager.views.exception_handler'
 }
-HASHID_FIELD_SALT = 'v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^'
+HASHID_FIELD_SALT = "v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^"
+INFOBIP_KEY = "a5da698b60430bc68b80e5a3977740bc-e41a65f3-53ee-49eb-988b-49a867c6db37"
 
-IS_TEST_SERVER = False
+IS_TEST_SERVER = True
 
 if IS_TEST_SERVER:
     try:
