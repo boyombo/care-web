@@ -10,6 +10,7 @@ class Plan(models.Model):
     size = models.PositiveIntegerField(null=True)
 
     history = HistoricalRecords()
+
     # client_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # spouse_dependant_rate = models.DecimalField(
     #    max_digits=10, decimal_places=2, default=0
@@ -51,9 +52,3 @@ class PlanRate(models.Model):
     @property
     def has_extra(self):
         return self.plan.has_extra
-
-
-class SmsLog(models.Model):
-    recipient = models.TextField(default="", blank=True)
-    message = models.TextField()
-    status = models.CharField(max_length=200, default="", blank=True)
