@@ -23,7 +23,7 @@ class SmsLog(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "{} {}".format(self.category, self.status)
+        return "{}".format(self.get_category_display())
 
     @property
     def plan_name(self):

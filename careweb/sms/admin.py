@@ -2,6 +2,7 @@ from django.contrib import admin, messages
 
 from sms.forms import SmsLogAdminForm
 from sms.models import SmsLog
+from sms.utils import get_client_contacts, send_multi_sms
 
 
 class SmsLogAdmin(admin.ModelAdmin):
@@ -21,9 +22,10 @@ class SmsLogAdmin(admin.ModelAdmin):
             return
         else:
             category = obj.category
-            if category == "A":
-                pass
+            contacts = get_client_contacts(category, obj.plan, obj.recipients)
+            status = send_multi_sms(contacts, obj.message)
             obj.sender = request.user
+            obj.status = "S" if str(status) == "200" else "F"
             super(SmsLogAdmin, self).save_model(request, obj, form, change)
 
 

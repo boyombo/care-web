@@ -61,13 +61,37 @@ def send_multi_sms(receivers, msg):
     return response.status_code
 
 
-def get_client_contacts(category, plan_id, receivers):
+def get_client_contacts(category, plan, recipients):
     clients = []
     contacts = []
     if category == "P":
-        plan = Plan.objects.get(id=plan_id)
         clients = plan.client_set.all()
     elif category == "A":
         clients = Client.objects.all()
     elif category == "C":
         clients = None
+
+    if clients:
+        for client in clients:
+            phone = client.phone_no
+            if not phone:
+                continue
+            phone = format_number(phone)
+            phone_number = phone.replace("0", "234", 1) if str(phone).startswith("0") else phone
+            if len(phone_number) < 13:
+                continue
+            contacts.append(phone_number.strip())
+    elif recipients:
+        temp = recipients.split(",")
+        for item in temp:
+            item = format_number(item)
+            phone_number = item.replace("0", "234", 1) if str(item).startswith("0") else item
+            if len(phone_number) < 13:
+                continue
+            contacts.append(phone_number.strip())
+    return contacts
+
+
+def format_number(number):
+    number = number[1:] if str(number).startswith("+") else number
+    return number
