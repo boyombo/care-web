@@ -23,8 +23,11 @@ class SmsLogAdmin(admin.ModelAdmin):
         else:
             category = obj.category
             contacts = get_client_contacts(category, obj.plan, obj.recipients)
+            print(contacts)
             status = send_multi_sms(contacts, obj.message, obj.sms_sender)
             obj.created_by = request.user
+            if obj.recipients:
+                obj.recipients = ",".join(contacts)
             obj.status = "S" if str(status) == "200" else "F"
             super(SmsLogAdmin, self).save_model(request, obj, form, change)
 
