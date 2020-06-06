@@ -20,7 +20,8 @@ class SmsLog(models.Model):
     message = models.TextField()
     status = models.CharField(max_length=200, choices=STATUS, default="", blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    sms_sender = models.CharField(max_length=15, default="FutureCare")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{}".format(self.get_category_display())
@@ -30,7 +31,3 @@ class SmsLog(models.Model):
         if self.plan:
             return self.plan.name
         return "N/A"
-
-    @property
-    def sender_name(self):
-        return self.sender.username

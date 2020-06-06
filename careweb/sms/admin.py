@@ -11,7 +11,7 @@ class SmsLogAdmin(admin.ModelAdmin):
             'js/sms_admin.js',
         )
 
-    list_display = ('category', 'plan_name', 'created', 'sender_name', 'status')
+    list_display = ('category', 'plan_name', 'created', 'sms_sender', 'status')
     list_filter = ('category', 'status')
     date_hierarchy = 'created'
     form = SmsLogAdminForm
@@ -23,8 +23,8 @@ class SmsLogAdmin(admin.ModelAdmin):
         else:
             category = obj.category
             contacts = get_client_contacts(category, obj.plan, obj.recipients)
-            status = send_multi_sms(contacts, obj.message)
-            obj.sender = request.user
+            status = send_multi_sms(contacts, obj.message, obj.sms_sender)
+            obj.created_by = request.user
             obj.status = "S" if str(status) == "200" else "F"
             super(SmsLogAdmin, self).save_model(request, obj, form, change)
 

@@ -6,4 +6,4 @@ from sms.models import SmsLog
 class SmsLogAdminForm(forms.ModelForm):
     class Meta:
         model = SmsLog
-        fields = ['category', 'plan', 'recipients', 'message']
+        fields = ['sms_sender', 'category', 'plan', 'recipients', 'message']

@@ -42,7 +42,7 @@ def send_sms(msisdn="7061543553", msg="Test"):
     return response
 
 
-def send_multi_sms(receivers, msg):
+def send_multi_sms(receivers, msg, sender):
     key = settings.INFOBIP_KEY
     headers = {
         "Authorization": f"App {key}",
@@ -51,7 +51,7 @@ def send_multi_sms(receivers, msg):
     }
     url = "https://dmm56g.api.infobip.com/sms/2/text/single"
     data = {
-        "from": "FutureCare",
+        "from": sender,
         "to": receivers,
         "text": msg,
     }
