@@ -1,3 +1,32 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 
-# Register your models here.
+from sms.forms import SmsLogAdminForm
+from sms.models import SmsLog
+from sms.utils import get_client_contacts, send_multi_sms
+
+
+class SmsLogAdmin(admin.ModelAdmin):
+    class Media:
+        js = (
+            'js/sms_admin.js',
+        )
+
+    list_display = ('category', 'plan_name', 'created', 'sender_name', 'status')
+    list_filter = ('category', 'status')
+    date_hierarchy = 'created'
+    form = SmsLogAdminForm
+
+    def save_model(self, request, obj, form, change):
+        if obj.pk:
+            messages.warning(request, "Action completed successfully. No change was applied!")
+            return
+        else:
+            category = obj.category
+            contacts = get_client_contacts(category, obj.plan, obj.recipients)
+            status = send_multi_sms(contacts, obj.message)
+            obj.sender = request.user
+            obj.status = "S" if str(status) == "200" else "F"
+            super(SmsLogAdmin, self).save_model(request, obj, form, change)
+
+
+admin.site.register(SmsLog, SmsLogAdmin)
