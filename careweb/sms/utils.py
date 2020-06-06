@@ -93,5 +93,6 @@ def get_client_contacts(category, plan, recipients):
 
 
 def format_number(number):
+    number = number.strip()
     number = number[1:] if str(number).startswith("+") else number
     return number
