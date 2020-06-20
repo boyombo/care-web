@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Profile
+{% endblock title %}
+
+
+{% block content %}
+
+    <!-- banner Area Start -->
+    <section id="insuronbreadcrumb" class="insuronbreadcrumb">
+        <div class="bcoverlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Content">
+                        <h2>
+                            Profile
+                        </h2>
+                        <div class="links">
+                            <ul>
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li>
+                                    <span>/</span>
+                                </li>
+                                <li>
+                                    <a class="active" href="">Profile</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Welcome Area End -->
+
+    <!-- Services Area Start -->
+    <section id="serviceDetails" class="serviceDetails" style="padding-bottom: 15px">
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            <div class="row">
+                <div class="col-md-7 col-xs-12">
+                    <div class="content">
+                        <h2>Welcome, {{ profile.name }}</h2>
+                        <div>
+                            <a href="{% url 'provider_change_password' %}" class='btn'
+                               style="background-color: #9fde50; color: #fff; "><i class="pe-7s-lock"> </i> Change your
+                                password</a>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 counter" style="padding: 10px;">
+                        <div class="row">
+                            <div class=" col-md-12">
+                                <h4 class="h4-font"><strong>LGA: </strong> {{ profile.lga }}</h4>
+                                <h4 class="h4-font"><strong>Address: </strong> {{ profile.address }}</h4>
+                                <h4 class="h4-font"><strong>Phone 1: </strong> {{ profile.phone1 }}</h4>
+                                <h4 class="h4-font"><strong>Phone 2: </strong> {{ profile.phone2 }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-xs-12">
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <div class="feature lifeinsurance" style="padding-top: 15px">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="box">
+                        <h3>View Client</h3>
+                        <form action="{% url 'provider_view_client' %}">
+                            <div class="form-group">
+                                <div class="col-sm-8" style="display: inline-block">
+                                    <input name="code" type="text" class="form-control"
+                                           placeholder="Supply Client LASHMA Code/Email/Phone">
+                                </div>
+                                <button class="btn btn-success btn-lg">View</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- Services Area End -->
+
+{% endblock content %}
+
+{% block extra-js %}
+    <script type="text/javascript">
+        $('.nav-link').removeClass('active')
+        $('#profile-nav-link').addClass('active')
+    </script>
+{% endblock extra-js %}

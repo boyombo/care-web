@@ -82,7 +82,7 @@ def get_client_details(client, host):
         "paymentInstrument": client.payment_instrument,
         "dependents": dependants,  # I call it dependents instead of dependants everywhere
         "associations": associations,
-        "usesDefaultPassword": client.uses_default_password,
+        "usesDefaultPassword": client.uses_default_password
     }
 
 

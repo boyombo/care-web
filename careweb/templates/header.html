@@ -82,7 +82,7 @@
                                 </a>
                             </div>
                            
-                            {% else %}
+                            {% elif not perms.provider.is_provider %}
                             <div class="big-btn">
                                 <a href="#">
                                     <i class="fas fa-phone"></i>

@@ -7,7 +7,7 @@ from hashid_field import HashidAutoField
 from simple_history.models import HistoricalRecords
 
 from location.models import LGA
-from provider.models import CareProvider
+from provider.models import CareProvider, ProviderComment
 from ranger.models import Ranger
 from core.models import Plan
 from payment.models import Payment
@@ -95,6 +95,14 @@ class Dependant(models.Model):
                 return "Mrs"
             return "Mr"
         return "Ms"
+
+    @property
+    def full_name(self):
+        return '{} {} {} {}'.format(self.get_salutation, self.first_name, self.middle_name, self.surname)
+
+    @property
+    def comments_received(self):
+        return ProviderComment.objects.filter(dependant=self).count()
 
 
 class Client(models.Model):
@@ -212,7 +220,7 @@ class Client(models.Model):
 
     @property
     def full_name(self):
-        return "{} {}".format(self.first_name, self.surname)
+        return "{} {} {}".format(self.first_name, self.middle_name, self.surname)
 
     @property
     def active(self):
@@ -271,6 +279,10 @@ class Client(models.Model):
     @property
     def dependents(self):
         return self.dependant_set.all()
+
+    @property
+    def comments_received(self):
+        return ProviderComment.objects.filter(client=self, dependant=None).count()
 
 
 class MyClient(Client):

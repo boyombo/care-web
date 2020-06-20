@@ -85,7 +85,7 @@ CONSTANCE_CONFIG = {
     "AGENT_COMMISSION": (5, "Commission for Agents as a percentage of subscription"),
     "CLIENT_DEFAULT_PASSWORD": (
         "Qwerty123",
-        "Default password for clients registered by rangers.",
+        "Default password for clients/provider registered by rangers.",
     ),
     "LEN_VERIFICATION_CODE": (5, "Length of verification code for new users"),
     "CLIENT_LIMIT": (2000, "Limit to notify users"),
@@ -251,7 +251,7 @@ REST_FRAMEWORK = {
 HASHID_FIELD_SALT = "v3m*lx71+z51ymv1hb=ts4uj%=34*r@4=y3ajz(+!&4!=r8nv^"
 INFOBIP_KEY = "a5da698b60430bc68b80e5a3977740bc-e41a65f3-53ee-49eb-988b-49a867c6db37"
 
-IS_TEST_SERVER = False
+IS_TEST_SERVER = True
 
 if IS_TEST_SERVER:
     try:

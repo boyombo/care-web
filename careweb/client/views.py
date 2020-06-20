@@ -163,6 +163,14 @@ def client_login(request):
             except User.DoesNotExist:
                 pass
 
+            # Is provider
+            try:
+                u = User.objects.get(username=un)
+                if not u.is_superuser and u.has_perm('provider.is_provider'):
+                    return HttpResponseRedirect(reverse('provider_profile'))
+            except User.DoesNotExist:
+                pass
+
             # A client?
             try:
                 cl = Client.objects.get(user=request.user)

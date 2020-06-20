@@ -43,7 +43,7 @@ class AssociationInline(admin.TabularInline):
 
 @admin.register(Dependant)
 class DependantAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
-    list_display = ["surname", "first_name", "dob", "relationship"]
+    list_display = ["surname", "first_name", "dob", "relationship", "comments_received"]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -66,6 +66,7 @@ class MyClientAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
         "plan",
         "subscription_rate",
         "verified",
+        "comments_received"
     ]
     actions = ["subscribe_client"]
 
@@ -138,6 +139,7 @@ class ClientAdmin(HashIdFieldAdminMixin, SimpleHistoryAdmin):
         "user",
         "verification_code",
         "verified",
+        "comments_received"
     ]
     inlines = [DependantInline, AssociationInline]
     search_fields = ["user__username", "surname", "first_name"]
