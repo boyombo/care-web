@@ -104,3 +104,5 @@ static/
 .idea
 .idea/*
 
+careweb/test_settings.py
+
