@@ -1,9 +1,11 @@
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import django_excel as excel
 
 from payment.models import Payment
 from ranger.models import Ranger, WalletFunding
@@ -29,3 +31,29 @@ class CreateFundingView(APIView):
             return Response({"success": True, "funding": serialized.data}, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_200_OK)
+
+
+@login_required
+def export_rangers(request):
+    column_names = [
+        "S/N", "First Name", "Last Name", "Phone Number",
+        "LGA", "Balance", "Date Added"
+    ]
+    output = [column_names]
+    rows = []
+    rangers = Ranger.objects.all()
+    index = 1
+    for ranger in rangers:
+        date = ranger.created.strftime("%B %d, %Y") if ranger.created else ""
+        rows.append([
+            index,
+            ranger.first_name,
+            ranger.last_name,
+            ranger.phone,
+            ranger.lga.name,
+            ranger.balance,
+            date
+        ])
+    output.extend(rows)
+    sheet = excel.pe.Sheet(output)
+    return excel.make_response(sheet, "xls", file_name="Rangers")

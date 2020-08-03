@@ -1,0 +1,33 @@
+{% extends 'admin/change_list.html' %}
+
+{% block search %}
+    <style>
+        #download-ranger-label {
+            position: absolute;
+            right: 30px;
+            margin-top: 10px
+        }
+
+        @media (max-width: 700px) {
+            #download-ranger-label {
+                position: static;
+                margin-left: 10px;
+                margin-top: 10px
+            }
+        }
+    </style>
+    {% if request.user.is_superuser %}
+        <a href="{% url 'export_rangers' %}" id="download-ranger-label" class="btn btn-success">
+            Download Rangers
+        </a>
+    {% endif %}
+    <i class="fa fa-spinner fa-2x fa-spin text-info" id="download-spinner" style="display: none"></i>
+
+    {{ block.super }}
+
+
+    <script>
+        const $ = jQuery;
+
+    </script>
+{% endblock %}
