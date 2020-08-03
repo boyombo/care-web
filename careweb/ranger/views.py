@@ -54,6 +54,7 @@ def export_rangers(request):
             ranger.balance,
             date
         ])
+        index += 1
     output.extend(rows)
     sheet = excel.pe.Sheet(output)
     return excel.make_response(sheet, "xls", file_name="Rangers")
