@@ -36,7 +36,7 @@ class CreateFundingView(APIView):
 @login_required
 def export_rangers(request):
     column_names = [
-        "S/N", "First Name", "Last Name", "Phone Number",
+        "S/N", "Email", "First Name", "Last Name", "Phone Number",
         "LGA", "Balance", "Date Added"
     ]
     output = [column_names]
@@ -45,8 +45,10 @@ def export_rangers(request):
     index = 1
     for ranger in rangers:
         date = ranger.created.strftime("%B %d, %Y") if ranger.created else ""
+        email = ranger.user.email if ranger.user else ""
         rows.append([
             index,
+            email,
             ranger.first_name,
             ranger.last_name,
             ranger.phone,
