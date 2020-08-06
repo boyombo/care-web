@@ -20,7 +20,7 @@ class Command(BaseCommand):
         success = 0
         failure = 0
         skipped = 0
-        for client in Client.objects.filter(verified=True):
+        for client in Client.objects.all():
             if client.lashma_no and client.phone_no:
                 msg = "Dear {name}, your Quality Life Code is {ql_code} and LASHMA ID is {lashma_id}. " \
                       "Kindly Keep them safe for subsequent Use. Thank you.".format(name=client.full_name,
