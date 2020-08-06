@@ -23,7 +23,7 @@ class SmsLogAdmin(admin.ModelAdmin):
         else:
             category = obj.category
             contacts = get_client_contacts(category, obj.plan, obj.recipients)
-            print(contacts)
+            # print(contacts)
             status = send_multi_sms(contacts, obj.message, obj.sms_sender)
             obj.created_by = request.user
             if obj.recipients:
