@@ -2,7 +2,6 @@ from django.urls import path
 
 from payment import views
 
-
 urlpatterns = [
     path("initiate/", views.new_payment, name="initiate_payment"),
     path(
@@ -16,5 +15,7 @@ urlpatterns = [
     path("paystack_verify/", views.verify_paystack_payment),
     path("subscription_verify/", views.verify_paystack_subscription),
     path("verify_user/", views.verify_user),
+    path("ussd_info/", views.ussd_info),
+    path("ussd_payment/", views.ussd_payment),
     path("walkin_payment/", views.walkin_payment),
 ]

@@ -25,3 +25,11 @@ class WalkinPaymentForm(forms.ModelForm):
                 raise forms.ValidationError("User does not exist")
             else:
                 return _username
+
+
+class UssdPaymentForm(forms.ModelForm):
+    phone = forms.CharField(max_length=20)
+
+    class Meta:
+        model = Payment
+        fields = ["amount", "payment_date", "reference", "narration", "paid_by", "phone"]

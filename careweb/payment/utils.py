@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from client.models import Client
 from payment.models import Payment
 from ranger.models import WalletFunding, Ranger
+from subscription.utils import get_subscription_rate
 
 REF = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"
 
@@ -56,3 +57,12 @@ def get_user_for_payment(username):
         return {"first_name": _client.first_name, "last_name": _client.surname}
         # return "client"
         # return JsonResponse({"success": True})
+
+
+def get_details_for_ussd(phone):
+    try:
+        _client = Client.objects.get(phone_no=phone)
+    except Client.DoesNotExist:
+        raise ValueError("User does not exist")
+    else:
+        return {"amount": get_subscription_rate(_client)}

@@ -13,8 +13,8 @@ from subscription.utils import (
     get_subscription_rate,
 )
 from payment.models import Payment
-from payment.forms import PaymentForm, WalkinPaymentForm
-from payment.utils import get_reference, get_user_for_payment
+from payment.forms import PaymentForm, WalkinPaymentForm, UssdPaymentForm
+from payment.utils import get_reference, get_user_for_payment, get_details_for_ussd
 from payment.paystack import initiate, verify
 from core.basic import basic_auth, basic_error_response
 
@@ -62,6 +62,27 @@ def verify_user(request):
     #    return JsonResponse({"success": True})
 
     # return HttpResponseBadRequest("Illegal request")
+
+
+@csrf_exempt
+def ussd_info(request):
+    if request.method != "GET":
+        return HttpResponseBadRequest("{} not allowed".format(request.method))
+    _usr, error_message = basic_auth(request)
+    if not _usr:
+        return basic_error_response(error_message)
+
+    phone = request.GET.get("phone", None)
+    if not phone:
+        return HttpResponseBadRequest("Illegal request")
+
+    try:
+        user_details = get_details_for_ussd(phone)
+    except ValueError as err:
+        return HttpResponseBadRequest(err)
+    else:
+        user_details.update({"success": True})
+        return JsonResponse(user_details)
 
 
 @csrf_exempt
@@ -118,6 +139,47 @@ def walkin_payment(request):
             errors = form.errors.as_json()
             return JsonResponse({"success": False, "errors": errors})
     else:
+        return JsonResponse({"success": False, "errors": "Only POST allowed"})
+
+
+@csrf_exempt
+def ussd_payment(request):
+    _usr, error_message = basic_auth(request)
+    if not _usr:
+        logger.error(f"USSD payment failed. {error_message}")
+        return basic_error_response(error_message)
+
+    if request.method == "POST":
+        form = UssdPaymentForm(request.POST)
+        if form.is_valid():
+            ref = get_reference()
+            phone = form.cleaned_data["phone"]
+            amount = form.cleaned_data["amount"]
+            # reference from POST is actually saved as cust_reference
+            # and an auto-generated ref is saved as reference
+            cust_reference = form.cleaned_data["reference"]
+
+            pymt = form.save(commit=False)
+            pymt.cust_reference = cust_reference
+            pymt.reference = ref
+            pymt.status = Payment.SUCCESSFUL
+            pymt.payment_mode = Payment.BANK_PAYMENT
+            pymt.save()
+            logger.info(f"USSD payment logged. Details: {form.cleaned_data}")
+
+            try:
+                _client = Client.objects.get(phone_no=phone)
+            except Client.DoesNotExist:
+                pass
+            else:
+                create_subscription(_client, amount)
+                return JsonResponse({"success": True, "reference": ref})
+        else:
+            errors = form.errors.as_json()
+            logger.error(f"Invalid data passed for USSD payment. {errors}")
+            return JsonResponse({"success": False, "errors": errors})
+    else:
+        logger.error(f"User called USSD payment with method {request.method} instead of POST")
         return JsonResponse({"success": False, "errors": "Only POST allowed"})
 
 
