@@ -1045,31 +1045,40 @@ class UpdateClientView(UpdateAPIView):
             if data.get('plan_id'):
                 plan = Plan.objects.get(id=data.get('plan_id'))
             instance = self.get_object()
-            instance.salutation = data.get('salutation')
-            instance.first_name = data.get('first_name')
-            instance.middle_name = data.get('middle_name')
-            instance.surname = data.get('surname')
-            instance.dob = data.get('dob')
-            instance.sex = data.get('sex')
-            instance.marital_status = data.get('marital_status')
-            instance.national_id_card_no = data.get('national_id_card_no')
-            instance.drivers_licence_no = data.get('drivers_licence_no')
-            instance.lashma_no = data.get('lashma_no')
-            instance.lagos_resident_no = data.get('lagos_resident_no')
-            instance.phone_no = data.get('phone_no')
-            instance.whatsapp_no = data.get('phone_no')
-            instance.email = data.get('email')
-            instance.company = data.get('company')
-            instance.home_address = data.get('home_address')
-            instance.occupation = data.get('occupation')
-            instance.office_address = data.get('office_address')
-            instance.international_passport_no = data.get('international_passport_no')
-            instance.voters_card_no = data.get('voters_card_no')
-            instance.payment_instrument = data.get('payment_instrument')
-            instance.payment_option = data.get('payment_option')
-            instance.hmo = hmo
-            instance.pcp = pcp
-            instance.plan = plan
+            instance.salutation = data.get('salutation') if data.get('salutation') else instance.salutation
+            instance.first_name = data.get('first_name') if data.get('first_name') else instance.first_name
+            instance.middle_name = data.get('middle_name') if data.get('middle_name') else instance.middle_name
+            instance.surname = data.get('surname') if data.get('surname') else instance.surname
+            instance.dob = data.get('dob') if data.get('dob') else instance.dob
+            instance.sex = data.get('sex') if data.get('sex') else instance.sex
+            instance.marital_status = data.get('marital_status') if data.get(
+                'marital_status') else instance.marital_status
+            instance.national_id_card_no = data.get('national_id_card_no') if data.get(
+                'national_id_card_no') else instance.national_id_card_no
+            instance.drivers_licence_no = data.get('drivers_licence_no') if data.get(
+                'drivers_licence_no') else instance.drivers_licence_no
+            instance.lashma_no = data.get('lashma_no') if data.get('lashma_no') else instance.lashma_no
+            instance.lagos_resident_no = data.get('lagos_resident_no') if data.get(
+                'lagos_resident_no') else instance.lagos_resident_no
+            instance.phone_no = data.get('phone_no') if data.get('phone_no') else instance.phone_no
+            instance.whatsapp_no = data.get('phone_no') if data.get('phone_no') else instance.whatsapp_no
+            instance.email = data.get('email') if data.get('email') else instance.email
+            instance.company = data.get('company') if data.get('company') else instance.company
+            instance.home_address = data.get('home_address') if data.get('home_address') else instance.home_address
+            instance.occupation = data.get('occupation') if data.get('occupation') else instance.occupation
+            instance.office_address = data.get('office_address') if data.get(
+                'office_address') else instance.office_address
+            instance.international_passport_no = data.get('international_passport_no') if data.get(
+                'international_passport_no') else instance.international_passport_no
+            instance.voters_card_no = data.get('voters_card_no') if data.get(
+                'voters_card_no') else instance.voters_card_no
+            instance.payment_instrument = data.get('payment_instrument') if data.get(
+                'payment_instrument') else instance.payment_instrument
+            instance.payment_option = data.get('payment_option') if data.get(
+                'payment_option') else instance.payment_option
+            instance.hmo = hmo if hmo else instance.hmo
+            instance.pcp = pcp if pcp else instance.pcp
+            instance.plan = plan if plan else instance.plan
             if not User.objects.filter(username=instance.email).exists() and not User.objects.filter(
                     username=instance.phone_no):
                 username = instance.email if instance.email else instance.phone_no

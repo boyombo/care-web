@@ -20,7 +20,10 @@ def send_reset_mail(to_email, name, reset_link):
 
 
 def send_email(to_email, template, context):
-    receiver = [to_email]
-    if isinstance(to_email, list):
-        receiver = to_email
-    mail.send(receiver, "noreply@futurecare.ng", template=template, context=context)
+    try:
+        receiver = [to_email]
+        if isinstance(to_email, list):
+            receiver = to_email
+        mail.send(receiver, "noreply@futurecare.ng", template=template, context=context)
+    except:
+        pass
