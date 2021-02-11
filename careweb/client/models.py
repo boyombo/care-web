@@ -65,7 +65,7 @@ class Dependant(models.Model):
     id = HashidAutoField(primary_key=True)
     primary = models.ForeignKey("Client", null=True, on_delete=models.CASCADE)
     surname = models.CharField(max_length=100)
-    salutation = models.CharField(max_length=100, blank=True, default="")
+    salutation = models.CharField(max_length=100, null=True, blank=True, default="")
     sex = models.CharField(max_length=100, null=True, blank=True)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True, default="")
